@@ -1,0 +1,65 @@
+[
+  {
+    "id": "1",
+    "slug": "pastel-tiramisu-daliza",
+    "nombre": "Pastel estilo tiramisú",
+    "descripcion": "Capas de bizcocho, crema mascarpone y cacao en retícula, fresas glaseadas y chocolate de adorno.",
+    "servicio": "pasteleria",
+    "categoria": "tortas",
+    "imagen": "/images/producto-pastel-tiramisu-daliza.png"
+  },
+  {
+    "id": "2",
+    "slug": "tartas-fruta-fresca",
+    "nombre": "Tartas de fruta fresca",
+    "descripcion": "Masa quebrada dorada, fruta de temporada glaseada y detalle de menta y flores comestibles.",
+    "servicio": "reposteria",
+    "categoria": "tartas",
+    "imagen": "/images/producto-tartas-fruta-daliza.png"
+  },
+  {
+    "id": "3",
+    "slug": "cheesecake-maracuya-daliza",
+    "nombre": "Cheesecake de maracuyá",
+    "descripcion": "Mousse amarillo con semillas de maracuyá, glaseado espejo, fresas y chocolate, listón decorativo.",
+    "servicio": "pasteleria",
+    "categoria": "tortas",
+    "imagen": "/images/producto-cheesecake-maracuya-daliza.png"
+  },
+  {
+    "id": "4",
+    "slug": "brazo-de-reina-daliza",
+    "nombre": "Brazo de reina",
+    "descripcion": "Bizcocho enrollado, crema suave con trozos de fruta roja, fresas encima y azúcar glass.",
+    "servicio": "panaderia",
+    "categoria": "especiales",
+    "imagen": "/images/producto-brazo-gitano-daliza.png"
+  },
+  {
+    "id": "5",
+    "slug": "torta-mousse-chocolate-daliza",
+    "nombre": "Torta mousse de chocolate",
+    "descripcion": "Tres capas de mousse y bizcocho, glaseado espejo de chocolate, fresas y decoración de chocolate.",
+    "servicio": "pasteleria",
+    "categoria": "tortas",
+    "imagen": "/images/producto-torta-mousse-chocolate-daliza.png"
+  },
+  {
+    "id": "6",
+    "slug": "mousse-fresa-individual",
+    "nombre": "Mousse de fresa individual",
+    "descripcion": "Mini torta en acetato, mousse rosa, cinta terciopelo, chocolate y fresas en la parte superior.",
+    "servicio": "reposteria",
+    "categoria": "postres",
+    "imagen": "/images/producto-mousse-fresa-individual-daliza.png"
+  },
+  {
+    "id": "7",
+    "slug": "mousse-frutos-rojos-daliza",
+    "nombre": "Mousse de frutos rojos",
+    "descripcion": "Acabado aterciopelado en tonos berries, topping de frutos rojos, fresas y chocolate blanco.",
+    "servicio": "pasteleria",
+    "categoria": "postres",
+    "imagen": "/images/producto-mousse-frutos-rojos-daliza.png"
+  }
+]

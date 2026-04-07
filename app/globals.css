@@ -1,0 +1,398 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/**
+ * Design system — pastelería premium (sin negro puro, sin azules)
+ * Primary #8B2E2E · Secondary/headings #5A2E2E · Background #F8F5F2
+ * Text #2A1A1A / muted #6B4C4C · Accent red #D64545 · Gold #C9A96E · Leaf #5FAF4A (micro)
+ */
+:root {
+  --background: #f8f5f2;
+  --foreground: #2a1a1a;
+  --heading: #5a2e2e;
+  --muted-foreground: #6b4c4c;
+
+  --primary: #8b2e2e;
+  --primary-hover: #d64545;
+  --primary-foreground: #ffffff;
+
+  --secondary: #efe9e4;
+  --secondary-foreground: #2a1a1a;
+
+  --card: #ffffff;
+  --card-foreground: #2a1a1a;
+
+  --popover: #ffffff;
+  --popover-foreground: #2a1a1a;
+
+  --muted: #ebe4dc;
+
+  --accent: #d64545;
+  --accent-foreground: #ffffff;
+
+  --destructive: #d64545;
+  --destructive-foreground: #ffffff;
+
+  --border: color-mix(in srgb, #c9a96e 28%, #e8e0d8 72%);
+  --input: color-mix(in srgb, #5a2e2e 8%, #f8f5f2 92%);
+  --ring: #8b2e2e;
+
+  --gold: #c9a96e;
+  --leaf: #5faf4a;
+
+  --chart-1: #8b2e2e;
+  --chart-2: #5a2e2e;
+  --chart-3: #c9a96e;
+  --chart-4: #d64545;
+  --chart-5: #5faf4a;
+
+  --radius: 0.875rem;
+
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: var(--secondary-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* Compat: utilidades existentes */
+  --brand-cream: #f8f5f2;
+  --brand-wine: #8b2e2e;
+  --brand-chocolate: #5a2e2e;
+  --brand-cherry: #d64545;
+  --brand-gold: #c9a96e;
+  --brand-leaf: #5faf4a;
+  /* Divisores de sección (verde hoja, mezclado con fondo para sutileza) */
+  --section-divider-leaf-strong: color-mix(in srgb, var(--leaf) 22%, transparent);
+  --section-divider-leaf-soft: color-mix(in srgb, var(--leaf) 14%, transparent);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --heading: oklch(0.92 0.02 20);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans, 'Montserrat', system-ui, sans-serif);
+  --font-serif: var(--font-serif, 'Great Vibes', 'Brush Script MT', cursive);
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-heading: var(--heading);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-wine: var(--brand-wine);
+  --color-brand-chocolate: var(--brand-chocolate);
+  --color-brand-cherry: var(--brand-cherry);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-leaf: var(--brand-leaf);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased transition-colors duration-200;
+  }
+}
+
+@layer components {
+  /**
+   * Títulos con paleta marca: chocolate (#5A2E2E), vino (#8B2E2E), dorado (#C9A96E), cereza (#D64545).
+   * No afecta títulos en hero oscuro (text-white) ni bloques con text-primary-foreground.
+   */
+
+  /* Great Vibes: evitar recorte con background-clip (ascendentes/descendentes) */
+  h1.font-serif.text-heading,
+  h2.font-serif.text-heading:not(.text-xl) {
+    background-image: linear-gradient(
+      122deg,
+      color-mix(in srgb, var(--heading) 78%, var(--gold) 22%) 0%,
+      color-mix(in srgb, var(--gold) 42%, var(--primary) 58%) 26%,
+      var(--primary) 45%,
+      color-mix(in srgb, var(--gold) 38%, var(--heading) 62%) 62%,
+      color-mix(in srgb, var(--primary) 55%, var(--gold) 45%) 82%,
+      color-mix(in srgb, var(--gold) 48%, var(--heading) 52%) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.28;
+    padding-block: 0.35em 0.55em;
+    overflow: visible;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  h1.font-serif.text-heading::after,
+  h2.font-serif.text-heading:not(.text-xl)::after {
+    content: '';
+    display: block;
+    width: min(9rem, 42%);
+    height: 3px;
+    margin-top: 0.35rem;
+    border-radius: 9999px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--gold) 92%, #fff 8%) 0%,
+      var(--gold) 18%,
+      var(--primary) 48%,
+      var(--primary-hover) 68%,
+      color-mix(in srgb, var(--gold) 65%, var(--primary)) 100%
+    );
+    box-shadow:
+      0 0 12px color-mix(in srgb, var(--gold) 32%, transparent),
+      0 1px 8px color-mix(in srgb, var(--gold) 22%, transparent);
+  }
+
+  .text-center h1.font-serif.text-heading::after,
+  .text-center h2.font-serif.text-heading:not(.text-xl)::after {
+    margin-inline: auto;
+  }
+
+  @media (min-width: 768px) {
+    .md\:text-left h1.font-serif.text-heading::after,
+    .md\:text-left h2.font-serif.text-heading:not(.text-xl)::after {
+      margin-inline: 0;
+      margin-left: 0;
+      margin-right: auto;
+    }
+  }
+
+  h2.font-serif.text-heading.text-xl {
+    background-image: none;
+    -webkit-text-fill-color: unset;
+    filter: none;
+    color: color-mix(in srgb, var(--heading) 58%, var(--gold) 42%);
+    border-left: 3px solid var(--gold);
+    padding-left: 0.65rem;
+    padding-block: 0.2em 0.35em;
+    border-radius: 2px 0 0 2px;
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--gold) 35%, transparent);
+    font-weight: 400;
+    line-height: 1.35;
+    overflow: visible;
+  }
+
+  h2.font-serif.text-heading.text-xl::after {
+    display: none;
+  }
+
+  h3.font-serif.text-heading,
+  h4.font-serif.text-heading {
+    color: color-mix(in srgb, var(--heading) 52%, var(--gold) 48%);
+    border-left: 3px solid var(--gold);
+    padding-left: 0.65rem;
+    padding-block: 0.22em 0.4em;
+    border-radius: 2px 0 0 2px;
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--gold) 28%, transparent);
+    font-weight: 400;
+    line-height: 1.38;
+    overflow: visible;
+  }
+
+  div[data-slot='card-title'].font-serif.text-heading {
+    color: color-mix(in srgb, var(--heading) 52%, var(--gold) 48%);
+    border-left: 3px solid var(--gold);
+    padding-left: 0.65rem;
+    padding-block: 0.2em 0.35em;
+    border-radius: 2px 0 0 2px;
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--gold) 28%, transparent);
+    font-weight: 400;
+    line-height: 1.38;
+    overflow: visible;
+  }
+
+  /**
+   * Divisores entre secciones — onda curva verde hoja (SVG), más visible que la línea recta.
+   * Omitir con data-no-section-divider en la <section>.
+   */
+  main > section:not(:first-child):not([data-no-section-divider]) {
+    position: relative;
+  }
+
+  main > section:not(:first-child):not([data-no-section-divider])::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    transform: translateX(-50%);
+    width: min(90rem, calc(100% - 1.25rem));
+    height: 1.75rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 36' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='wg' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%235faf4a' stop-opacity='0'/%3E%3Cstop offset='12%25' stop-color='%235faf4a' stop-opacity='0.95'/%3E%3Cstop offset='50%25' stop-color='%2348a83d' stop-opacity='1'/%3E%3Cstop offset='88%25' stop-color='%235faf4a' stop-opacity='0.95'/%3E%3Cstop offset='100%25' stop-color='%235faf4a' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='none' stroke='url(%23wg)' stroke-width='3.25' stroke-linecap='round' stroke-linejoin='round' d='M0 20 C120 6 240 30 360 18 C480 6 600 28 720 17 C840 6 960 30 1080 18 C1200 7 1320 26 1440 16'/%3E%3Cpath fill='none' stroke='%235faf4a' stroke-opacity='0.42' stroke-width='1.85' stroke-linecap='round' d='M0 26 C200 36 280 12 440 24 C600 36 760 10 920 23 C1080 36 1240 14 1440 25'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 100% 100%;
+    filter: drop-shadow(0 2px 5px color-mix(in srgb, var(--leaf) 38%, transparent))
+      drop-shadow(0 0 14px color-mix(in srgb, var(--leaf) 22%, transparent));
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  /* Great Vibes: sin negrita sintética (un solo peso en la fuente) */
+  .font-serif.font-bold,
+  .font-serif.font-semibold {
+    font-weight: 400;
+  }
+
+  /* Tamaños más legibles (por encima de text-4xl / text-xl de Tailwind) */
+  h1.font-serif.text-heading {
+    font-size: clamp(2.5rem, 1.35rem + 4vw, 4.125rem);
+  }
+
+  h2.font-serif.text-heading:not(.text-xl) {
+    font-size: clamp(2.125rem, 1.1rem + 3.5vw, 3.5rem);
+  }
+
+  h3.font-serif.text-heading {
+    font-size: clamp(1.7rem, 1.05rem + 2.2vw, 2.5rem);
+  }
+
+  h4.font-serif.text-heading {
+    font-size: clamp(1.5rem, 1rem + 1.4vw, 2.05rem);
+  }
+
+  h2.font-serif.text-heading.text-xl {
+    font-size: clamp(1.45rem, 0.95rem + 1.5vw, 1.95rem);
+  }
+
+  div[data-slot='card-title'].font-serif.text-heading {
+    font-size: clamp(1.4rem, 1rem + 1.2vw, 1.85rem);
+  }
+
+  /* Títulos script sin degradado (hero, contacto, etc.) */
+  h1.font-serif:not(.text-heading) {
+    font-weight: 400;
+    line-height: 1.2;
+    padding-block: 0.28em 0.5em;
+    overflow: visible;
+    font-size: clamp(2.4rem, 1.2rem + 5vw, 4.35rem);
+  }
+
+  h2.font-serif:not(.text-heading) {
+    font-weight: 400;
+    line-height: 1.25;
+    padding-block: 0.22em 0.4em;
+    overflow: visible;
+  }
+
+  /* Párrafos usados como titular (productos, cursos) */
+  p.font-serif.text-heading {
+    font-weight: 400;
+    line-height: 1.3;
+    padding-block: 0.2em 0.35em;
+    overflow: visible;
+  }
+
+  p.font-serif.text-2xl.text-heading {
+    font-size: clamp(1.65rem, 1.1rem + 1.8vw, 2.35rem);
+  }
+
+  /* Bloques de servicio (texto blanco sobre imagen) */
+  p.font-serif.text-white {
+    font-weight: 400;
+    line-height: 1.25;
+    padding-block: 0.15em 0.3em;
+  }
+
+  /* h3 sin capa .text-heading (p. ej. nombre de sede sobre tarjeta oscura) */
+  h3.font-serif.text-xl:not(.text-heading),
+  h3.font-serif.text-2xl:not(.text-heading) {
+    font-weight: 400;
+    line-height: 1.35;
+    padding-block: 0.2em 0.35em;
+    overflow: visible;
+  }
+
+  h3.font-serif.text-xl:not(.text-heading) {
+    font-size: clamp(1.45rem, 1rem + 1.3vw, 1.95rem);
+  }
+
+  /* Enlaces / líneas de producto y curso con script */
+  p.font-serif.text-lg.text-heading {
+    font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.45rem);
+    line-height: 1.4;
+  }
+
+  h3.font-serif.text-primary-foreground {
+    font-weight: 400;
+    line-height: 1.35;
+    padding-block: 0.2em 0.35em;
+    overflow: visible;
+  }
+}
