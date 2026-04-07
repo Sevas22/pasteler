@@ -1,6 +1,7 @@
 "use client"
 
-import { useLayoutEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, Search, X, Phone } from "lucide-react"
@@ -21,6 +22,7 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
   const isHome = pathname === "/"
   const isCursos = pathname === "/cursos"
@@ -37,7 +39,69 @@ export function Header() {
     return () => window.removeEventListener("scroll", update)
   }, [isHome])
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [mobileMenuOpen])
+
+  const mobileMenu =
+    mounted && mobileMenuOpen ? (
+      <div className="lg:hidden fixed inset-0 z-[100]">
+        <div className="fixed inset-0 bg-foreground/20" onClick={() => setMobileMenuOpen(false)} aria-hidden />
+        <div className="fixed inset-y-0 right-0 z-[101] flex w-full max-w-full flex-col overflow-y-auto bg-card px-6 py-6 shadow-2xl sm:max-w-sm sm:ring-1 sm:ring-border">
+          <div className="flex items-center justify-between">
+            <BrandLogo
+              variant="header"
+              className="-m-1.5 p-1.5"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            <button
+              type="button"
+              className="-m-2.5 rounded-md p-2.5 text-foreground"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="sr-only">Cerrar menú</span>
+              <X className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div className="mt-6 flow-root">
+            <div className="-my-6 divide-y divide-border">
+              <div className="space-y-2 py-6">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-medium text-foreground hover:bg-secondary"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+              <div className="py-6">
+                <Button asChild className="w-full">
+                  <Link href="/contacto" onClick={() => setMobileMenuOpen(false)}>
+                    <Phone className="mr-2 h-4 w-4" />
+                    Contáctanos
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : null
+
   return (
+    <>
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ease-out",
@@ -124,53 +188,8 @@ export function Header() {
           </Button>
         </div>
       </nav>
-
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
-          <div className="fixed inset-0 bg-foreground/20" onClick={() => setMobileMenuOpen(false)} />
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-card px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border">
-            <div className="flex items-center justify-between">
-              <BrandLogo
-                variant="header"
-                className="-m-1.5 p-1.5"
-                onClick={() => setMobileMenuOpen(false)}
-              />
-              <button
-                type="button"
-                className="-m-2.5 rounded-md p-2.5 text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Cerrar menú</span>
-                <X className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-border">
-                <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-medium text-foreground hover:bg-secondary"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-                <div className="py-6">
-                  <Button asChild className="w-full">
-                    <Link href="/contacto" onClick={() => setMobileMenuOpen(false)}>
-                      <Phone className="h-4 w-4 mr-2" />
-                      Contáctanos
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
+    {mobileMenu ? createPortal(mobileMenu, document.body) : null}
+    </>
   )
 }

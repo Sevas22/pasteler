@@ -86,13 +86,17 @@ export function HeroClient({ bannerSrc, bannerAlt }: HeroClientProps) {
         />
       </div>
 
-      {/* Velos suaves: menos negro para que brille el banner */}
+      {/* Velos: en móvil más contraste para leer el copy */}
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/36 via-black/14 to-transparent max-lg:from-black/40 max-lg:via-black/18"
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/36 via-black/14 to-transparent max-lg:from-black/52 max-lg:via-black/32 lg:from-black/36 lg:via-black/14"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/28 via-transparent to-black/10"
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/28 via-transparent to-black/10 max-lg:from-black/35 max-lg:via-black/20 max-lg:to-black/25"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_120%_90%_at_50%_32%,rgba(0,0,0,0.55)_0%,transparent_58%)] lg:hidden"
         aria-hidden
       />
 
@@ -100,11 +104,9 @@ export function HeroClient({ bannerSrc, bannerAlt }: HeroClientProps) {
         <div className="grid grid-cols-1 items-start gap-5 py-4 text-center sm:gap-7 sm:py-6 sm:text-left lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-5 [@media(max-height:720px)]:gap-4 [@media(max-height:720px)]:py-3">
           <div className="mx-auto w-full max-w-xl self-start sm:mx-0 lg:col-span-6 lg:self-center xl:col-span-5">
             <p
-              className="font-sans text-[10px] font-bold uppercase tracking-[0.28em] sm:text-[11px] sm:tracking-[0.26em] md:text-xs"
+              className="font-sans text-[10px] font-bold uppercase tracking-[0.28em] sm:text-[11px] sm:tracking-[0.26em] md:text-xs max-sm:[text-shadow:0_0_28px_rgba(0,0,0,0.95),0_2px_14px_rgba(0,0,0,0.85),0_0_2px_rgba(0,0,0,0.9)] sm:[text-shadow:0_0_1px_rgba(245,239,230,0.35),0_0_16px_rgba(139,50,50,0.55),0_2px_8px_rgba(0,0,0,0.45)]"
               style={{
                 color: H.rojo,
-                textShadow:
-                  "0 0 1px rgba(245,239,230,0.35), 0 0 16px rgba(139,50,50,0.55), 0 2px 8px rgba(0,0,0,0.45)",
               }}
             >
               Pastelería fina • Bogotá
@@ -115,25 +117,24 @@ export function HeroClient({ bannerSrc, bannerAlt }: HeroClientProps) {
               style={{ fontFamily: "var(--font-hero-title), ui-serif, Georgia, serif" }}
             >
               <span
-                className="block"
+                className="block max-sm:[text-shadow:0_4px_28px_rgba(0,0,0,0.92),0_2px_12px_rgba(0,0,0,0.85),0_0_3px_rgba(0,0,0,0.95)] sm:[text-shadow:0_2px_16px_rgba(0,0,0,0.5),0_1px_0_rgba(43,27,23,0.2)]"
                 style={{
                   color: H.crema,
-                  textShadow: "0 2px 16px rgba(0,0,0,0.5), 0 1px 0 rgba(43,27,23,0.2)",
                 }}
               >
                 Donde el arte
               </span>
               <span className="mt-1 block sm:mt-1.5">
                 <span
+                  className="max-sm:[text-shadow:0_4px_28px_rgba(0,0,0,0.92),0_2px_12px_rgba(0,0,0,0.85),0_0_3px_rgba(0,0,0,0.95)] sm:[text-shadow:0_2px_16px_rgba(0,0,0,0.5),0_1px_0_rgba(43,27,23,0.2)]"
                   style={{
                     color: H.crema,
-                    textShadow: "0 2px 16px rgba(0,0,0,0.5), 0 1px 0 rgba(43,27,23,0.2)",
                   }}
                 >
                   se vuelve{" "}
                 </span>
                 <span
-                  className="[text-shadow:0_0_28px_rgba(232,110,110,0.75),0_2px_12px_rgba(0,0,0,0.4)]"
+                  className="max-sm:[text-shadow:0_0_28px_rgba(0,0,0,0.95),0_4px_20px_rgba(0,0,0,0.85),0_0_32px_rgba(232,110,110,0.55)] [text-shadow:0_0_28px_rgba(232,110,110,0.75),0_2px_12px_rgba(0,0,0,0.4)]"
                   style={{ color: H.rojo }}
                 >
                   sabor
@@ -148,8 +149,7 @@ export function HeroClient({ bannerSrc, bannerAlt }: HeroClientProps) {
             </div>
 
             <div
-              className="font-sans mx-auto mt-4 max-w-md text-pretty sm:mx-0 sm:mt-5 [@media(max-height:720px)]:mt-3"
-              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.35)" }}
+              className="font-sans mx-auto mt-4 max-w-md text-pretty sm:mx-0 sm:mt-5 [@media(max-height:720px)]:mt-3 max-sm:[text-shadow:0_3px_18px_rgba(0,0,0,0.9),0_1px_4px_rgba(0,0,0,0.85)] sm:[text-shadow:0_1px_8px_rgba(0,0,0,0.35)]"
             >
               <p className="text-[0.9375rem] font-medium leading-relaxed sm:text-base" style={{ color: H.textoSecundario }}>
                 Creamos momentos dulces que se recuerdan.
@@ -216,8 +216,8 @@ export function HeroClient({ bannerSrc, bannerAlt }: HeroClientProps) {
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[#C9A96E]/80 bg-white/15 text-[#C9A96E] shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] backdrop-blur-md">
                     <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                   </span>
-                  <span className="text-[10px] font-bold uppercase leading-tight tracking-wide text-white">
-                    <span className="block text-sm font-semibold normal-case tracking-normal text-[#C9A96E]">
+                  <span className="text-[10px] font-bold uppercase leading-tight tracking-wide text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.95),0_1px_4px_rgba(0,0,0,0.85)]">
+                    <span className="block text-sm font-semibold normal-case tracking-normal text-[#C9A96E] [text-shadow:0_2px_12px_rgba(0,0,0,0.9)]">
                       {label}
                     </span>
                     {line}
@@ -258,7 +258,9 @@ export function HeroClient({ bannerSrc, bannerAlt }: HeroClientProps) {
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#C9A96E]/50 bg-[#C9A96E]/15 text-[#C9A96E]">
                 <Icon className="h-4 w-4" strokeWidth={2} aria-hidden />
               </span>
-              <span className="text-center sm:text-left">{text}</span>
+              <span className="text-center max-sm:[text-shadow:0_2px_14px_rgba(0,0,0,0.88),0_1px_4px_rgba(0,0,0,0.85)] sm:text-left sm:[text-shadow:0_1px_6px_rgba(0,0,0,0.4)]">
+                {text}
+              </span>
             </div>
           ))}
         </div>
