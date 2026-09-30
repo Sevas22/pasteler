@@ -14,8 +14,9 @@ const HOME_HEADER_SOLID_AFTER = 48
 
 const navigation = [
   { name: "Nosotros", href: "/#nosotros" },
-  { name: "Cursos", href: "/cursos" },
   { name: "Productos", href: "/productos" },
+  { name: "Cursos", href: "/cursos" },
+  { name: "Tiendas", href: "/tiendas" },
   { name: "Galería", href: "/galeria" },
   { name: "Contacto", href: "/contacto" },
 ]
@@ -115,20 +116,12 @@ export function Header() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex min-w-0 flex-1 items-center lg:flex-1">
-          <BrandLogo
-            variant="header"
-            className={cn("-m-1.5 p-1.5", !elevated && "drop-shadow-[0_1px_2px_rgba(255,255,255,0.85)]")}
-          />
+          <BrandLogo variant="header" className="-m-1.5 p-1.5" />
         </div>
         <div className="flex lg:hidden">
           <button
             type="button"
-            className={cn(
-              "-m-2.5 inline-flex items-center justify-center rounded-md p-2.5",
-              elevated
-                ? "text-foreground"
-                : "text-[#C9A96E] drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]",
-            )}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-foreground"
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Abrir menú</span>
@@ -138,20 +131,16 @@ export function Header() {
         <div className="hidden lg:flex lg:gap-x-10">
           {navigation.map((item) => {
             const active =
-              item.href === "/#nosotros" ? pathname === "/" : pathname === item.href
+              item.href === "/#nosotros"
+                ? pathname === "/"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`)
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 className={cn(
                   "text-sm font-medium tracking-wide transition-colors",
-                  elevated
-                    ? active
-                      ? "text-primary"
-                      : "text-foreground hover:text-primary"
-                    : active
-                      ? "text-[#C9A96E] drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]"
-                      : "text-[#E8D2A4] drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)] hover:text-[#C9A96E]",
+                  active ? "text-primary" : "text-foreground hover:text-primary",
                 )}
               >
                 {item.name}
@@ -162,24 +151,14 @@ export function Header() {
         <div className="hidden items-center gap-2 lg:flex lg:flex-1 lg:justify-end">
           <Link
             href="/productos"
-            className={cn(
-              "rounded-full p-2 transition-colors duration-200",
-              elevated
-                ? "text-foreground hover:bg-primary/10 hover:text-primary"
-                : "text-[#E8D2A4] drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)] hover:bg-black/20 hover:text-[#C9A96E]",
-            )}
+            className="rounded-full p-2 text-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-primary"
             aria-label="Buscar productos"
           >
             <Search className="h-5 w-5" />
           </Link>
           <Button
             asChild
-            className={cn(
-              "rounded-full border duration-200",
-              elevated
-                ? "border-brand-gold/60 bg-transparent text-primary hover:bg-primary-hover hover:text-primary-foreground"
-                : "border-[#8B2E2E]/90 bg-[#8B2E2E]/95 text-white shadow-sm backdrop-blur-sm hover:bg-[#D64545] hover:text-white",
-            )}
+            className="rounded-full border border-brand-gold/60 bg-transparent text-primary duration-200 hover:bg-primary-hover hover:text-primary-foreground"
           >
             <Link href="/contacto" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />

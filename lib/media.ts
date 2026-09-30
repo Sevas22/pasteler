@@ -2,7 +2,8 @@
  * Imágenes de marca en `/public/images` (fotografía de producto, logotipos y piezas gráficas).
  */
 
-import { formatCategoriaLabel, PRODUCTOS } from "@/lib/data/productos"
+import { formatCategoriaLabel } from "@/lib/data/productos-helpers"
+import type { Producto } from "@/lib/types/producto"
 
 export type GalleryItem = {
   id: string
@@ -39,25 +40,23 @@ const GALLERY_LAYOUT: readonly { size: string; contain?: boolean }[] = [
 ]
 
 /** Galería: una vista por producto; enlaces a `/productos/[slug]` */
-export const GALLERY_ITEMS: readonly GalleryItem[] = PRODUCTOS.map((p, i) => {
-  const layout = GALLERY_LAYOUT[i] ?? { size: "col-span-2" }
-  return {
-    id: p.slug,
-    productSlug: p.slug,
-    nombre: p.nombre,
-    src: p.imagen,
-    alt: `${p.nombre}: ${p.descripcion}`,
-    tag: formatCategoriaLabel(p.categoria),
-    size: layout.size,
-    ...(layout.contain ? { contain: layout.contain } : {}),
-  }
-})
+export function buildGalleryItems(productos: readonly Producto[]): GalleryItem[] {
+  return productos.map((p, i) => {
+    const layout = GALLERY_LAYOUT[i] ?? { size: "col-span-2" }
+    return {
+      id: p.slug,
+      productSlug: p.slug,
+      nombre: p.nombre,
+      src: p.imagen,
+      alt: `${p.nombre}: ${p.descripcion}`,
+      tag: formatCategoriaLabel(p.categoria),
+      size: layout.size,
+      ...(layout.contain ? { contain: layout.contain } : {}),
+    }
+  })
+}
 
 export const MEDIA = {
-  /** Banner promocional “próximamente curso” — pieza gráfica completa (mixer + postres + logo) */
-  cursosHeroPromo: "/images/cursos-hero-promo.png",
-  /** Banner /cursos — imagen única con texto y CTA ya integrados en el archivo */
-  cursosBannerFondo: "/images/cursos-banner-fondo.png",
   /** Fondo de cabecera en /cursos — fotografía de producto (misma línea que el catálogo) */
   heroMarble: "/images/producto-pastel-tiramisu-daliza.png",
   heroIngredientsA: "/images/brand-iconos-pasteleria.png",
@@ -95,5 +94,4 @@ export const MEDIA = {
     galeria: "/images/producto-mousse-frutos-rojos-daliza.png",
     contacto: "/images/producto-mousse-fresa-individual-daliza.png",
   },
-  galeria: GALLERY_ITEMS,
 } as const

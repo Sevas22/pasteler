@@ -1,7 +1,11 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { motion } from "framer-motion"
 import { BRANDING } from "@/lib/branding"
 import { cn } from "@/lib/utils"
+import { useTilt } from "@/components/motion/use-tilt"
 
 /** Sombra — variante texto superpuesto sobre la imagen */
 const shellClassOverlay =
@@ -243,9 +247,17 @@ export type CatalogFichaLinkProps = FichaVisualProps & { href: string }
 
 export function CatalogFichaLink({ href, className, contentLayout = "overlay", ...visual }: CatalogFichaLinkProps) {
   const shell = contentLayout === "split" ? shellClassSplit : shellClassOverlay
+  const { rotateX, rotateY, onMouseMove, onMouseLeave } = useTilt()
   return (
-    <Link href={href} className={cn(shell, className)}>
-      <FichaVisual {...visual} contentLayout={contentLayout} />
+    <Link
+      href={href}
+      className={cn(shell, className, "[perspective:900px]")}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+    >
+      <motion.div style={{ rotateX, rotateY }} className="relative h-full w-full">
+        <FichaVisual {...visual} contentLayout={contentLayout} />
+      </motion.div>
     </Link>
   )
 }
@@ -263,14 +275,17 @@ export function CatalogFichaButton({
   ...visual
 }: CatalogFichaButtonProps) {
   const shell = contentLayout === "split" ? shellClassSplit : shellClassOverlay
+  const { rotateX, rotateY, onMouseMove, onMouseLeave } = useTilt()
   return (
     <button
       type="button"
       onClick={onClick}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
       aria-pressed={selected}
       className={cn(
         shell,
-        "cursor-pointer",
+        "cursor-pointer [perspective:900px]",
         selected &&
           (contentLayout === "split"
             ? selectedSplitRing
@@ -278,7 +293,9 @@ export function CatalogFichaButton({
         className,
       )}
     >
-      <FichaVisual {...visual} contentLayout={contentLayout} />
+      <motion.div style={{ rotateX, rotateY }} className="relative h-full w-full">
+        <FichaVisual {...visual} contentLayout={contentLayout} />
+      </motion.div>
     </button>
   )
 }

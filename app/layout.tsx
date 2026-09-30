@@ -1,14 +1,13 @@
 import type { Metadata } from 'next'
-import { Great_Vibes, Montserrat, Playfair_Display } from 'next/font/google'
+import { Montserrat, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const greatVibes = Great_Vibes({
-  weight: '400',
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-serif',
-})
-
+/**
+ * Tipografía de marca (manual Daliza): Playfair Display = "tipografía emocional" (titulares),
+ * Montserrat = "tipografía funcional" (texto). Sin script/cursiva: el lettering "Daliza" vive
+ * solo en el logo (imagen), no como fuente de uso general.
+ */
 const montserrat = Montserrat({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-sans',
@@ -17,8 +16,8 @@ const montserrat = Montserrat({
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin', 'latin-ext'],
-  variable: '--font-hero-title',
-  weight: ['500', '600', '700'],
+  variable: '--font-serif',
+  style: ['normal', 'italic'],
 })
 
 export const metadata: Metadata = {
@@ -45,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body
-        className={`${greatVibes.variable} ${montserrat.variable} ${playfairDisplay.variable} font-sans antialiased overflow-x-hidden`}
+        className={`${montserrat.variable} ${playfairDisplay.variable} font-sans antialiased overflow-x-hidden`}
       >
         {children}
         <Analytics />

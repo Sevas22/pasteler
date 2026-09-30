@@ -1,59 +1,35 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import {
-  PRODUCTOS,
-  SERVICIOS_PRODUCTO,
-  formatCategoriaLabel,
-  getServicioLabel,
-  type ServicioProducto,
-} from "@/lib/data/productos"
-import { CatalogFichaButton, CatalogFichaLink } from "@/components/catalog-ficha-card"
-import { MEDIA } from "@/lib/media"
-import { Button } from "@/components/ui/button"
-import { Filter, ImageIcon } from "lucide-react"
+import Image from "next/image"
+import { AnimatePresence, motion } from "framer-motion"
+import { SERVICIOS_PRODUCTO, formatCategoriaLabel } from "@/lib/data/productos-helpers"
+import type { Producto, ServicioProducto } from "@/lib/types/producto"
+import { ProductQuickView } from "@/components/product-quick-view"
+import { ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type ProductGalleryProps = {
+  productos: Producto[]
   initialServicio?: ServicioProducto | "todos"
-  lockServicio?: boolean
   className?: string
 }
 
-export function ProductGallery({ initialServicio = "todos", lockServicio = false, className }: ProductGalleryProps) {
-  const items = PRODUCTOS
-  const [servicio, setServicio] = useState<ServicioProducto | "todos" | null>(
-    lockServicio ? initialServicio : null,
-  )
+const SERVICIO_PILLS = [{ slug: "todos" as const, label: "Todos" }, ...SERVICIOS_PRODUCTO]
+
+export function ProductGallery({
+  productos,
+  initialServicio = "todos",
+  className,
+}: ProductGalleryProps) {
+  const [servicio, setServicio] = useState<ServicioProducto | "todos">(initialServicio)
   const [filter, setFilter] = useState<string>("todas")
-  const servicioMeta: Record<ServicioProducto | "todos", { label: string; desc: string; image: string }> = {
-    todos: {
-      label: "Todos nuestros productos",
-      desc: "Explora todo el catálogo Daliza en una sola vista.",
-      image: MEDIA.servicioBanners.todos,
-    },
-    panaderia: {
-      label: "Panadería",
-      desc: "Panes artesanales, masa madre y viennoiserie horneada al día.",
-      image: MEDIA.servicioBanners.panaderia,
-    },
-    pasteleria: {
-      label: "Pastelería",
-      desc: "Tortas de celebración y diseños elegantes para eventos especiales.",
-      image: MEDIA.servicioBanners.pasteleria,
-    },
-    reposteria: {
-      label: "Repostería",
-      desc: "Cupcakes, galletas y postres para mesas dulces y regalos.",
-      image: MEDIA.servicioBanners.reposteria,
-    },
-  }
+  const [quickView, setQuickView] = useState<Producto | null>(null)
 
   const itemsByServicio = useMemo(() => {
-    if (!servicio) return []
-    if (servicio === "todos") return items
-    return items.filter((p) => p.servicio === servicio)
-  }, [items, servicio])
+    if (servicio === "todos") return productos
+    return productos.filter((p) => p.servicio === servicio)
+  }, [productos, servicio])
 
   const categorias = useMemo(() => {
     const s = new Set(itemsByServicio.map((p) => p.categoria))
@@ -66,127 +42,108 @@ export function ProductGallery({ initialServicio = "todos", lockServicio = false
   }, [itemsByServicio, filter])
 
   return (
-    <section className={cn("bg-background pt-24 pb-16 sm:pt-28 sm:pb-20 md:pb-24", className)}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl px-1 text-center sm:px-0">
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-            Nuestros productos
-          </p>
-          <h1 className="mt-2 text-balance font-serif text-3xl font-normal text-heading sm:text-4xl md:text-5xl">
-            Nuestros productos
+    <section data-no-section-divider className={cn("bg-background px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:px-12", className)}>
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-6 sm:grid-cols-[1.3fr_1fr] sm:items-end sm:gap-10">
+          <h1
+            className="text-balance text-5xl font-normal leading-[1.05] text-heading sm:text-6xl"
+            style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+          >
+            Nuestros <span className="italic text-primary">productos.</span>
           </h1>
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {productos.length} creaciones hechas a mano. Filtra por servicio o categoría para encontrar lo que
+            buscas.
+          </p>
         </div>
 
-        {!lockServicio && !servicio ? (
-          <div className="mx-auto mt-8 max-w-2xl rounded-[1.25rem] border border-border/60 bg-white px-5 py-7 text-center shadow-sm sm:mt-10 sm:px-10 sm:py-10">
-            <p className="font-serif text-2xl font-normal text-heading md:text-3xl">Selecciona una ficha de servicio</p>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
-              Elige Panadería, Pastelería, Repostería o Todos nuestros productos para ver el catálogo.
-            </p>
-          </div>
-        ) : null}
+        <div className="mt-8 flex flex-wrap gap-2">
+          {SERVICIO_PILLS.map((s) => (
+            <button
+              key={s.slug}
+              type="button"
+              onClick={() => {
+                setServicio(s.slug)
+                setFilter("todas")
+              }}
+              className={cn(
+                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                servicio === s.slug
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
 
-        {!lockServicio && (
-          <div className={cn(!servicio ? "mt-6 sm:mt-8" : "mt-8 sm:mt-10")}>
-            <div className="grid items-stretch gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {(["todos", ...SERVICIOS_PRODUCTO.map((s) => s.slug)] as const).map((s) => {
-                const pillPair =
-                  s === "todos"
-                    ? { left: "Daliza", right: "Todo el catálogo" }
-                    : s === "panaderia"
-                      ? { left: "Panadería", right: "Catálogo" }
-                      : s === "pasteleria"
-                        ? { left: "Pastelería", right: "Catálogo" }
-                        : { left: "Repostería", right: "Catálogo" }
-                return (
-                  <CatalogFichaButton
-                    key={s}
-                    contentLayout="split"
-                    showBrandLogoOnImage={false}
-                    imageFit="contain"
-                    selected={servicio === s}
-                    imageSrc={servicioMeta[s].image}
-                    imageAlt={servicioMeta[s].label}
-                    title={servicioMeta[s].label}
-                    preview={servicioMeta[s].desc}
-                    pillLeft={pillPair.left}
-                    pillRight={pillPair.right}
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                    onClick={() => {
-                      setServicio(s)
-                      setFilter("todas")
-                    }}
-                  />
-                )
-              })}
-            </div>
-
-            {servicio && servicio !== "todos" && (
-              <div className="mt-4 text-center">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="border-primary/30 text-primary"
-                  onClick={() => {
-                    setServicio("todos")
-                    setFilter("todas")
-                  }}
-                >
-                  Ver todos los servicios
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {servicio && (
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:mt-12">
-            <span className="mr-2 flex items-center gap-1 text-sm text-muted-foreground">
-              <Filter className="h-4 w-4" />
-              Categoría:
-            </span>
+        {categorias.length > 1 ? (
+          <div className="mt-4 flex flex-wrap gap-2">
             {categorias.map((c) => (
-              <Button
+              <button
                 key={c}
                 type="button"
-                variant={filter === c ? "default" : "outline"}
-                size="sm"
-                className={
-                  filter === c
-                    ? "bg-primary text-primary-foreground"
-                    : "border-primary/30 text-primary"
-                }
                 onClick={() => setFilter(c)}
+                className={cn(
+                  "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors",
+                  filter === c
+                    ? "border-primary text-primary"
+                    : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary",
+                )}
               >
-                {c === "todas" ? "Todas" : c}
-              </Button>
-            ))}
-          </div>
-        )}
-
-        {servicio && visible.length === 0 ? (
-          <div className="mt-16 flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card py-20 text-center">
-            <ImageIcon className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-muted-foreground">No hay productos en esta categoría.</p>
-          </div>
-        ) : servicio ? (
-          <div className="mt-10 grid gap-6 sm:mt-12 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
-            {visible.map((p) => (
-              <CatalogFichaLink
-                key={p.id}
-                href={`/productos/${p.slug}`}
-                imageSrc={p.imagen}
-                imageAlt={p.nombre}
-                title={p.nombre}
-                pillLeft={formatCategoriaLabel(p.categoria)}
-                pillRight={getServicioLabel(p.servicio)}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
+                {c === "todas" ? "Todas las categorías" : formatCategoriaLabel(c)}
+              </button>
             ))}
           </div>
         ) : null}
+
+        {visible.length === 0 ? (
+          <div className="mt-16 flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
+            <ImageIcon className="h-10 w-10 text-muted-foreground" aria-hidden />
+            <p className="mt-4 text-muted-foreground">No hay productos en esta categoría.</p>
+          </div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${servicio}-${filter}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-10 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 lg:grid-cols-4"
+            >
+              {visible.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setQuickView(p)}
+                  className="group flex flex-col text-left"
+                >
+                  <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
+                    <Image
+                      src={p.imagen}
+                      alt={p.nombre}
+                      fill
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    />
+                  </div>
+                  <p className="mt-3 text-sm font-medium text-foreground transition-colors group-hover:text-primary sm:text-base">
+                    {p.nombre}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{formatCategoriaLabel(p.categoria)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {p.precio ? `$${p.precio.toLocaleString("es-CO")}` : "Consultar"}
+                  </p>
+                </button>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        )}
       </div>
+
+      <ProductQuickView producto={quickView} onOpenChange={(open) => !open && setQuickView(null)} />
     </section>
   )
 }

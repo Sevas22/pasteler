@@ -4,9 +4,15 @@ import { MapPin, Phone, Clock, Navigation, MessageCircle } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { locations } from "@/lib/data/locations"
+import type { Location } from "@/lib/data/locations"
+import { RevealStagger, RevealItem, Reveal } from "@/components/motion/reveal"
+import { FlourishDivider } from "@/components/ornaments/flourish-divider"
 
-export function Locations() {
+type LocationsProps = {
+  locations: Location[]
+}
+
+export function Locations({ locations }: LocationsProps) {
   return (
     <section id="sedes" className="relative overflow-hidden bg-background py-16 sm:py-20 md:py-24">
       <div className="absolute inset-0 opacity-5">
@@ -15,34 +21,40 @@ export function Locations() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl px-1 text-center sm:px-0">
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-            Nuestras sedes
-          </p>
-          <h2 className="mt-2 text-balance font-serif text-3xl font-normal text-heading sm:text-4xl md:text-5xl">
-            4 ubicaciones en Bogotá
-          </h2>
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
-            Encuéntranos en Bosa y Ciudadela Colsubsidio. Detalle de direcciones y teléfonos en{" "}
-            <Link href="/contacto" className="font-medium text-primary underline-offset-4 hover:underline">
-              Contacto
-            </Link>
-            .
-          </p>
-          <div className="mt-6">
-            <Button asChild>
-              <Link href="/contacto#mapa-contacto">
-                Ver mapa de sedes
-                <MapPin className="ml-2 h-4 w-4" />
+        <Reveal>
+          <div className="mx-auto max-w-2xl px-1 text-center sm:px-0">
+            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+              04 · Nuestras sedes
+            </p>
+            <h2 className="mt-2 text-balance font-serif text-3xl font-normal text-heading sm:text-4xl md:text-5xl">
+              {locations.length} ubicaciones en Bogotá
+            </h2>
+            <FlourishDivider className="mt-4" />
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
+              Cada sede tiene su propio catálogo y código QR. Escanea el de tu sucursal o explora{" "}
+              <Link href="/tiendas" className="font-medium text-primary underline-offset-4 hover:underline">
+                todas las tiendas
               </Link>
-            </Button>
+              .
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Button asChild>
+                <Link href="/tiendas">
+                  Ver todas las sedes
+                  <MapPin className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="border-primary/30 text-primary">
+                <Link href="/contacto#mapa-contacto">Ver mapa</Link>
+              </Button>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid gap-5 sm:mt-14 sm:gap-6 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
+        <RevealStagger className="mt-12 grid gap-5 sm:mt-14 sm:gap-6 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
           {locations.map((location) => (
+            <RevealItem key={location.id}>
             <Card
-              key={location.name}
               className={`group relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${
                 location.isPrincipal
                   ? "bg-primary text-primary-foreground ring-2 ring-brand-gold/50"
@@ -141,11 +153,24 @@ export function Locations() {
                     <Link href="/contacto">Ver contacto</Link>
                   </Button>
                 )}
+                <Button
+                  asChild
+                  variant="outline"
+                  className={`w-full mt-3 ${
+                    location.isPrincipal
+                      ? "border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10"
+                      : "border-primary/30 text-primary"
+                  }`}
+                >
+                  <Link href={`/tiendas/${location.slug}`}>Ver menú de esta sede</Link>
+                </Button>
               </CardContent>
             </Card>
+            </RevealItem>
           ))}
-        </div>
+        </RevealStagger>
 
+        <Reveal>
         <div className="mt-12 rounded-2xl border border-brand-gold/35 bg-primary/[0.07] p-6 text-center sm:mt-14 sm:p-8 md:mt-16 md:p-12">
           <h3 className="font-serif text-2xl font-normal text-heading md:text-3xl">
             ¿Necesitas más información?
@@ -172,6 +197,7 @@ export function Locations() {
             </Button>
           </div>
         </div>
+        </Reveal>
       </div>
     </section>
   )

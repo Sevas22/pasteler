@@ -1,123 +1,103 @@
 import Link from "next/link"
-import { Facebook, Phone, MapPin, Heart } from "lucide-react"
+import { Facebook, Phone } from "lucide-react"
 import { BrandLogo } from "@/components/brand-logo"
+import { SoftCircle } from "@/components/ornaments/soft-circle"
+import type { Location } from "@/lib/data/locations"
 
-export function Footer() {
+type FooterProps = {
+  locations: Location[]
+}
+
+const ENLACES = [
+  { href: "/", label: "Inicio" },
+  { href: "/#nosotros", label: "Nosotros" },
+  { href: "/productos", label: "Productos" },
+  { href: "/cursos", label: "Cursos" },
+  { href: "/tiendas", label: "Tiendas" },
+  { href: "/galeria", label: "Galería" },
+  { href: "/contacto", label: "Contacto" },
+] as const
+
+export function Footer({ locations }: FooterProps) {
   return (
-    <footer className="bg-brand-chocolate text-brand-cream">
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
-        <div className="grid gap-10 text-center sm:text-left md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <div className="flex flex-col items-center md:items-start lg:col-span-1">
-            <BrandLogo variant="footer" />
-            <p className="mt-5 max-w-sm text-sm text-brand-cream/75 sm:mt-6">
-              Pastelería fina y cursos en Bogotá. Tradición, sabor y enseñanza con pasión.
+    <footer className="relative overflow-hidden bg-[#3A2620] pb-20 text-[#F3E9DC] sm:pb-16">
+      <SoftCircle color="gold" size={360} className="-right-32 -top-32" />
+      <SoftCircle color="cherry" size={240} className="-left-20 bottom-0" />
+
+      <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+        <div className="grid gap-x-8 gap-y-12 sm:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <BrandLogo variant="footer" className="mx-0" />
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-[#D8C7B8]">
+              Pastelería fina y cursos en Bosa, Bogotá. Tradición, sabor y enseñanza con pasión.
             </p>
+            <a
+              href="https://www.facebook.com/PasteleriaDaliza"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 text-sm text-[#D8C7B8] transition-colors hover:text-[#C9A96E]"
+            >
+              <Facebook className="h-4 w-4" aria-hidden />
+              Pastelería Daliza
+            </a>
           </div>
 
-          <div className="md:text-left">
-            <h3 className="mb-4 font-semibold text-brand-cream">Enlaces</h3>
-            <ul className="mx-auto max-w-xs space-y-2 md:mx-0">
-              <li>
-                <Link
-                  href="/"
-                  className="inline-block text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold"
-                >
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <Link href="/#nosotros" className="inline-block text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold">
-                  Nosotros
-                </Link>
-              </li>
-              <li>
-                <Link href="/productos" className="inline-block text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold">
-                  Productos
-                </Link>
-              </li>
-              <li>
-                <Link href="/galeria" className="inline-block text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold">
-                  Galería
-                </Link>
-              </li>
-              <li>
-                <Link href="/cursos" className="inline-block text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold">
-                  Cursos
-                </Link>
-              </li>
-              <li>
-                <Link href="/contacto" className="inline-block text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold">
-                  Contacto
-                </Link>
-              </li>
+          <div>
+            <h3
+              className="text-lg font-normal text-[#F3E9DC]"
+              style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+            >
+              Enlaces
+            </h3>
+            <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-1">
+              {ENLACES.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-[#D8C7B8] transition-colors hover:text-[#C9A96E]"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div className="md:text-left">
-            <h3 className="mb-4 font-semibold text-brand-cream">Sedes</h3>
-            <ul className="mx-auto max-w-xs space-y-2 md:mx-0">
-              <li className="flex items-start justify-center gap-2 text-sm text-brand-cream/70 md:justify-start">
-                <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                Bosa Carbonell (Principal)
-              </li>
-              <li className="flex items-start justify-center gap-2 text-sm text-brand-cream/70 md:justify-start">
-                <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                Bosa Naranjos
-              </li>
-              <li className="flex items-start justify-center gap-2 text-sm text-brand-cream/70 md:justify-start">
-                <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                Bosa Piamonte
-              </li>
-              <li className="flex items-start justify-center gap-2 text-sm text-brand-cream/70 md:justify-start">
-                <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                Ciudadela Colsubsidio
-              </li>
-            </ul>
-          </div>
-
-          <div className="md:text-left">
-            <h3 className="mb-4 font-semibold text-brand-cream">Contacto</h3>
-            <ul className="mx-auto max-w-xs space-y-3 md:mx-0">
-              <li>
-                <a
-                  href="tel:+573108336425"
-                  className="flex items-center justify-center gap-2 text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold md:justify-start"
-                >
-                  <Phone className="h-4 w-4" />
-                  310 833 6425
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+573125169547"
-                  className="flex items-center justify-center gap-2 text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold md:justify-start"
-                >
-                  <Phone className="h-4 w-4" />
-                  312 516 9547
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.facebook.com/PasteleriaDaliza"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 text-sm text-brand-cream/70 transition-colors duration-200 hover:text-brand-gold md:justify-start"
-                >
-                  <Facebook className="h-4 w-4" />
-                  Pastelería Daliza
-                </a>
-              </li>
+          <div>
+            <h3
+              className="text-lg font-normal text-[#F3E9DC]"
+              style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+            >
+              Sedes
+            </h3>
+            <ul className="mt-5 flex flex-col gap-4">
+              {locations.map((location) => (
+                <li key={location.id}>
+                  <Link
+                    href={`/tiendas/${location.slug}`}
+                    className="text-sm text-[#D8C7B8] transition-colors hover:text-[#C9A96E]"
+                  >
+                    {location.name}
+                    {location.isPrincipal ? <span className="text-[#C9A96E]"> · Principal</span> : null}
+                  </Link>
+                  {location.phone ? (
+                    <a
+                      href={`tel:+57${location.phone.replace(/\s/g, "")}`}
+                      className="mt-0.5 flex items-center gap-1.5 text-xs text-[#D8C7B8]/70 transition-colors hover:text-[#C9A96E]"
+                    >
+                      <Phone className="h-3 w-3" aria-hidden />
+                      {location.phone}
+                    </a>
+                  ) : null}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-brand-gold/25 pt-8">
-          <p className="text-center text-sm text-brand-cream/65">
+        <div className="mt-16 border-t border-white/10 pt-8 text-center sm:text-left">
+          <p className="text-sm text-[#D8C7B8]/70">
             © {new Date().getFullYear()} Dalizas Pastelería Fina. Todos los derechos reservados.
-          </p>
-          <p className="mt-2 text-center text-xs text-brand-cream/45 flex items-center justify-center gap-1">
-            Hecho con <Heart className="h-3 w-3 text-brand-cherry fill-brand-cherry" /> en
-            Bogotá, Colombia
           </p>
         </div>
       </div>

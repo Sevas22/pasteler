@@ -1,21 +1,16 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { notFound } from "next/navigation"
 import { LayoutShell } from "@/components/layout-shell"
 import { ProductDetailView } from "@/components/product-detail-view"
-import { PRODUCTOS, getProductoBySlug } from "@/lib/data/productos"
+import { getProductoBySlugPublic, getOtrosProductosPublic } from "@/lib/data/productos"
 
 type Props = {
   params: Promise<{ slug: string }>
 }
 
-export function generateStaticParams() {
-  return PRODUCTOS.map((p) => ({ slug: p.slug }))
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const producto = getProductoBySlug(slug)
+  const producto = await getProductoBySlugPublic(slug)
   if (!producto) {
     return { title: "Producto | Dalizas" }
   }
@@ -32,32 +27,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductoDetallePage({ params }: Props) {
   const { slug } = await params
-  const producto = getProductoBySlug(slug)
+  const producto = await getProductoBySlugPublic(slug)
   if (!producto) {
     notFound()
   }
+  const relacionados = await getOtrosProductosPublic(producto.slug, 3)
 
   return (
     <LayoutShell>
-      <div className="h-20" aria-hidden />
-      <nav className="mx-auto max-w-7xl px-4 pt-4 text-sm text-muted-foreground sm:px-6 lg:px-8">
-        <ol className="flex flex-wrap items-center gap-2">
-          <li>
-            <Link href="/" className="transition-colors hover:text-primary">
-              Inicio
-            </Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li>
-            <Link href="/productos" className="transition-colors hover:text-primary">
-              Productos
-            </Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li className="font-medium text-foreground">{producto.nombre}</li>
-        </ol>
-      </nav>
-      <ProductDetailView producto={producto} />
+      <ProductDetailView producto={producto} relacionados={relacionados} />
     </LayoutShell>
   )
 }

@@ -1,53 +1,80 @@
+import { createClient } from "@/lib/supabase/server"
+
 export type Location = {
+  id: string
+  slug: string
   name: string
   type: string
   address: string
   phone: string
+  whatsapp: string
   hours: string
   isPrincipal: boolean
   /** Google Maps search URL for the address */
   mapsUrl: string
+  active: boolean
+  sortOrder: number
 }
 
-export const locations: Location[] = [
-  {
-    name: "Bosa Carbonell",
-    type: "Sede Principal",
-    address: "Diag. 71 Sur No. 78A - 19",
-    phone: "310 8336425",
-    hours: "Lun - Sáb: 8:00 AM - 7:00 PM",
-    isPrincipal: true,
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Diag.+71+Sur+No.+78A+-+19+Bogot%C3%A1",
-  },
-  {
-    name: "Bosa Naranjos",
-    type: "Sucursal",
-    address: "Transv. 79D No. 73A - 19 Sur",
-    phone: "312 5169547",
-    hours: "Lun - Sáb: 8:00 AM - 7:00 PM",
-    isPrincipal: false,
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Transv.+79D+No.+73A+-+19+Sur+Bogot%C3%A1",
-  },
-  {
-    name: "Bosa Piamonte",
-    type: "Sucursal",
-    address: "Calle 68A Sur No. 79C - 10",
-    phone: "322 3940849",
-    hours: "Lun - Sáb: 8:00 AM - 7:00 PM",
-    isPrincipal: false,
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Calle+68A+Sur+No.+79C+-+10+Bogot%C3%A1",
-  },
-  {
-    name: "Ciudadela Colsubsidio",
-    type: "Sucursal",
-    address: "Cra. 113 No. 81 - 82",
-    phone: "",
-    hours: "Lun - Sáb: 8:00 AM - 7:00 PM",
-    isPrincipal: false,
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Cra.+113+No.+81+-+82+Bogot%C3%A1",
-  },
-]
+type LocationRow = {
+  id: string
+  slug: string
+  name: string
+  type: string
+  address: string
+  phone: string | null
+  whatsapp: string | null
+  hours: string | null
+  is_principal: boolean
+  maps_url: string | null
+  active: boolean
+  sort_order: number
+}
+
+function mapLocation(row: LocationRow): Location {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    type: row.type,
+    address: row.address,
+    phone: row.phone ?? "",
+    whatsapp: row.whatsapp ?? (row.phone ? row.phone.replace(/\D/g, "") : ""),
+    hours: row.hours ?? "",
+    isPrincipal: row.is_principal,
+    mapsUrl: row.maps_url ?? "",
+    active: row.active,
+    sortOrder: row.sort_order,
+  }
+}
+
+/** Sedes visibles públicamente (activas), ordenadas para mostrar en el sitio. */
+export async function getLocations(): Promise<Location[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("locations")
+    .select("*")
+    .order("sort_order", { ascending: true })
+
+  if (error) {
+    console.error("[getLocations]", error.message)
+    return []
+  }
+  return (data as LocationRow[]).map(mapLocation)
+}
+
+export async function getLocationBySlug(slug: string): Promise<Location | undefined> {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from("locations").select("*").eq("slug", slug).maybeSingle()
+
+  if (error || !data) return undefined
+  return mapLocation(data as LocationRow)
+}
+
+export async function getLocationById(id: string): Promise<Location | undefined> {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from("locations").select("*").eq("id", id).maybeSingle()
+
+  if (error || !data) return undefined
+  return mapLocation(data as LocationRow)
+}

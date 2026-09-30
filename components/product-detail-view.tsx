@@ -1,161 +1,175 @@
+"use client"
+
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Check, MessageCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Check, MapPin, MessageCircle } from "lucide-react"
 import type { Producto } from "@/lib/types/producto"
-import { getOtrosProductos, getServicioLabel } from "@/lib/data/productos"
-import { cn } from "@/lib/utils"
+import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
+import { ProductQuickView } from "@/components/product-quick-view"
 
 type ProductDetailViewProps = {
   producto: Producto
+  relacionados: Producto[]
 }
 
-export function ProductDetailView({ producto }: ProductDetailViewProps) {
-  const relacionados = getOtrosProductos(producto.slug, 3)
+export function ProductDetailView({ producto, relacionados }: ProductDetailViewProps) {
+  const [quickView, setQuickView] = useState<Producto | null>(null)
   const contactHref = `/contacto?servicio=${encodeURIComponent(producto.nombre)}`
   const waHref = `https://wa.me/573108336425?text=${encodeURIComponent(
     `Hola, me interesa información sobre: ${producto.nombre}`,
   )}`
 
   return (
-    <article>
-      <div className="relative aspect-[5/4] min-h-[240px] w-full overflow-hidden bg-muted sm:aspect-[21/9] sm:min-h-[220px] md:aspect-[2.4/1] md:min-h-[320px]">
-        <Image
-          src={producto.imagen}
-          alt=""
-          fill
-          priority
-          className="object-contain object-center sm:object-cover sm:object-center"
-          sizes="100vw"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent md:via-black/25"
-          aria-hidden
-        />
-        <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-4 pb-8 pt-16 sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#C9A96E]">
-            Pastelería fina · Bogotá
-          </p>
-          <h1 className="mt-2 font-serif text-3xl font-normal tracking-normal text-balance text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.65)] md:text-5xl">
-            {producto.nombre}
-          </h1>
-          <div
-            className="mt-3 h-0.5 w-14 rounded-full bg-brand-gold md:w-16"
-            aria-hidden
-          />
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <p className="inline-block rounded-full bg-primary px-3 py-1 text-xs font-medium capitalize text-primary-foreground shadow-sm">
-              {producto.categoria}
-            </p>
-            <p className="inline-block rounded-full border border-white/35 bg-white/90 px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-              {getServicioLabel(producto.servicio)}
-            </p>
-          </div>
-        </div>
-      </div>
+    <article className="bg-background px-5 pb-20 pt-24 sm:px-8 sm:pt-28 lg:px-12">
+      <div className="mx-auto max-w-6xl">
+        <nav className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+          <Link href="/" className="transition-colors hover:text-primary">Inicio</Link>
+          <span aria-hidden>/</span>
+          <Link href="/productos" className="transition-colors hover:text-primary">Productos</Link>
+          <span aria-hidden>/</span>
+          <span className="text-foreground">{producto.nombre}</span>
+        </nav>
 
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_380px] lg:gap-16 lg:items-start">
-          <div className="min-w-0 space-y-8">
-            <div>
-              <h2 className="font-serif text-xl font-normal text-heading md:text-2xl">Sobre este servicio</h2>
-              <p className="mt-4 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-                {producto.descripcionLarga}
-              </p>
+        <div className="mt-6 grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-[0_25px_55px_-25px_rgba(58,38,32,0.4)]">
+              <Image src={producto.imagen} alt={producto.nombre} fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 560px" />
             </div>
 
-            <div className="rounded-2xl border border-brand-gold/25 bg-card/80 p-6 shadow-sm ring-1 ring-brand-gold/10">
-              <h3 className="font-serif text-lg font-normal text-heading">Incluye / opciones</h3>
-              <ul className="mt-4 space-y-3">
-                {producto.highlights.map((line) => (
-                  <li key={line} className="flex gap-3 text-sm text-muted-foreground md:text-base">
-                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
-                    <span>{line}</span>
+            {producto.imagenesExtra && producto.imagenesExtra.length > 0 ? (
+              <div className="mt-4 grid grid-cols-3 gap-3">
+                {producto.imagenesExtra.map((src, i) => (
+                  <div key={src} className="relative aspect-square overflow-hidden rounded-lg">
+                    <Image
+                      src={src}
+                      alt={`${producto.nombre} — imagen ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="180px"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div>
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-primary/80">
+              <span>{formatCategoriaLabel(producto.categoria)}</span>
+              <span className="h-1 w-1 rounded-full bg-primary/50" aria-hidden />
+              <span>{getServicioLabel(producto.servicio)}</span>
+            </p>
+
+            <h1
+              className="mt-3 text-balance text-4xl font-normal leading-tight text-heading sm:text-5xl"
+              style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+            >
+              {producto.nombre}
+            </h1>
+
+            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+              {producto.descripcionLarga || producto.descripcion}
+            </p>
+
+            {producto.sedes.length > 0 ? (
+              <Link
+                href="/tiendas"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
+              >
+                <MapPin className="h-3.5 w-3.5" aria-hidden />
+                Disponible en {producto.sedes.length} sede{producto.sedes.length > 1 ? "s" : ""}
+              </Link>
+            ) : null}
+
+            {producto.highlights.length > 0 ? (
+              <ul className="mt-6 flex flex-col gap-2 border-t border-border/70 pt-6">
+                {producto.highlights.map((h) => (
+                  <li key={h} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                    {h}
                   </li>
                 ))}
               </ul>
-            </div>
+            ) : null}
 
-            {producto.imagenesExtra && producto.imagenesExtra.length > 0 && (
-              <div>
-                <h3 className="font-serif text-lg font-normal text-heading">Galería</h3>
-                <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                  {producto.imagenesExtra.map((src, i) => (
-                    <div
-                      key={src}
-                      className={cn(
-                        "relative aspect-[4/3] overflow-hidden rounded-xl bg-muted shadow-inner",
-                        producto.imagenesExtra!.length === 1 && "sm:col-span-2",
-                      )}
-                    >
-                      <Image
-                        src={src}
-                        alt={`${producto.nombre} — imagen ${i + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 400px"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <aside className="lg:sticky lg:top-28">
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-md">
-              <p className="text-sm text-muted-foreground leading-relaxed">{producto.descripcion}</p>
-              <div className="mt-6 flex flex-col gap-3">
-                <Button asChild className="w-full rounded-full py-6 text-base font-semibold" size="lg">
-                  <Link href={contactHref}>
-                    <MessageCircle className="mr-2 h-5 w-5" />
-                    Pedir cotización
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full rounded-full border-primary/30">
-                  <Link href={waHref} target="_blank" rel="noopener noreferrer">
-                    WhatsApp
-                  </Link>
-                </Button>
+            <div className="mt-8 rounded-2xl border border-border bg-card p-6">
+              {producto.precio ? (
+                <p
+                  className="text-3xl font-normal text-heading"
+                  style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+                >
+                  ${producto.precio.toLocaleString("es-CO")}
+                </p>
+              ) : (
+                <p
+                  className="text-xl italic font-normal text-heading"
+                  style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+                >
+                  Precio a consultar
+                </p>
+              )}
+              <div className="mt-5 flex flex-col gap-3">
+                <a
+                  href={waHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+                >
+                  <MessageCircle className="h-4 w-4" aria-hidden />
+                  Pedir por WhatsApp
+                </a>
+                <Link
+                  href={contactHref}
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-border px-7 text-sm font-medium text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                >
+                  Solicitar cotización
+                </Link>
               </div>
               <p className="mt-4 text-center text-xs text-muted-foreground">
-                Responde el formulario con fecha, porciones y referencia de este producto.
+                Indica fecha, porciones y esta referencia — te confirmamos disponibilidad y valor.
               </p>
             </div>
-          </aside>
+          </div>
         </div>
 
-        {relacionados.length > 0 && (
-          <section className="mt-20 border-t border-brand-leaf/20 pt-16">
-            <h2 className="font-serif text-2xl font-normal text-heading md:text-3xl">Otros productos</h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {relacionados.length > 0 ? (
+          <section className="mt-20 border-t border-border/70 pt-14">
+            <p
+              className="text-2xl font-normal text-heading"
+              style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+            >
+              También te puede gustar
+            </p>
+            <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3">
               {relacionados.map((p) => (
-                <Link
+                <button
                   key={p.slug}
-                  href={`/productos/${p.slug}`}
-                  className="group overflow-hidden rounded-2xl border border-border/80 bg-card shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                  type="button"
+                  onClick={() => setQuickView(p)}
+                  className="group flex flex-col text-left"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                  <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
                     <Image
                       src={p.imagen}
-                      alt=""
+                      alt={p.nombre}
                       fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                      sizes="(max-width: 640px) 50vw, 33vw"
                     />
                   </div>
-                  <div className="p-4">
-                    <p className="text-xs font-medium uppercase tracking-wider text-primary">{p.categoria}</p>
-                    <p className="mt-1 font-serif text-lg font-normal text-heading group-hover:text-primary transition-colors">
-                      {p.nombre}
-                    </p>
-                  </div>
-                </Link>
+                  <p className="mt-3 text-sm font-medium text-foreground transition-colors group-hover:text-primary sm:text-base">
+                    {p.nombre}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{formatCategoriaLabel(p.categoria)}</p>
+                </button>
               ))}
             </div>
           </section>
-        )}
+        ) : null}
       </div>
+
+      <ProductQuickView producto={quickView} onOpenChange={(open) => !open && setQuickView(null)} />
     </article>
   )
 }

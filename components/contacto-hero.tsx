@@ -1,65 +1,49 @@
 "use client"
 
-import Link from "next/link"
 import { useMemo, useState } from "react"
 import { MapPin } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { locations } from "@/lib/data/locations"
+import type { Location } from "@/lib/data/locations"
 
-function getAllLocationsEmbedUrl() {
-  const query = locations.map((l) => `${l.name}, ${l.address}, Bogotá`).join(" | ")
-  return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
+type ContactoHeroProps = {
+  locations: Location[]
 }
 
-export function ContactoHero() {
+export function ContactoHero({ locations }: ContactoHeroProps) {
   const [selected, setSelected] = useState<string>("todas")
+
+  const getAllLocationsEmbedUrl = () => {
+    const query = locations.map((l) => `${l.name}, ${l.address}, Bogotá`).join(" | ")
+    return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
+  }
 
   const mapSrc = useMemo(() => {
     if (selected === "todas") return getAllLocationsEmbedUrl()
     const loc = locations.find((l) => l.name === selected)
-    if (!loc) return getAllLocationsEmbedUrl()
+    if (!loc || !loc.mapsUrl) return getAllLocationsEmbedUrl()
     const url = new URL(loc.mapsUrl)
     const query = url.searchParams.get("query") ?? `${loc.name}, ${loc.address}, Bogotá`
     return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
-  }, [selected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected, locations])
 
   return (
-    <section className="relative overflow-hidden border-b border-brand-gold/25 bg-gradient-to-br from-brand-chocolate via-[#4a2828] to-[#2a1a1a] pt-24 pb-12 text-primary-foreground sm:pt-28 sm:pb-16">
-      <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/30 opacity-40 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-brand-gold/20 opacity-35 blur-3xl" />
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl px-1 text-center sm:px-0">
-          <h1 className="text-balance font-serif text-3xl font-normal leading-snug tracking-normal sm:text-4xl md:text-5xl lg:text-6xl">
-            Visítanos o escríbenos
+    <section data-no-section-divider className="bg-background px-5 pb-10 pt-28 sm:px-8 sm:pt-32 lg:px-12">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-6 sm:grid-cols-[1.3fr_1fr] sm:items-end sm:gap-10">
+          <h1
+            className="text-balance text-5xl font-normal leading-[1.05] text-heading sm:text-6xl"
+            style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+          >
+            Visítanos o <span className="italic text-primary">escríbenos.</span>
           </h1>
-          <p className="mt-4 text-lg text-white/80 md:text-xl">
-            Elige la sede más cercana. Cada ubicación tiene su propio contacto para pedidos y
-            consultas de cursos.
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Elige la sede más cercana. Cada ubicación tiene su propio contacto para pedidos y consultas de
+            cursos.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="w-full min-h-[48px] bg-primary text-primary-foreground hover:bg-primary-hover sm:w-auto sm:min-h-10"
-            >
-              <Link href="#contacto">Ir al formulario</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="w-full min-h-[48px] border-brand-gold/50 bg-white/5 text-white hover:bg-white/10 sm:w-auto sm:min-h-10"
-            >
-              <a href="https://wa.me/573108336425" target="_blank" rel="noopener noreferrer">
-                WhatsApp principal
-              </a>
-            </Button>
-          </div>
         </div>
 
-        <div id="mapa-contacto" className="mt-12 sm:mt-16">
-          <div className="relative overflow-hidden rounded-xl border border-brand-gold/35 shadow-xl sm:rounded-2xl">
+        <div id="mapa-contacto" className="mt-10">
+          <div className="relative overflow-hidden rounded-2xl">
             <iframe
               title="Mapa con todas las sedes Dalizas"
               src={mapSrc}
@@ -68,17 +52,17 @@ export function ContactoHero() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <div className="mt-6 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => setSelected("todas")}
               className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                 selected === "todas"
-                  ? "border-brand-gold bg-brand-gold/20 text-white"
-                  : "border-brand-gold/45 bg-white/10 text-white hover:bg-white/20"
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-foreground hover:border-primary/50 hover:text-primary"
               }`}
             >
-              <MapPin className="h-4 w-4 text-brand-gold" />
+              <MapPin className="h-3.5 w-3.5" aria-hidden />
               Todas las sedes
             </button>
             {locations.map((loc) => (
@@ -88,11 +72,11 @@ export function ContactoHero() {
                 onClick={() => setSelected(loc.name)}
                 className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                   selected === loc.name
-                    ? "border-brand-gold bg-brand-gold/20 text-white"
-                    : "border-brand-gold/45 bg-white/10 text-white hover:bg-white/20"
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-card text-foreground hover:border-primary/50 hover:text-primary"
                 }`}
               >
-                <MapPin className="h-4 w-4 text-brand-gold" />
+                <MapPin className="h-3.5 w-3.5" aria-hidden />
                 {loc.name}
               </button>
             ))}
