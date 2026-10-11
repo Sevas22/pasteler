@@ -42,7 +42,7 @@ const GALLERY_LAYOUT: readonly { size: string; contain?: boolean }[] = [
 /** Galería: una vista por producto; enlaces a `/productos/[slug]` */
 export function buildGalleryItems(productos: readonly Producto[]): GalleryItem[] {
   return productos.map((p, i) => {
-    const layout = GALLERY_LAYOUT[i] ?? { size: "col-span-2" }
+    const layout = i % 9 === 0 ? { size: "col-span-2 row-span-2", contain: false } : { size: "col-span-1", contain: false }
     return {
       id: p.slug,
       productSlug: p.slug,
@@ -55,6 +55,48 @@ export function buildGalleryItems(productos: readonly Producto[]): GalleryItem[]
     }
   })
 }
+
+/** Banners editados (carpeta `public/images/banners`). */
+export const BANNERS = {
+  hero: [
+    { src: "/images/banners/hero-pasteleria-cinco-rebanadas.webp", alt: "Rebanadas de tortas y cheesecakes Daliza" },
+    { src: "/images/banners/hero-pasteleria-frutos-rojos.webp", alt: "Cheesecakes con frutos rojos, caramelo y chocolate" },
+    { src: "/images/banners/hero-pasteleria-onda-dorada.webp", alt: "Cuatro rebanadas de pastelería fina Daliza" },
+  ],
+  panaderia: "/images/banners/panaderia-surtido-crema.webp",
+  pasteleria: "/images/banners/pasteleria-tartaletas-rollos-claro.webp",
+  reposteria: "/images/banners/reposteria-tarta-vino.webp",
+  celebracion: "/images/banners/celebracion-vino-oro.webp",
+  historia: "/images/banners/panaderia-canasta.webp",
+  /** Cabecera de /productos según el servicio elegido */
+  productosServicio: {
+    todos: "/images/banners/reposteria-fresas-cinta.webp",
+    panaderia: "/images/banners/panaderia-lino-flores.webp",
+    pasteleria: "/images/banners/pasteleria-tartaletas-rollos.webp",
+    reposteria: "/images/banners/reposteria-rebanadas-caramelo.webp",
+  },
+  paginas: {
+    cursos: "/images/banners/pasteleria-brillos.webp",
+    tiendas: "/images/banners/panaderia-bokeh.webp",
+    contacto: "/images/banners/panaderia-dorada.webp",
+    galeria: "/images/banners/panaderia-dorada-densa.webp",
+  },
+} as const
+
+/** Tortas personalizadas de cumpleaños y celebraciones (solo galería, no son productos del catálogo). */
+export const TORTAS_PERSONALIZADAS: readonly { src: string; alt: string; size: string }[] = [
+  { src: "/images/galeria/tortas/torta-01.webp", alt: "Torta personalizada temática de fútbol", size: "col-span-2 row-span-2" },
+  { src: "/images/galeria/tortas/torta-02.webp", alt: "Torta personalizada de Snoopy y Charlie Brown", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-03.webp", alt: "Torta personalizada rosada de Barbie", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-04.webp", alt: "Torta de primera comunión", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-05.webp", alt: "Torta de cumpleaños con estampado de leopardo", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-06.webp", alt: "Torta de cumpleaños de Snoopy de dos pisos", size: "col-span-2 row-span-2" },
+  { src: "/images/galeria/tortas/torta-07.webp", alt: "Torta roja de cumpleaños decorada con moños", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-08.webp", alt: "Torta personalizada de Bluey", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-09.webp", alt: "Torta de bautizo con ángel", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-10.webp", alt: "Torta de dos pisos de Barbie", size: "col-span-1" },
+  { src: "/images/galeria/tortas/torta-11.webp", alt: "Torta elegante con rosas rojas y número dorado", size: "col-span-2 row-span-2" },
+]
 
 export const MEDIA = {
   /** Fondo de cabecera en /cursos — fotografía de producto (misma línea que el catálogo) */

@@ -2,11 +2,14 @@ import { LayoutShell } from "@/components/layout-shell"
 import { Hero } from "@/components/hero"
 import { ExploraCategorias } from "@/components/explora-categorias"
 import { Manifiesto } from "@/components/manifiesto"
+import { BannerServicios } from "@/components/banner-servicios"
+import { NuestraHistoria } from "@/components/nuestra-historia"
 import { OficioPilares } from "@/components/oficio-pilares"
 import { SeleccionTemporada } from "@/components/seleccion-temporada"
 import { CelebraOcasiones } from "@/components/celebra-ocasiones"
 import { SedesBanda } from "@/components/sedes-banda"
 import { CursosTeaserBanda } from "@/components/cursos-teaser-banda"
+import { ProveedoresCarrusel } from "@/components/proveedores-carrusel"
 import { FaqSection } from "@/components/faq-section"
 import { CtaContactStrip } from "@/components/cta-contact-strip"
 import { getCourses } from "@/lib/data/courses"
@@ -21,11 +24,14 @@ export default async function HomePage() {
       <Hero />
       <ExploraCategorias />
       <Manifiesto />
+      <BannerServicios />
+      <NuestraHistoria />
       <OficioPilares />
       <SeleccionTemporada productos={productos} />
       <CelebraOcasiones />
       <SedesBanda locations={locations} />
       <CursosTeaserBanda courses={courses} />
+      <ProveedoresCarrusel />
       <FaqSection />
       <CtaContactStrip />
     </LayoutShell>

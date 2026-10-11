@@ -4,7 +4,8 @@ import { TiendasGrid } from "@/components/tiendas-grid"
 import { getLocations } from "@/lib/data/locations"
 import { getProductosByLocationSlugPublic } from "@/lib/data/productos"
 import { generateQrDataUrl, getLocationUrl } from "@/lib/qr"
-import { MEDIA } from "@/lib/media"
+import { BANNERS, MEDIA } from "@/lib/media"
+import { PageHero } from "@/components/page-hero"
 
 export const metadata: Metadata = {
   title: "Nuestras tiendas | Dalizas Pastelería Fina",
@@ -33,20 +34,17 @@ export default async function TiendasPage() {
 
   return (
     <LayoutShell>
-      <section data-no-section-divider className="bg-background px-5 pb-10 pt-28 sm:px-8 sm:pt-32 lg:px-12">
-        <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-[1.3fr_1fr] sm:items-end sm:gap-10">
-          <h1
-            className="text-balance text-5xl font-normal leading-[1.05] text-heading sm:text-6xl"
-            style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
-          >
-            Nuestras <span className="italic text-primary">tiendas.</span>
-          </h1>
-          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Cuatro sedes en Bosa y Ciudadela Colsubsidio. Escanea el QR en el mostrador o elige tu sede aquí para
-            ver solo lo disponible en ese punto.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        src={BANNERS.paginas.tiendas}
+        alt="Panadería artesanal recién horneada Daliza"
+        priority
+        title={
+          <>
+            Nuestras <span className="italic text-[#E3C98F]">tiendas.</span>
+          </>
+        }
+        description="Cuatro sedes en Bosa y Ciudadela Colsubsidio. Escanea el QR en el mostrador o elige tu sede aquí para ver solo lo disponible en ese punto."
+      />
 
       <TiendasGrid items={enriched} />
     </LayoutShell>

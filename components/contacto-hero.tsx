@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react"
 import { MapPin } from "lucide-react"
 import type { Location } from "@/lib/data/locations"
+import { PageHero } from "@/components/page-hero"
+import { BANNERS } from "@/lib/media"
 
 type ContactoHeroProps = {
   locations: Location[]
@@ -27,22 +29,22 @@ export function ContactoHero({ locations }: ContactoHeroProps) {
   }, [selected, locations])
 
   return (
-    <section data-no-section-divider className="bg-background px-5 pb-10 pt-28 sm:px-8 sm:pt-32 lg:px-12">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-6 sm:grid-cols-[1.3fr_1fr] sm:items-end sm:gap-10">
-          <h1
-            className="text-balance text-5xl font-normal leading-[1.05] text-heading sm:text-6xl"
-            style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
-          >
-            Visítanos o <span className="italic text-primary">escríbenos.</span>
-          </h1>
-          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Elige la sede más cercana. Cada ubicación tiene su propio contacto para pedidos y consultas de
-            cursos.
-          </p>
-        </div>
+    <>
+      <PageHero
+        src={BANNERS.paginas.contacto}
+        alt="Panadería dorada recién horneada Daliza"
+        priority
+        title={
+          <>
+            Visítanos o <span className="italic text-[#E3C98F]">escríbenos.</span>
+          </>
+        }
+        description="Elige la sede más cercana. Cada ubicación tiene su propio contacto para pedidos y consultas de cursos."
+      />
 
-        <div id="mapa-contacto" className="mt-10">
+      <section data-no-section-divider className="bg-background px-5 pb-10 pt-10 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-6xl">
+        <div id="mapa-contacto">
           <div className="relative overflow-hidden rounded-2xl">
             <iframe
               title="Mapa con todas las sedes Dalizas"
@@ -84,5 +86,6 @@ export function ContactoHero({ locations }: ContactoHeroProps) {
         </div>
       </div>
     </section>
+    </>
   )
 }

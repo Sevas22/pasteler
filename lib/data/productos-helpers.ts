@@ -25,8 +25,6 @@ export function getServicioLabel(servicio: ServicioProducto): string {
 /** Etiqueta legible para badges y metadatos (p. ej. `viennoiserie` → Viennoiserie). */
 export function formatCategoriaLabel(categoria: string): string {
   if (!categoria) return ""
-  return categoria
-    .split(/[-_\s]+/)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    .join(" ")
+  const texto = categoria.split(/[-_\s]+/).filter(Boolean).join(" ").toLowerCase()
+  return texto.charAt(0).toUpperCase() + texto.slice(1)
 }

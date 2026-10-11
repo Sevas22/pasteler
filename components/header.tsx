@@ -1,16 +1,14 @@
 "use client"
 
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, Search, X, Phone } from "lucide-react"
+import { Menu, UserRound, X, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { BrandLogo } from "@/components/brand-logo"
 
-/** En home, el header es transparente hasta este desplazamiento (px). */
-const HOME_HEADER_SOLID_AFTER = 48
 
 const navigation = [
   { name: "Nosotros", href: "/#nosotros" },
@@ -21,24 +19,31 @@ const navigation = [
   { name: "Contacto", href: "/contacto" },
 ]
 
+function NavLink({ item, pathname }: { item: (typeof navigation)[number]; pathname: string }) {
+  const active =
+    item.href === "/#nosotros" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`)
+  return (
+    <Link
+      href={item.href}
+      className={cn(
+        "text-sm font-medium tracking-wide transition-colors",
+        active ? "text-primary" : "text-foreground hover:text-primary",
+      )}
+    >
+      {item.name}
+    </Link>
+  )
+}
+
+const NAV_IZQUIERDA = navigation.slice(0, 3)
+const NAV_DERECHA = navigation.slice(3)
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
-  const isHome = pathname === "/"
   const isCursos = pathname === "/cursos"
-  const [elevated, setElevated] = useState(() => !isHome)
-
-  useLayoutEffect(() => {
-    if (!isHome) {
-      setElevated(true)
-      return
-    }
-    const update = () => setElevated(window.scrollY > HOME_HEADER_SOLID_AFTER)
-    update()
-    window.addEventListener("scroll", update, { passive: true })
-    return () => window.removeEventListener("scroll", update)
-  }, [isHome])
+  const elevated = true
 
   useEffect(() => {
     setMounted(true)
@@ -57,7 +62,7 @@ export function Header() {
     mounted && mobileMenuOpen ? (
       <div className="lg:hidden fixed inset-0 z-[100]">
         <div className="fixed inset-0 bg-foreground/20" onClick={() => setMobileMenuOpen(false)} aria-hidden />
-        <div className="fixed inset-y-0 right-0 z-[101] flex w-full max-w-full flex-col overflow-y-auto bg-card px-6 py-6 shadow-2xl sm:max-w-sm sm:ring-1 sm:ring-border">
+        <div className="menu-drawer-left fixed inset-y-0 left-0 z-[101] flex w-full max-w-full flex-col overflow-y-auto bg-card px-6 py-6 shadow-2xl sm:max-w-sm sm:ring-1 sm:ring-border">
           <div className="flex items-center justify-between">
             <BrandLogo
               variant="header"
@@ -114,51 +119,47 @@ export function Header() {
           : "border-b border-white/15 bg-transparent",
       )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex min-w-0 flex-1 items-center lg:flex-1">
-          <BrandLogo variant="header" className="-m-1.5 p-1.5" />
-        </div>
-        <div className="flex lg:hidden">
+      <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 py-3 sm:px-6 lg:px-8">
+        {/* Izquierda: botón de menú (móvil) / enlaces (desktop) */}
+        <div className="flex items-center lg:justify-end">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-foreground"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-foreground lg:hidden"
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Abrir menú</span>
             <Menu className="h-6 w-6" aria-hidden="true" />
           </button>
+          <div className="hidden lg:flex lg:gap-x-8 xl:gap-x-10">
+            {NAV_IZQUIERDA.map((item) => (
+              <NavLink key={item.name} item={item} pathname={pathname} />
+            ))}
+          </div>
         </div>
-        <div className="hidden lg:flex lg:gap-x-10">
-          {navigation.map((item) => {
-            const active =
-              item.href === "/#nosotros"
-                ? pathname === "/"
-                : pathname === item.href || pathname.startsWith(`${item.href}/`)
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "text-sm font-medium tracking-wide transition-colors",
-                  active ? "text-primary" : "text-foreground hover:text-primary",
-                )}
-              >
-                {item.name}
-              </Link>
-            )
-          })}
+
+        {/* Centro: logo */}
+        <div className="flex justify-center lg:px-10 xl:px-14">
+          <BrandLogo variant="header" className="-m-1.5 p-1.5" />
         </div>
-        <div className="hidden items-center gap-2 lg:flex lg:flex-1 lg:justify-end">
+
+        {/* Derecha: enlaces y acciones (desktop) / acceso admin (móvil) */}
+        <div className="flex items-center justify-end gap-2">
+          <div className="hidden lg:flex lg:gap-x-8 xl:gap-x-10">
+            {NAV_DERECHA.map((item) => (
+              <NavLink key={item.name} item={item} pathname={pathname} />
+            ))}
+          </div>
           <Link
-            href="/productos"
-            className="rounded-full p-2 text-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-primary"
-            aria-label="Buscar productos"
+            href="/admin"
+            className="rounded-full p-2 text-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-primary lg:ml-4"
+            aria-label="Panel administrativo"
+            title="Panel administrativo"
           >
-            <Search className="h-5 w-5" />
+            <UserRound className="h-5 w-5" />
           </Link>
           <Button
             asChild
-            className="rounded-full border border-brand-gold/60 bg-transparent text-primary duration-200 hover:bg-primary-hover hover:text-primary-foreground"
+            className="hidden rounded-full border border-brand-gold/60 bg-transparent text-primary duration-200 hover:bg-primary-hover hover:text-primary-foreground xl:inline-flex"
           >
             <Link href="/contacto" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />

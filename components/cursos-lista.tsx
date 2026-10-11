@@ -1,8 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Check } from "lucide-react"
+import { ArrowRight, Check, GraduationCap } from "lucide-react"
 import type { Course } from "@/lib/data/courses"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
+import { HandStamp } from "@/components/ornaments/hand-stamp"
 
 type CursosListaProps = {
   courses: Course[]
@@ -21,14 +22,21 @@ export function CursosLista({ courses }: CursosListaProps) {
               key={course.slug}
               className={`grid items-center gap-10 lg:grid-cols-2 lg:gap-16 ${invert ? "lg:[&>*:first-child]:order-2" : ""}`}
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-[0_25px_55px_-25px_rgba(58,38,32,0.45)]">
-                <Image
-                  src={course.image}
-                  alt={course.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 560px"
-                />
+              <div className="relative">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-[0_25px_55px_-25px_rgba(58,38,32,0.45)]">
+                  <Image
+                    src={course.image}
+                    alt={course.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 560px"
+                  />
+                </div>
+                {i === 0 ? (
+                  <div className="absolute -bottom-6 -left-6 rounded-full bg-background p-2 shadow-[0_12px_30px_-10px_rgba(58,38,32,0.35)]">
+                    <HandStamp icon={GraduationCap} text="APRENDE EL OFICIO • DALIZA •" />
+                  </div>
+                ) : null}
               </div>
 
               <div>

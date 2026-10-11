@@ -1,8 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
-import { MessageCircle } from "lucide-react"
+import { MapPin, MessageCircle } from "lucide-react"
 import type { Location } from "@/lib/data/locations"
 import { RevealStagger, RevealItem } from "@/components/motion/reveal"
+import { HandStamp } from "@/components/ornaments/hand-stamp"
 
 type TiendaItem = {
   location: Location
@@ -23,28 +24,35 @@ export function TiendasGrid({ items }: TiendasGridProps) {
         <div className="mt-2 h-px w-full bg-border" aria-hidden />
 
         <RevealStagger className="mt-8 grid gap-x-10 gap-y-12 sm:grid-cols-2">
-          {items.map(({ location, qr, heroImage, productCount }) => (
+          {items.map(({ location, qr, heroImage, productCount }, i) => (
             <RevealItem key={location.id} className="group flex flex-col">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
-                <Image
-                  src={heroImage}
-                  alt=""
-                  fill
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                {location.isPrincipal ? (
-                  <span className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground">
-                    Sede principal
-                  </span>
-                ) : null}
-                <div className="absolute bottom-3 right-3 overflow-hidden rounded-lg border-2 border-white bg-white p-0.5 shadow-md">
-                  <Image src={qr} alt={`Código QR — ${location.name}`} width={48} height={48} unoptimized />
+              <div className="relative">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+                  <Image
+                    src={heroImage}
+                    alt=""
+                    fill
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  {location.isPrincipal ? (
+                    <span className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground">
+                      Sede principal
+                    </span>
+                  ) : null}
+                  <div className="absolute bottom-3 right-3 overflow-hidden rounded-lg border-2 border-white bg-white p-0.5 shadow-md">
+                    <Image src={qr} alt={`Código QR — ${location.name}`} width={48} height={48} unoptimized />
+                  </div>
                 </div>
+                {i === 0 ? (
+                  <div className="absolute -bottom-6 -left-6 rounded-full bg-background p-2 shadow-[0_12px_30px_-10px_rgba(58,38,32,0.35)]">
+                    <HandStamp icon={MapPin} text="4 SEDES EN BOGOTÁ • DALIZA •" />
+                  </div>
+                ) : null}
               </div>
 
               <h2
-                className="mt-4 text-xl font-normal text-heading"
+                className={`text-xl font-normal text-heading ${i === 0 ? "mt-10" : "mt-4"}`}
                 style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
               >
                 {location.name}

@@ -164,6 +164,20 @@
   body {
     @apply bg-background text-foreground antialiased transition-colors duration-200;
     position: relative;
+    /* Cursor de cerezas (punto activo = donde se juntan los tallos, arriba a la izquierda). */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 4 C5 9 8 13 11 16' stroke='%234C7A34' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M4 4 C12 5 19 8 23 13' stroke='%234C7A34' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M4 4 C8 0.5 13 1 15 4 C11 7 6.5 7 4 4Z' fill='%236FA04B' stroke='%234C7A34' stroke-width='0.8'/%3E%3Ccircle cx='11' cy='22' r='7' fill='%23D64545' stroke='%238B2E2E' stroke-width='1'/%3E%3Ccircle cx='23' cy='20' r='6.5' fill='%23D64545' stroke='%238B2E2E' stroke-width='1'/%3E%3Ccircle cx='8.6' cy='19.4' r='1.8' fill='white' opacity='0.65'/%3E%3Ccircle cx='20.8' cy='17.6' r='1.7' fill='white' opacity='0.65'/%3E%3C/svg%3E") 4 4, auto;
+  }
+  a,
+  button,
+  [role="button"],
+  summary,
+  label[for],
+  select {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 4 C5 9 8 13 11 16' stroke='%234C7A34' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M4 4 C12 5 19 8 23 13' stroke='%234C7A34' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M4 4 C8 0.5 13 1 15 4 C11 7 6.5 7 4 4Z' fill='%236FA04B' stroke='%234C7A34' stroke-width='0.8'/%3E%3Ccircle cx='11' cy='22' r='7' fill='%23E35252' stroke='%23C9A96E' stroke-width='1.6'/%3E%3Ccircle cx='23' cy='20' r='6.5' fill='%23E35252' stroke='%23C9A96E' stroke-width='1.6'/%3E%3Ccircle cx='8.6' cy='19.4' r='1.8' fill='white' opacity='0.8'/%3E%3Ccircle cx='20.8' cy='17.6' r='1.7' fill='white' opacity='0.8'/%3E%3C/svg%3E") 4 4, pointer;
+  }
+  a:disabled,
+  button:disabled {
+    cursor: not-allowed;
   }
   /* Textura de papel muy sutil — le quita planitud al fondo crema sin distraer. */
   body::before {
@@ -387,5 +401,90 @@
 
   h3.font-serif.text-primary-foreground {
     line-height: 1.25;
+  }
+}
+
+@keyframes hero-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-text-in {
+  animation: hero-text-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-text-in {
+    animation: none;
+  }
+}
+
+/* Páginas con banner a pantalla completa (home y páginas internas): las secciones se "encuadran" al desplazarse. */
+html:has(:is(#inicio, [data-snap-hero])) {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 5.55rem;
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  html:has(:is(#inicio, [data-snap-hero])) {
+    scroll-snap-type: y mandatory;
+  }
+}
+
+html:has(:is(#inicio, [data-snap-hero])) main > * {
+  scroll-snap-align: start;
+}
+
+html:has(:is(#inicio, [data-snap-hero])) footer {
+  scroll-snap-align: end;
+}
+
+/* Carrusel de proveedores: desplazamiento infinito, pausa al pasar el mouse. */
+@keyframes proveedores-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.proveedores-track {
+  animation: proveedores-scroll 38s linear infinite;
+}
+
+.proveedores-wrap:hover .proveedores-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proveedores-track {
+    animation: none;
+  }
+}
+
+/* Menú móvil: entra desde la izquierda hacia la derecha. */
+@keyframes menu-drawer-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.menu-drawer-left {
+  animation: menu-drawer-left 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-drawer-left {
+    animation: none;
   }
 }

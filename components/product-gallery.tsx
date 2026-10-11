@@ -7,6 +7,8 @@ import { SERVICIOS_PRODUCTO, formatCategoriaLabel } from "@/lib/data/productos-h
 import type { Producto, ServicioProducto } from "@/lib/types/producto"
 import { ProductQuickView } from "@/components/product-quick-view"
 import { ImageIcon } from "lucide-react"
+import { BANNERS } from "@/lib/media"
+import { PageHero } from "@/components/page-hero"
 import { cn } from "@/lib/utils"
 
 type ProductGalleryProps = {
@@ -42,22 +44,33 @@ export function ProductGallery({
   }, [itemsByServicio, filter])
 
   return (
-    <section data-no-section-divider className={cn("bg-background px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:px-12", className)}>
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-6 sm:grid-cols-[1.3fr_1fr] sm:items-end sm:gap-10">
-          <h1
-            className="text-balance text-5xl font-normal leading-[1.05] text-heading sm:text-6xl"
-            style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
-          >
-            Nuestros <span className="italic text-primary">productos.</span>
-          </h1>
-          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            {productos.length} creaciones hechas a mano. Filtra por servicio o categoría para encontrar lo que
-            buscas.
-          </p>
-        </div>
+    <>
+      <PageHero
+        title={
+          <>
+            Nuestros <span className="italic text-[#E3C98F]">productos.</span>
+          </>
+        }
+        description={`${productos.length} creaciones hechas a mano. Filtra por servicio o categoría para encontrar lo que buscas.`}
+        background={(Object.keys(BANNERS.productosServicio) as (keyof typeof BANNERS.productosServicio)[]).map((key) => (
+          <Image
+            key={key}
+            src={BANNERS.productosServicio[key]}
+            alt=""
+            fill
+            priority={key === initialServicio}
+            sizes="100vw"
+            className={cn(
+              "object-cover object-[72%_center] saturate-[1.1] contrast-[1.05] transition-opacity duration-700 ease-in-out",
+              key === servicio ? "opacity-100" : "opacity-0",
+            )}
+          />
+        ))}
+      />
 
-        <div className="mt-8 flex flex-wrap gap-2">
+      <section data-no-section-divider className={cn("bg-background px-5 pb-16 pt-10 sm:px-8 lg:px-12", className)}>
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-wrap gap-2">
           {SERVICIO_PILLS.map((s) => (
             <button
               key={s.slug}
@@ -111,7 +124,7 @@ export function ProductGallery({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-10 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 lg:grid-cols-4"
+              className="mt-10 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3"
             >
               {visible.map((p) => (
                 <button
@@ -126,7 +139,7 @@ export function ProductGallery({
                       alt={p.nombre}
                       fill
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 33vw"
                     />
                   </div>
                   <p className="mt-3 text-sm font-medium text-foreground transition-colors group-hover:text-primary sm:text-base">
@@ -145,5 +158,6 @@ export function ProductGallery({
 
       <ProductQuickView producto={quickView} onOpenChange={(open) => !open && setQuickView(null)} />
     </section>
+    </>
   )
 }

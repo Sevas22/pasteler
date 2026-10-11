@@ -27,7 +27,7 @@ type ProductRow = {
 }
 
 const PRODUCT_COLUMNS = "*, product_locations(locations(slug))"
-const PLACEHOLDER_IMAGE = "/images/logo-dalizas-blanco.png"
+const PLACEHOLDER_IMAGE = "/images/logo-dalizas-transparente.png"
 /** Todo lo que cambie un producto invalida este tag (ver revalidateTag en admin/actions.ts). */
 const PRODUCTOS_TAG = "productos"
 
@@ -45,7 +45,7 @@ function mapProducto(row: ProductRow): Producto {
     descripcionLarga: row.description_long,
     servicio: row.servicio,
     categoria: row.categoria,
-    imagen: row.image_url ?? PLACEHOLDER_IMAGE,
+    imagen: !row.image_url || row.image_url.includes("logo-dalizas") ? PLACEHOLDER_IMAGE : row.image_url,
     highlights: row.highlights ?? [],
     imagenesExtra: row.extra_images ?? [],
     precio: row.price,

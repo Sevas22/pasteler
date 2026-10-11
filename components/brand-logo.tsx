@@ -44,23 +44,21 @@ export function BrandLogo({ variant = "header", className, onClick }: BrandLogoP
       )}
     >
       {variant === "footer" ? (
-        <span className="inline-block rounded-xl border border-brand-gold/40 bg-brand-cream p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-          <Image
-            src={src}
-            alt={BRANDING.logoAlt}
-            width={320}
-            height={120}
-            className="h-auto max-h-[88px] w-auto max-w-[240px] object-contain object-center md:max-h-[100px] md:max-w-[280px]"
-          />
-        </span>
+        <Image
+          src={src}
+          alt={BRANDING.logoAlt}
+          width={320}
+          height={320}
+          className="h-auto max-h-[120px] w-auto max-w-[120px] object-contain object-center md:max-h-[140px] md:max-w-[140px]"
+        />
       ) : (
         <Image
           src={src}
           alt={BRANDING.logoAlt}
-          width={220}
-          height={80}
+          width={160}
+          height={160}
           priority
-          className="h-[3rem] w-auto max-h-[3.5rem] max-w-[min(168px,42vw)] rounded-md object-contain object-left ring-1 ring-brand-gold/35 md:h-[3.5rem] md:max-h-[4rem] md:max-w-[192px]"
+          className="h-16 w-auto max-h-16 max-w-16 object-contain object-left md:h-20 md:max-h-20 md:max-w-20"
         />
       )}
     </Link>

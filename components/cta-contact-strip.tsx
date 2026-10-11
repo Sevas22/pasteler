@@ -1,20 +1,29 @@
 import Image from "next/image"
 import Link from "next/link"
-import { MessageCircle } from "lucide-react"
+import { Heart, MessageCircle } from "lucide-react"
+import { HandStamp } from "@/components/ornaments/hand-stamp"
+import { BANNERS } from "@/lib/media"
 
 export function CtaContactStrip() {
   return (
-    <section data-no-section-divider className="relative isolate overflow-hidden py-28 sm:py-36">
+    <section data-no-section-divider className="relative isolate flex items-center overflow-hidden py-28 sm:min-h-[calc(100svh-5.55rem)] sm:py-24">
       <Image
-        src="/images/producto-torta-chocolate-ganache.png"
-        alt="Torta de chocolate con ganache Daliza"
+        src={BANNERS.celebracion}
+        alt="Tartaletas de fruta y rollos de crema sobre terciopelo vino"
         fill
         className="object-cover"
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1c100e]/90 via-[#1c100e]/55 to-[#1c100e]/30" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#1c100e]/85 via-[#2a1210]/60 to-[#2a1210]/45" aria-hidden />
 
-      <div className="relative mx-auto max-w-2xl px-5 text-center sm:px-8">
+      <HandStamp
+        tone="cream"
+        icon={Heart}
+        text="EL ARTE DE CELEBRAR • DALIZA •"
+        className="absolute bottom-6 left-6 hidden sm:flex"
+      />
+
+      <div className="relative mx-auto w-full max-w-2xl px-5 text-center sm:px-8">
         <p
           className="text-balance text-4xl font-normal leading-tight text-[#F7EFE4] sm:text-5xl"
           style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}

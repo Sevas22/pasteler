@@ -40,7 +40,7 @@ function mapCourse(row: CourseRow): Course {
     title: row.title,
     description: row.description,
     descripcionLarga: row.description_long,
-    image: row.image_url ?? "/images/logo-dalizas-marca.png",
+    image: row.image_url ?? "/images/logo-dalizas-transparente.png",
     imagenesExtra: row.extra_images ?? [],
     duration: row.duration ?? "",
     students: row.students ?? "",

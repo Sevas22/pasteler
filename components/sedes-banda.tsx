@@ -1,16 +1,22 @@
 import Link from "next/link"
 import { MessageCircle } from "lucide-react"
 import type { Location } from "@/lib/data/locations"
+import { DripEdge } from "@/components/ornaments/drip"
 
 type SedesBandaProps = {
   locations: Location[]
 }
 
-/** Bloque de color sólido, sin tarjetas idénticas ni cifras — solo las 4 sedes reales. */
+/** Bloque de color sólido con textura de "torta": goteo de caramelo en el borde superior. */
 export function SedesBanda({ locations }: SedesBandaProps) {
   return (
-    <section data-no-section-divider className="bg-[#3A2620] px-5 py-16 text-[#F3E9DC] sm:px-8 sm:py-20 lg:px-12">
-      <div className="mx-auto max-w-6xl">
+    <section
+      data-no-section-divider
+      className="relative overflow-hidden bg-[#3A2620] px-5 pb-16 pt-9 text-[#F3E9DC] sm:px-8 sm:pb-20 sm:pt-12 lg:px-12"
+    >
+      <DripEdge fill="#C9A96E" className="absolute inset-x-0 top-0 h-9 w-full -translate-y-px sm:h-12" />
+
+      <div className="relative mx-auto max-w-6xl">
         <p
           className="text-3xl font-normal sm:text-4xl"
           style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}

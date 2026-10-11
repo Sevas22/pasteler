@@ -27,12 +27,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Dalizas — Pastelería Fina',
     description: 'Pastelería fina y cursos de repostería en Bogotá.',
-    images: ['/images/logo-dalizas-marca.png'],
+    images: ['/images/logo-dalizas-transparente.png'],
     locale: 'es_CO',
   },
   icons: {
-    icon: [{ url: "/images/logo-dalizas-marca.png", type: "image/png" }],
-    apple: "/images/logo-dalizas-marca.png",
+    icon: [{ url: "/images/logo-dalizas-transparente.png", type: "image/png" }],
+    apple: "/images/logo-dalizas-transparente.png",
   },
 }
 

@@ -11,7 +11,7 @@ export async function LayoutShell({ children }: { children: React.ReactNode }) {
     <>
       <ScrollProgress />
       <Header />
-      <main className="min-h-screen w-full min-w-0 overflow-x-hidden">{children}</main>
+      <main className="min-h-screen w-full min-w-0 overflow-x-clip">{children}</main>
       <StickyActionBar locations={locations} />
       <Footer locations={locations} />
     </>

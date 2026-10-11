@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Cake, Gift, Heart, ArrowRight } from "lucide-react"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
+import { HandStamp } from "@/components/ornaments/hand-stamp"
 
 const OCASIONES = [
   { icono: Cake, label: "Cumpleaños" },
@@ -16,14 +17,19 @@ export function CelebraOcasiones() {
       <SoftCircle color="wine" size={260} className="right-[-4rem] top-[-4rem]" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-20">
-        <div className="relative aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl shadow-[0_30px_60px_-25px_rgba(58,38,32,0.45)] lg:mx-0">
-          <Image
-            src="/images/producto-brazo-gitano-daliza.png"
-            alt="Torta para celebraciones Daliza"
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 480px"
-          />
+        <div className="relative mx-auto w-full max-w-md lg:mx-0">
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-[0_30px_60px_-25px_rgba(58,38,32,0.45)]">
+            <Image
+              src="/images/producto-brazo-gitano-daliza.png"
+              alt="Torta para celebraciones Daliza"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 480px"
+            />
+          </div>
+          <div className="absolute -bottom-6 -right-6 rounded-full bg-background p-2 shadow-[0_12px_30px_-10px_rgba(58,38,32,0.35)]">
+            <HandStamp icon={Gift} text="PARA CADA OCASIÓN • DALIZA •" />
+          </div>
         </div>
 
         <div>

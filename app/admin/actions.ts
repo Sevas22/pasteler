@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidatePath, updateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { requireAdminSession } from "@/lib/supabase/admin-guard"
@@ -89,7 +89,7 @@ export async function saveProductAction(_prevState: ActionResult, formData: Form
   }
 
   revalidateSite()
-  revalidateTag("productos")
+  updateTag("productos")
   redirect(productId ? "/admin/productos?ok=1&msg=updated" : "/admin/productos?ok=1&msg=created")
 }
 
@@ -98,7 +98,7 @@ export async function deleteProductAction(productId: string): Promise<void> {
   const supabase = await createClient()
   await supabase.from("products").delete().eq("id", productId)
   revalidateSite()
-  revalidateTag("productos")
+  updateTag("productos")
 }
 
 // ── Sucursales ───────────────────────────────────────────────────────────
@@ -140,7 +140,7 @@ export async function saveLocationAction(_prevState: ActionResult, formData: For
   }
 
   revalidateSite()
-  revalidateTag("locations")
+  updateTag("locations")
   redirect(locationId ? "/admin/sucursales?ok=1&msg=updated" : "/admin/sucursales?ok=1&msg=created")
 }
 
@@ -149,7 +149,7 @@ export async function deleteLocationAction(locationId: string): Promise<void> {
   const supabase = await createClient()
   await supabase.from("locations").delete().eq("id", locationId)
   revalidateSite()
-  revalidateTag("locations")
+  updateTag("locations")
 }
 
 // ── Cursos ───────────────────────────────────────────────────────────────
