@@ -131,7 +131,7 @@ export function ProductGallery({
                   key={p.id}
                   type="button"
                   onClick={() => setQuickView(p)}
-                  className="group flex flex-col text-left"
+                  className="group flex h-full flex-col text-left"
                 >
                   <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
                     <Image
@@ -142,13 +142,15 @@ export function ProductGallery({
                       sizes="(max-width: 640px) 50vw, 33vw"
                     />
                   </div>
-                  <p className="mt-3 text-sm font-medium text-foreground transition-colors group-hover:text-primary sm:text-base">
-                    {p.nombre}
-                  </p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{formatCategoriaLabel(p.categoria)}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {p.precio ? `$${p.precio.toLocaleString("es-CO")}` : "Consultar"}
-                  </p>
+                  <div className="flex flex-1 flex-col">
+                    <p className="mt-3 line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug text-foreground transition-colors group-hover:text-primary sm:min-h-[3rem] sm:text-base">
+                      {p.nombre}
+                    </p>
+                    <p className="mt-0.5 truncate text-xs text-muted-foreground">{formatCategoriaLabel(p.categoria)}</p>
+                    <p className="mt-auto pt-1.5 text-sm font-medium text-primary">
+                      {p.precio ? `$${p.precio.toLocaleString("es-CO")}` : "Consultar"}
+                    </p>
+                  </div>
                 </button>
               ))}
             </motion.div>

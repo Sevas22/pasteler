@@ -6,7 +6,7 @@ import { BANNERS } from "@/lib/media"
 
 export function CtaContactStrip() {
   return (
-    <section data-no-section-divider className="relative isolate flex items-center overflow-hidden py-28 sm:min-h-[calc(100svh-5.55rem)] sm:py-24">
+    <section data-no-section-divider className="relative isolate flex items-center overflow-hidden py-28 sm:min-h-[calc(100svh-4rem)] sm:py-24">
       <Image
         src={BANNERS.celebracion}
         alt="Tartaletas de fruta y rollos de crema sobre terciopelo vino"

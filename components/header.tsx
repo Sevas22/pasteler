@@ -42,8 +42,6 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
-  const isCursos = pathname === "/cursos"
-  const elevated = true
 
   useEffect(() => {
     setMounted(true)
@@ -108,18 +106,23 @@ export function Header() {
 
   return (
     <>
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ease-out",
-        elevated
-          ? cn(
-              "bg-brand-cream/95 shadow-sm backdrop-blur-md",
-              isCursos ? "border-b border-transparent" : "border-b border-brand-gold/30",
-            )
-          : "border-b border-white/15 bg-transparent",
-      )}
-    >
-      <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 py-3 sm:px-6 lg:px-8">
+    <header className="fixed inset-x-0 top-0 z-50">
+      {/* Fondo: barra delgada de lado a lado con una "barriguita" curva al centro donde vive el logo */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 drop-shadow-[0_6px_10px_rgba(58,38,32,0.16)]" aria-hidden>
+        <div className="h-16 bg-brand-cream" />
+        <svg
+          viewBox="0 0 320 104"
+          preserveAspectRatio="none"
+          className="absolute left-1/2 top-0 h-[104px] w-[250px] -translate-x-1/2 text-brand-cream sm:w-[320px]"
+        >
+          <path
+            fill="currentColor"
+            d="M0,0 L320,0 L320,64 C285,64 270,72 255,88 C240,102 215,104 160,104 C105,104 80,102 65,88 C50,72 35,64 0,64 Z"
+          />
+        </svg>
+      </div>
+
+      <nav className="relative mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6 lg:px-8">
         {/* Izquierda: botón de menú (móvil) / enlaces (desktop) */}
         <div className="flex items-center lg:justify-end">
           <button
@@ -137,10 +140,8 @@ export function Header() {
           </div>
         </div>
 
-        {/* Centro: logo */}
-        <div className="flex justify-center lg:px-10 xl:px-14">
-          <BrandLogo variant="header" className="-m-1.5 p-1.5" />
-        </div>
+        {/* Centro: espacio reservado para el logo (que sobresale sobre la barriguita) */}
+        <div className="w-[110px] sm:w-[170px] lg:w-[230px]" aria-hidden />
 
         {/* Derecha: enlaces y acciones (desktop) / acceso admin (móvil) */}
         <div className="flex items-center justify-end gap-2">
@@ -159,13 +160,17 @@ export function Header() {
           </Link>
           <Button
             asChild
-            className="hidden rounded-full border border-brand-gold/60 bg-transparent text-primary duration-200 hover:bg-primary-hover hover:text-primary-foreground xl:inline-flex"
+            className="hidden h-9 rounded-full border border-brand-gold/60 bg-transparent text-primary duration-200 hover:bg-primary-hover hover:text-primary-foreground xl:inline-flex"
           >
             <Link href="/contacto" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
               Contáctanos
             </Link>
           </Button>
+        </div>
+
+        <div className="absolute left-1/2 top-1 -translate-x-1/2">
+          <BrandLogo variant="header" className="p-0" />
         </div>
       </nav>
     </header>

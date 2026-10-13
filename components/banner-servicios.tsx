@@ -68,7 +68,7 @@ export function BannerServicios() {
           <section
             key={b.eyebrow}
             data-no-section-divider
-            className="relative isolate flex min-h-[560px] w-full items-end overflow-hidden bg-[#1c100e] sm:h-[calc(100svh-5.55rem)] sm:items-center"
+            className="relative isolate flex min-h-[560px] w-full items-end overflow-hidden bg-[#1c100e] sm:h-[calc(100svh-4rem)] sm:items-center"
           >
             <Image
               src={b.src}

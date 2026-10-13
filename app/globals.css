@@ -428,7 +428,7 @@
 /* Páginas con banner a pantalla completa (home y páginas internas): las secciones se "encuadran" al desplazarse. */
 html:has(:is(#inicio, [data-snap-hero])) {
   scroll-snap-type: y proximity;
-  scroll-padding-top: 5.55rem;
+  scroll-padding-top: 4rem;
 }
 
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {

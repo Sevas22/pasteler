@@ -6,6 +6,7 @@ import { ArrowRight, X } from "lucide-react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
 import type { Producto } from "@/lib/types/producto"
+import { cn } from "@/lib/utils"
 
 type ProductQuickViewProps = {
   producto: Producto | null
@@ -24,12 +25,16 @@ export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewPro
           <>
             <DialogTitle className="sr-only">{producto.nombre}</DialogTitle>
 
-            <div className="relative h-56 w-full sm:h-full">
+            <div className="relative h-56 w-full overflow-hidden sm:h-full">
               <Image
                 src={producto.imagen}
                 alt={producto.nombre}
                 fill
-                className="object-cover"
+                className={cn(
+                  "object-cover",
+                  // Las fotos traen 3 porciones: se amplía para ver una sola. Las tortas enteras y el logo van sin ampliar.
+                  !producto.imagen.includes("-torta-") && !producto.imagen.includes("logo-dalizas") && "scale-[1.7]",
+                )}
                 sizes="(max-width: 640px) 100vw, 50vw"
                 priority
               />
