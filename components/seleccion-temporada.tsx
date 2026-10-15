@@ -3,130 +3,142 @@
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { AnimatePresence, motion } from "framer-motion"
-import { formatCategoriaLabel } from "@/lib/data/productos-helpers"
-import { DRIP_CLIP_STYLE } from "@/components/ornaments/drip"
-import type { Producto } from "@/lib/types/producto"
+import { ArrowRight } from "lucide-react"
+import { SERVICIOS_PRODUCTO, formatCategoriaLabel } from "@/lib/data/productos-helpers"
+import { SoftCircle } from "@/components/ornaments/soft-circle"
+import type { Producto, ServicioProducto } from "@/lib/types/producto"
+import { cn } from "@/lib/utils"
 
 type SeleccionTemporadaProps = {
   productos: Producto[]
 }
 
-const MAX_POR_CATEGORIA = 6
+const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
+const POR_SERVICIO = 4
 
-/** Agrupa los productos reales por categoría, en el orden en que ya vienen ordenados (sort_order). */
-function agruparPorCategoria(productos: Producto[]) {
-  const grupos: { categoria: string; items: Producto[] }[] = []
-  for (const producto of productos) {
-    let grupo = grupos.find((g) => g.categoria === producto.categoria)
-    if (!grupo) {
-      grupo = { categoria: producto.categoria, items: [] }
-      grupos.push(grupo)
-    }
-    if (grupo.items.length < MAX_POR_CATEGORIA) grupo.items.push(producto)
+/** Productos destacados por servicio (si falta alguno se completa con otros que tengan foto). */
+const DESTACADOS: Record<ServicioProducto, string[]> = {
+  pasteleria: [
+    "torta-con-cheesecake-de-maracuya",
+    "torta-de-amapola",
+    "torta-con-cheesecake-de-mora",
+    "torta-con-cheesecake-de-oreo",
+  ],
+  reposteria: ["cheesecake-de-maracuya", "milhojas", "brazo-de-reina", "tartaleta-de-frutas"],
+  panaderia: ["roscon-de-coco", "corazones", "hojaldre-de-bocadillo-y-queso", "pan-de-breva"],
+}
+
+const tieneFoto = (p: Producto) => !p.imagen.includes("logo-dalizas")
+
+function seleccionar(productos: Producto[], servicio: ServicioProducto): Producto[] {
+  const delServicio = productos.filter((p) => p.active && p.servicio === servicio && tieneFoto(p))
+  const elegidos = DESTACADOS[servicio]
+    .map((slug) => delServicio.find((p) => p.slug === slug))
+    .filter((p): p is Producto => Boolean(p))
+  for (const p of delServicio) {
+    if (elegidos.length >= POR_SERVICIO) break
+    if (!elegidos.includes(p)) elegidos.push(p)
   }
-  return grupos
+  return elegidos.slice(0, POR_SERVICIO)
 }
 
 export function SeleccionTemporada({ productos }: SeleccionTemporadaProps) {
-  const grupos = useMemo(() => agruparPorCategoria(productos.filter((p) => p.active)), [productos])
-  const [activa, setActiva] = useState(0)
+  const pestanas = useMemo(
+    () =>
+      SERVICIOS_PRODUCTO.map((s) => ({ ...s, items: seleccionar(productos, s.slug) })).filter(
+        (s) => s.items.length > 0,
+      ),
+    [productos],
+  )
+  const [activa, setActiva] = useState(() => Math.max(0, pestanas.findIndex((p) => p.slug === "pasteleria")))
 
-  if (grupos.length === 0) return null
-  const grupo = grupos[activa]
+  if (pestanas.length === 0) return null
+  const actual = pestanas[Math.min(activa, pestanas.length - 1)]
 
   return (
-    <section data-no-section-divider className="bg-background px-5 py-16 sm:px-8 sm:py-24 lg:px-12">
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <div className="relative aspect-[4/5] w-full max-w-sm" style={DRIP_CLIP_STYLE}>
-            <Image
-              src="/images/hero-banner-principal.png"
-              alt="Pastelería Daliza — creaciones hechas a mano"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 420px"
-            />
-          </div>
-          <p
-            className="mt-6 max-w-sm text-3xl font-normal leading-tight text-heading sm:text-4xl"
-            style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
-          >
-            Selección de temporada
-          </p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
-            Una carta viva: cada pieza que ves aquí se hornea y se decora a mano en nuestro obrador de Bosa.
-          </p>
-          <Link
-            href="/productos"
-            className="mt-4 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
-          >
-            Ver todo el catálogo
-          </Link>
-        </div>
+    <section
+      data-no-section-divider
+      className="relative flex items-center overflow-hidden bg-background px-5 py-20 sm:min-h-[calc(100svh-4rem)] sm:px-8 sm:py-12 lg:px-12"
+    >
+      <SoftCircle color="gold" size={320} className="-right-20 -top-16" />
+      <SoftCircle color="cherry" size={240} className="-left-16 bottom-0" />
 
-        <div>
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Categorías">
-            {grupos.map((g, i) => (
+      <div className="relative mx-auto w-full max-w-6xl">
+        <div className="text-center">
+          <p className="flex items-center justify-center gap-3 text-xs font-medium uppercase tracking-[0.22em] text-primary">
+            <span className="h-px w-8 bg-primary/50" aria-hidden />
+            Selección de temporada
+            <span className="h-px w-8 bg-primary/50" aria-hidden />
+          </p>
+          <p className="mt-4 text-balance text-4xl font-normal leading-[1.08] text-heading sm:text-5xl" style={SERIF}>
+            Hecho a mano, <span className="italic text-primary">cada día.</span>
+          </p>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Algunas de las piezas que se hornean y se decoran en nuestro obrador de Bosa.
+          </p>
+
+          <div className="mt-8 inline-flex rounded-full border border-border bg-card p-1 shadow-sm" role="tablist" aria-label="Servicios">
+            {pestanas.map((p, i) => (
               <button
-                key={g.categoria}
+                key={p.slug}
                 type="button"
                 role="tab"
-                aria-selected={i === activa}
+                aria-selected={p.slug === actual.slug}
                 onClick={() => setActiva(i)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  i === activa
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
+                className={cn(
+                  "rounded-full px-5 py-2 text-sm font-medium transition-colors sm:px-7",
+                  p.slug === actual.slug
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
-                {formatCategoriaLabel(g.categoria)}
+                {p.label}
               </button>
             ))}
           </div>
+        </div>
 
-          <AnimatePresence mode="wait">
-            <motion.ul
-              key={grupo.categoria}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-8 divide-y divide-border/70 border-t border-border/70"
-            >
-              {grupo.items.map((producto) => (
-                <li key={producto.slug}>
-                  <Link
-                    href={`/productos/${producto.slug}`}
-                    className="group flex items-start justify-between gap-6 py-4 transition-[padding] duration-200 hover:pl-2"
-                  >
-                    <span>
-                      <span className="flex flex-wrap items-center gap-2.5">
-                        <span className="text-base font-medium text-foreground transition-colors group-hover:text-primary sm:text-lg">
-                          {producto.nombre}
-                        </span>
-                        {producto.highlights.some((h) => h.toLowerCase().includes("por pedido")) ? (
-                          <span className="inline-flex items-center rounded-full bg-[#D64545] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
-                            Por pedido
-                          </span>
-                        ) : null}
-                      </span>
-                      {producto.descripcion ? (
-                        <span className="mt-1 block max-w-md text-sm leading-relaxed text-muted-foreground">
-                          {producto.descripcion}
-                        </span>
-                      ) : null}
+        <ul key={actual.slug} className="hero-text-in mt-10 grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4 lg:gap-x-6">
+          {actual.items.map((producto) => (
+            <li key={producto.slug}>
+              <Link href={`/productos/${producto.slug}`} className="group block">
+                <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-muted shadow-[0_24px_50px_-28px_rgba(58,38,32,0.55)]">
+                  <Image
+                    src={producto.imagen}
+                    alt={producto.nombre}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                    sizes="(max-width: 1024px) 50vw, 280px"
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    aria-hidden
+                  />
+                  {producto.highlights.some((h) => h.toLowerCase().includes("por pedido")) ? (
+                    <span className="absolute left-3 top-3 rounded-full bg-[#D64545] px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-white shadow-sm">
+                      Por pedido
                     </span>
-                    {producto.precio ? (
-                      <span className="mt-0.5 shrink-0 text-sm text-muted-foreground">
-                        ${producto.precio.toLocaleString("es-CO")}
-                      </span>
-                    ) : null}
-                  </Link>
-                </li>
-              ))}
-            </motion.ul>
-          </AnimatePresence>
+                  ) : null}
+                </div>
+                <p className="mt-4 text-lg font-normal leading-snug text-heading transition-colors group-hover:text-primary" style={SERIF}>
+                  {producto.nombre}
+                </p>
+                <p className="mt-0.5 text-xs font-medium uppercase tracking-[0.14em] text-[#B08A4A]">
+                  {formatCategoriaLabel(producto.categoria)}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-10 flex justify-center">
+          <Link
+            href={`/productos?servicio=${actual.slug}`}
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          >
+            Ver toda la {actual.label.toLowerCase()}
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
         </div>
       </div>
     </section>

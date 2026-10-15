@@ -6,7 +6,7 @@ import { BannerServicios } from "@/components/banner-servicios"
 import { NuestraHistoria } from "@/components/nuestra-historia"
 import { OficioPilares } from "@/components/oficio-pilares"
 import { SeleccionTemporada } from "@/components/seleccion-temporada"
-import { CelebraOcasiones } from "@/components/celebra-ocasiones"
+import { TortasPersonalizadas } from "@/components/tortas-personalizadas"
 import { SedesBanda } from "@/components/sedes-banda"
 import { CursosTeaserBanda } from "@/components/cursos-teaser-banda"
 import { ProveedoresCarrusel } from "@/components/proveedores-carrusel"
@@ -28,7 +28,7 @@ export default async function HomePage() {
       <NuestraHistoria />
       <OficioPilares />
       <SeleccionTemporada productos={productos} />
-      <CelebraOcasiones />
+      <TortasPersonalizadas />
       <SedesBanda locations={locations} />
       <CursosTeaserBanda courses={courses} />
       <ProveedoresCarrusel />
