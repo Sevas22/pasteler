@@ -2,7 +2,7 @@ import type { Location } from "@/lib/data/locations"
 import type { Producto } from "@/lib/types/producto"
 
 /** Dominio público del sitio. En producción nunca debe quedar en localhost (sitemap, canónicas, QR, JSON-LD). */
-const DOMINIO_POR_DEFECTO = "https://dalizas.com"
+const DOMINIO_POR_DEFECTO = "https://www.dalizas.com"
 
 export function getSiteUrl(): string {
   const env = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "")
