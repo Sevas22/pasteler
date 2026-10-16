@@ -6,7 +6,8 @@ const DOMINIO_POR_DEFECTO = "https://www.dalizas.com"
 
 export function getSiteUrl(): string {
   const env = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "")
-  if (env && !env.includes("localhost")) return env
+  // dalizas.com redirige a www.dalizas.com: la URL canónica es siempre la de www.
+  if (env && !env.includes("localhost")) return env.replace("//dalizas.com", "//www.dalizas.com")
   if (process.env.NODE_ENV === "production") return DOMINIO_POR_DEFECTO
   return env || "http://localhost:3000"
 }
