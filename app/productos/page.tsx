@@ -5,9 +5,10 @@ import { getProductosPublic } from "@/lib/data/productos"
 import { isServicioProducto } from "@/lib/data/productos-helpers"
 
 export const metadata: Metadata = {
-  title: "Productos | Dalizas Pastelería Fina",
+  title: "Tortas, postres, repostería y panadería en Bogotá",
   description:
-    "Galería de tortas, cupcakes, postres y más. Pastelería fina en Bogotá — Dalizas Pastelería Fina.",
+    "Catálogo Daliza: tortas, cheesecakes, postres, repostería y pan artesanal (almojábanas, hojaldres, resobados y más). Cotiza por WhatsApp en Bosa, Bogotá.",
+  alternates: { canonical: "/productos" },
 }
 
 type ProductosPageProps = {

@@ -70,9 +70,9 @@ export const BANNERS = {
   historia: "/images/banners/panaderia-canasta.webp",
   /** Cabecera de /productos según el servicio elegido */
   productosServicio: {
-    todos: "/images/banners/reposteria-fresas-cinta.webp",
+    todos: "/images/banners/hero-pasteleria-frutos-rojos.webp",
     panaderia: "/images/banners/panaderia-lino-flores.webp",
-    pasteleria: "/images/banners/pasteleria-tartaletas-rollos.webp",
+    pasteleria: "/images/banners/hero-pasteleria-onda-dorada.webp",
     reposteria: "/images/banners/reposteria-rebanadas-caramelo.webp",
   },
   paginas: {
@@ -80,6 +80,7 @@ export const BANNERS = {
     tiendas: "/images/banners/panaderia-bokeh.webp",
     contacto: "/images/banners/panaderia-dorada.webp",
     galeria: "/images/banners/panaderia-dorada-densa.webp",
+    blog: "/images/banners/reposteria-tarta-vino.webp",
   },
 } as const
 

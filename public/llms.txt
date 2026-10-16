@@ -1,0 +1,20 @@
+# Daliza Pastelería Fina
+
+> Pastelería fina, repostería y panadería artesanal en Bosa, Bogotá (Colombia). Tortas personalizadas con papel de azúcar, cheesecakes, postres, galletas, hojaldres y pan. Pedidos y cotizaciones por WhatsApp en cada sede.
+
+Daliza tiene sedes en Bosa (Carbonell, Naranjos y Piamonte), en Ciudadela Colsubsidio y una sucursal de panadería (Panadería Carbonell). Los productos no se venden en línea: el cliente cotiza y confirma disponibilidad y valor por WhatsApp con la sede de su preferencia. El sitio está en español.
+
+## Páginas principales
+- [Inicio](https://dalizas.com/): presentación, servicios, sedes y preguntas frecuentes.
+- [Productos](https://dalizas.com/productos): catálogo de pastelería, repostería y panadería.
+- [Sedes](https://dalizas.com/tiendas): direcciones, horarios, teléfonos y WhatsApp de cada sede.
+- [Galería](https://dalizas.com/galeria): tortas personalizadas y productos.
+- [Contacto](https://dalizas.com/contacto): formulario que abre WhatsApp con el mensaje listo.
+- [Cursos](https://dalizas.com/cursos): próximamente (programación en definición).
+
+## Blog
+- [Torta personalizada con papel de azúcar: cómo pedirla en Bogotá](https://dalizas.com/blog/torta-personalizada-papel-de-azucar-bogota)
+- [¿Cuántas porciones tiene una torta? Guía para elegir el tamaño](https://dalizas.com/blog/cuantas-porciones-tiene-una-torta-que-tamano-pedir)
+- [Cheesecake, tres leches o torta fría: ¿cuál elegir?](https://dalizas.com/blog/cheesecake-torta-tres-leches-o-torta-fria)
+- [Panadería colombiana: almojábana, pan de bono, resobados y más](https://dalizas.com/blog/panaderia-colombiana-almojabana-pan-de-bono-resobados)
+- [Cómo conservar y transportar una torta](https://dalizas.com/blog/como-conservar-y-transportar-una-torta)

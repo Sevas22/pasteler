@@ -1,17 +1,19 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Reveal } from "@/components/motion/reveal"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
+import { JsonLd } from "@/components/json-ld"
+import { grafo, preguntasSchema } from "@/lib/seo"
 
-const faqs = [
+export const faqs = [
   {
     question: "¿Con cuánta anticipación debo pedir mi torta?",
     answer:
-      "Para tortas de celebración recomendamos al menos 3 a 5 días de anticipación, y 1 a 2 semanas para diseños personalizados o pedidos grandes. Escríbenos por WhatsApp para confirmar disponibilidad en tu fecha.",
+      "Entre más pronto nos escribas, mejor: los diseños personalizados, las tortas con papel de azúcar y los pedidos grandes necesitan más tiempo de preparación. Escríbenos por WhatsApp a tu sede, cuéntanos la fecha y te confirmamos disponibilidad.",
   },
   {
     question: "¿Hacen envíos o solo se recoge en tienda?",
     answer:
-      "Puedes recoger tu pedido en cualquiera de nuestras 4 sedes en Bogotá. Coordina con tu sede más cercana por WhatsApp si necesitas entrega.",
+      "Puedes recoger tu pedido en cualquiera de nuestras sedes en Bogotá (Bosa y Ciudadela Colsubsidio). Coordina con tu sede más cercana por WhatsApp si necesitas que te lo entreguemos.",
   },
   {
     question: "¿Puedo personalizar sabor, tamaño o decoración?",
@@ -26,13 +28,14 @@ const faqs = [
   {
     question: "¿Cómo funcionan los cursos de pastelería?",
     answer:
-      "Nuestros cursos son presenciales, en grupos reducidos, con niveles desde principiante hasta especialidades avanzadas. Revisa el detalle de cada uno en la sección de Cursos o escríbenos para conocer las próximas fechas.",
+      "Estamos definiendo la nueva programación de cursos de pastelería. Escríbenos por WhatsApp y te avisamos apenas abramos inscripciones.",
   },
 ] as const
 
 export function FaqSection() {
   return (
     <section data-no-section-divider className="bg-background py-16 sm:py-20 md:py-24">
+      <JsonLd data={grafo(preguntasSchema(faqs))} />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="text-center">

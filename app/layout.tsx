@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Montserrat, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { JsonLd } from '@/components/json-ld'
+import { NEGOCIO, SITE_URL, grafo, organizacionSchema, sitioWebSchema } from '@/lib/seo'
 
 /**
  * Tipografía de marca (manual Daliza): Playfair Display = "tipografía emocional" (titulares),
@@ -21,15 +23,47 @@ const playfairDisplay = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
-  title: 'Dalizas - Pastelería Fina | Cursos de Pastelería en Bogotá',
-  description: 'Dalizas Pastelería Fina - Aprende el arte de la repostería con nuestros cursos profesionales. 4 sedes en Bogotá: Bosa Carbonell, Bosa Naranjos, Bosa Piamonte y Ciudadela Colsubsidio.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Daliza Pastelería Fina | Tortas, postres y panadería en Bosa, Bogotá',
+    template: '%s | Daliza Pastelería Fina',
+  },
+  description:
+    'Tortas personalizadas con papel de azúcar, cheesecakes, postres, repostería y pan artesanal en Bosa, Bogotá. Sedes Carbonell, Naranjos, Piamonte y Ciudadela Colsubsidio. Pide por WhatsApp.',
+  applicationName: NEGOCIO.nombre,
+  keywords: [
+    'pastelería en Bosa',
+    'tortas personalizadas Bogotá',
+    'tortas con papel de azúcar',
+    'panadería en Bosa',
+    'cheesecake Bogotá',
+    'tortas de cumpleaños Bogotá',
+    'repostería fina',
+    'Daliza Pastelería',
+  ],
+  alternates: { canonical: '/' },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
+  },
   openGraph: {
-    title: 'Dalizas — Pastelería Fina',
-    description: 'Pastelería fina y cursos de repostería en Bogotá.',
-    images: ['/images/logo-dalizas-transparente.png'],
+    type: 'website',
+    siteName: NEGOCIO.nombre,
+    title: 'Daliza Pastelería Fina | Tortas, postres y panadería en Bosa, Bogotá',
+    description: 'Tortas personalizadas, cheesecakes, postres y pan artesanal en Bosa, Bogotá. Pide por WhatsApp.',
+    url: '/',
+    images: [{ url: NEGOCIO.imagenSocial, width: 1600, height: 900, alt: 'Pastelería fina Daliza en Bosa, Bogotá' }],
     locale: 'es_CO',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Daliza Pastelería Fina | Bosa, Bogotá',
+    description: 'Tortas personalizadas, postres y panadería artesanal. Pide por WhatsApp.',
+    images: [NEGOCIO.imagenSocial],
+  },
+  formatDetection: { telephone: true, address: true, email: false },
+  category: 'food',
   icons: {
     icon: [{ url: "/images/logo-dalizas-transparente.png", type: "image/png" }],
     apple: "/images/logo-dalizas-transparente.png",
@@ -46,6 +80,7 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${playfairDisplay.variable} font-sans antialiased overflow-x-hidden`}
       >
+        <JsonLd data={grafo(organizacionSchema(), sitioWebSchema())} />
         {children}
         <Analytics />
       </body>

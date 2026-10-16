@@ -3,6 +3,8 @@ import { Clock, MapPin, MessageCircle } from "lucide-react"
 import type { Location } from "@/lib/data/locations"
 import { DripEdge } from "@/components/ornaments/drip"
 import { generateQrDataUrl, getLocationUrl } from "@/lib/qr"
+import { Horario } from "@/components/horario"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
@@ -41,11 +43,11 @@ export async function SedesBanda({ locations }: SedesBandaProps) {
           </p>
         </div>
 
-        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className={`mt-12 grid gap-5 sm:grid-cols-2 ${sedes.length >= 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
           {sedes.map(({ location, qr }) => (
             <li
               key={location.id}
-              className="flex flex-col items-center rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center shadow-[0_20px_40px_-25px_rgba(0,0,0,0.7)] transition-colors hover:border-[#E3C98F]/40 hover:bg-white/[0.07]"
+              className="flex flex-col items-center rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center lg:p-5 xl:p-6 shadow-[0_20px_40px_-25px_rgba(0,0,0,0.7)] transition-colors hover:border-[#E3C98F]/40 hover:bg-white/[0.07]"
             >
               <h3 className="text-xl font-normal text-[#F7EFE4]" style={SERIF}>
                 {location.name}
@@ -67,20 +69,22 @@ export async function SedesBanda({ locations }: SedesBandaProps) {
               {location.hours ? (
                 <p className="mt-1.5 flex items-start gap-2 text-sm text-[#D8C7B8]/80">
                   <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#E3C98F]" aria-hidden />
-                  <span>{location.hours}</span>
+                  <span>
+                    <Horario texto={location.hours} />
+                  </span>
                 </p>
               ) : null}
 
               {location.whatsapp ? (
-                <a
-                  href={`https://wa.me/57${location.whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <WhatsAppCTA
+                  mensaje={`Hola, quiero información de la sede ${location.name}`}
+                  ruta={`/tiendas/${location.slug}`}
+                  sedesSlugs={[location.slug]}
                   className="mt-5 inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-[#E3C98F]/60 px-5 text-sm font-medium text-[#E3C98F] transition-colors hover:bg-[#E3C98F] hover:text-[#2a1210]"
                 >
                   <MessageCircle className="h-4 w-4" aria-hidden />
                   Escribir por WhatsApp
-                </a>
+                </WhatsAppCTA>
               ) : (
                 <Link
                   href={`/tiendas/${location.slug}`}

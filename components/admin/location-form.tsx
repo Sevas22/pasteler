@@ -101,7 +101,7 @@ export function LocationForm({ location }: { location?: Location }) {
         </div>
         <div className="space-y-2">
           <Label htmlFor="hours">Horario</Label>
-          <Input id="hours" name="hours" placeholder="Lun - Sáb: 8:00 AM - 7:00 PM" defaultValue={location?.hours ?? ""} />
+          <Input id="hours" name="hours" placeholder="Lun - Vie: 12:00 PM - 8:30 PM · Sáb y Dom: 10:00 AM - 8:30 PM" defaultValue={location?.hours ?? ""} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="maps_url">URL de Google Maps</Label>

@@ -7,6 +7,7 @@ import { Check, MapPin, MessageCircle } from "lucide-react"
 import type { Producto } from "@/lib/types/producto"
 import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
 import { ProductQuickView } from "@/components/product-quick-view"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
 
 type ProductDetailViewProps = {
   producto: Producto
@@ -16,9 +17,6 @@ type ProductDetailViewProps = {
 export function ProductDetailView({ producto, relacionados }: ProductDetailViewProps) {
   const [quickView, setQuickView] = useState<Producto | null>(null)
   const contactHref = `/contacto?servicio=${encodeURIComponent(producto.nombre)}`
-  const waHref = `https://wa.me/573108336425?text=${encodeURIComponent(
-    `Hola, me interesa información sobre: ${producto.nombre}`,
-  )}`
 
   return (
     <article className="bg-background px-5 pb-20 pt-24 sm:px-8 sm:pt-28 lg:px-12">
@@ -110,15 +108,15 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
                 </p>
               )}
               <div className="mt-5 flex flex-col gap-3">
-                <a
-                  href={waHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <WhatsAppCTA
+                  mensaje={`Hola, quiero cotizar: ${producto.nombre}`}
+                  ruta={`/productos/${producto.slug}`}
+                  sedesSlugs={producto.sedes}
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
                 >
                   <MessageCircle className="h-4 w-4" aria-hidden />
                   Pedir por WhatsApp
-                </a>
+                </WhatsAppCTA>
                 <Link
                   href={contactHref}
                   className="inline-flex min-h-12 items-center justify-center rounded-full border border-border px-7 text-sm font-medium text-foreground transition-colors hover:border-primary/50 hover:text-primary"

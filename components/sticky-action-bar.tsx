@@ -2,17 +2,14 @@
 
 import Link from "next/link"
 import { MapPin, MessageCircle } from "lucide-react"
-import type { Location } from "@/lib/data/locations"
 import { MagneticButton } from "@/components/motion/magnetic-button"
-
-type StickyActionBarProps = {
-  locations: Location[]
-}
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
+import { useLocations } from "@/components/locations-context"
 
 /** Barra inferior persistente: sede rápida + WhatsApp — visible en todo el sitio. */
-export function StickyActionBar({ locations }: StickyActionBarProps) {
+export function StickyActionBar() {
+  const locations = useLocations()
   const principal = locations.find((l) => l.isPrincipal) ?? locations[0]
-  const whatsapp = principal?.whatsapp || "573108336425"
 
   return (
     <div
@@ -30,15 +27,13 @@ export function StickyActionBar({ locations }: StickyActionBarProps) {
         </Link>
 
         <MagneticButton strength={0.3}>
-          <a
-            href={`https://wa.me/${whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <WhatsAppCTA
+            mensaje="Hola, quiero personalizar mi pedido"
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[0_8px_24px_rgba(139,46,46,0.4)] transition-all duration-200 hover:scale-[1.03] hover:bg-primary-hover"
           >
             <MessageCircle className="h-4 w-4" />
             Personalizar mi pedido
-          </a>
+          </WhatsAppCTA>
         </MagneticButton>
       </div>
     </div>

@@ -7,9 +7,10 @@ import { getLocations } from "@/lib/data/locations"
 import { getCourses } from "@/lib/data/courses"
 
 export const metadata: Metadata = {
-  title: "Contacto y sedes | Dalizas Pastelería Fina",
+  title: "Contacto: pide tu torta por WhatsApp",
   description:
-    "Sedes en Bogotá: Bosa Carbonell, Bosa Naranjos, Bosa Piamonte y Ciudadela Colsubsidio. WhatsApp, formulario y Facebook.",
+    "Escríbenos por WhatsApp a la sede Daliza más cercana en Bosa o Ciudadela Colsubsidio, Bogotá. Cotiza tortas personalizadas, postres y panadería.",
+  alternates: { canonical: "/contacto" },
 }
 
 export default async function ContactoPage() {

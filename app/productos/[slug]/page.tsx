@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { LayoutShell } from "@/components/layout-shell"
 import { ProductDetailView } from "@/components/product-detail-view"
+import { JsonLd } from "@/components/json-ld"
+import { grafo, migasSchema, productoSchema } from "@/lib/seo"
 import { getProductoBySlugPublic, getOtrosProductosPublic } from "@/lib/data/productos"
 
 type Props = {
@@ -12,14 +14,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const producto = await getProductoBySlugPublic(slug)
   if (!producto) {
-    return { title: "Producto | Dalizas" }
+    return { title: "Producto" }
   }
+  const descripcion = `${producto.nombre} en Daliza Pastelería Fina, Bosa, Bogotá. ${producto.descripcion}`.slice(0, 300)
   return {
-    title: `${producto.nombre} | Dalizas Pastelería Fina`,
-    description: producto.descripcion,
+    title: `${producto.nombre} en Bogotá`,
+    description: descripcion,
+    alternates: { canonical: `/productos/${producto.slug}` },
     openGraph: {
-      title: `${producto.nombre} | Dalizas`,
+      type: "website",
+      title: `${producto.nombre} | Daliza Pastelería Fina`,
       description: producto.descripcion,
+      url: `/productos/${producto.slug}`,
       images: [{ url: producto.imagen, alt: producto.nombre }],
     },
   }
@@ -35,6 +41,16 @@ export default async function ProductoDetallePage({ params }: Props) {
 
   return (
     <LayoutShell>
+      <JsonLd
+        data={grafo(
+          productoSchema(producto),
+          migasSchema([
+            { nombre: "Inicio", ruta: "/" },
+            { nombre: "Productos", ruta: "/productos" },
+            { nombre: producto.nombre, ruta: `/productos/${producto.slug}` },
+          ]),
+        )}
+      />
       <ProductDetailView producto={producto} relacionados={relacionados} />
     </LayoutShell>
   )

@@ -16,6 +16,7 @@ const navigation = [
   { name: "Cursos", href: "/cursos" },
   { name: "Tiendas", href: "/tiendas" },
   { name: "Galería", href: "/galeria" },
+  { name: "Blog", href: "/blog" },
   { name: "Contacto", href: "/contacto" },
 ]
 

@@ -1,9 +1,5 @@
 import QRCode from "qrcode"
-
-/** URL pública del sitio (usada para armar los enlaces que codifica cada QR de sucursal). */
-export function getSiteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000"
-}
+import { getSiteUrl } from "@/lib/seo"
 
 export function getLocationUrl(slug: string): string {
   return `${getSiteUrl()}/tiendas/${slug}`

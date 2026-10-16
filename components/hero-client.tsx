@@ -115,6 +115,7 @@ export function HeroClient() {
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 gap-10 px-5 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:px-12 lg:pb-16 lg:pt-32">
         <div>
+          <h1 className="sr-only">Daliza Pastelería Fina: tortas personalizadas, postres y panadería en Bosa, Bogotá</h1>
           <div key={slide} className="hero-text-in min-h-[19rem] sm:min-h-[22rem] lg:min-h-[24rem]">
               <p className="flex items-center gap-2.5 text-sm font-medium text-[#EADBCB]">
                 <span className="h-px w-8 bg-[#E3C98F]/70" aria-hidden />
@@ -122,12 +123,12 @@ export function HeroClient() {
                 {texto.eyebrow}
               </p>
 
-              <h1
+              <h2
                 className="mt-4 text-balance text-[2.75rem] font-normal leading-[1.05] text-[#F7EFE4] drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] sm:text-6xl lg:text-[4.5rem]"
                 style={SERIF}
               >
                 {texto.titulo} <span className="italic text-[#E3C98F]">{texto.italica}</span>
-              </h1>
+              </h2>
 
               <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#EADBCB] sm:text-base">{texto.texto}</p>
           </div>

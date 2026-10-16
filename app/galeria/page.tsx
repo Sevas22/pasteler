@@ -11,9 +11,10 @@ import { cn } from "@/lib/utils"
 import { RevealStagger, RevealItem, Reveal } from "@/components/motion/reveal"
 
 export const metadata: Metadata = {
-  title: "Galería | Dalizas Pastelería Fina",
+  title: "Galería de tortas personalizadas, postres y pan",
   description:
-    "Galería de pastelería fina Daliza: tortas, postres, pan y viennoiserie. Toca una foto para ver la ficha del producto.",
+    "Mira tortas personalizadas con papel de azúcar, cheesecakes, postres y pan artesanal de Daliza Pastelería Fina en Bogotá. Toca una foto para ver el producto.",
+  alternates: { canonical: "/galeria" },
 }
 
 export default async function GaleriaPage() {

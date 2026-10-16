@@ -8,9 +8,10 @@ import { BANNERS, MEDIA } from "@/lib/media"
 import { PageHero } from "@/components/page-hero"
 
 export const metadata: Metadata = {
-  title: "Nuestras tiendas | Dalizas Pastelería Fina",
+  title: "Sedes en Bosa y Ciudadela Colsubsidio, Bogotá",
   description:
-    "Encuentra tu sede Daliza en Bogotá, escanea el QR en el local y descubre el catálogo disponible en cada punto.",
+    "Encuentra tu pastelería Daliza en Bogotá: sedes Carbonell, Naranjos y Piamonte en Bosa y Ciudadela Colsubsidio. Dirección, horarios, WhatsApp y catálogo de cada sede.",
+  alternates: { canonical: "/tiendas" },
 }
 
 export default async function TiendasPage() {

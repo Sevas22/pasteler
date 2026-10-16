@@ -12,6 +12,8 @@ import { CursosTeaserBanda } from "@/components/cursos-teaser-banda"
 import { ProveedoresCarrusel } from "@/components/proveedores-carrusel"
 import { FaqSection } from "@/components/faq-section"
 import { CtaContactStrip } from "@/components/cta-contact-strip"
+import { JsonLd } from "@/components/json-ld"
+import { grafo, sedeSchema } from "@/lib/seo"
 import { getCourses } from "@/lib/data/courses"
 import { getLocations } from "@/lib/data/locations"
 import { getProductosPublic } from "@/lib/data/productos"
@@ -21,6 +23,7 @@ export default async function HomePage() {
 
   return (
     <LayoutShell>
+      <JsonLd data={grafo(...locations.map(sedeSchema))} />
       <Hero />
       <ExploraCategorias />
       <Manifiesto />

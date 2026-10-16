@@ -15,6 +15,7 @@ const ENLACES = [
   { href: "/cursos", label: "Cursos" },
   { href: "/tiendas", label: "Tiendas" },
   { href: "/galeria", label: "Galería" },
+  { href: "/blog", label: "Blog" },
   { href: "/contacto", label: "Contacto" },
 ] as const
 
@@ -29,7 +30,7 @@ export function Footer({ locations }: FooterProps) {
           <div>
             <BrandLogo variant="footer" className="mx-0" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-[#D8C7B8]">
-              Pastelería fina y cursos en Bosa, Bogotá. Tradición, sabor y enseñanza con pasión.
+              Pastelería fina, repostería y panadería artesanal en Bosa, Bogotá. Tradición y sabor hechos con pasión.
             </p>
             <a
               href="https://www.facebook.com/PasteleriaDaliza"

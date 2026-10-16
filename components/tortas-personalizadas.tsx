@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Handshake, ImagePlus, MessageCircle, PackageCheck } from "lucide-react"
 import { HandStamp } from "@/components/ornaments/hand-stamp"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
@@ -98,15 +99,13 @@ export function TortasPersonalizadas() {
           </ul>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
-            <a
-              href={`https://wa.me/573108336425?text=${encodeURIComponent("Hola, quiero cotizar una torta personalizada con papel de azúcar")}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <WhatsAppCTA
+              mensaje="Hola, quiero cotizar una torta personalizada con papel de azúcar"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#D64545] px-7 text-sm font-semibold text-white shadow-[0_12px_30px_-10px_rgba(214,69,69,0.8)] transition-colors hover:bg-[#E35252]"
             >
               <MessageCircle className="h-4 w-4" aria-hidden />
               Cotizar mi torta
-            </a>
+            </WhatsAppCTA>
             <Link
               href="/galeria"
               className="inline-flex items-center gap-2 text-sm font-medium text-[#F7EFE4] underline-offset-4 transition hover:text-[#E3C98F] hover:underline"

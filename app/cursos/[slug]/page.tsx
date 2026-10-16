@@ -12,13 +12,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const course = await getCursoBySlug(slug)
   if (!course) {
-    return { title: "Curso | Dalizas" }
+    return { title: "Curso" }
   }
   return {
-    title: `${course.title} | Dalizas Pastelería Fina`,
+    title: `${course.title}, curso de pastelería en Bogotá`,
     description: course.description,
+    alternates: { canonical: `/cursos/${course.slug}` },
     openGraph: {
-      title: `${course.title} | Dalizas`,
+      title: `${course.title} | Daliza Pastelería Fina`,
+      url: `/cursos/${course.slug}`,
       description: course.description,
       images: [{ url: course.image, alt: course.title }],
     },

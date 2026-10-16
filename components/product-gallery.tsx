@@ -61,7 +61,7 @@ export function ProductGallery({
             priority={key === initialServicio}
             sizes="100vw"
             className={cn(
-              "object-cover object-[72%_center] saturate-[1.1] contrast-[1.05] transition-opacity duration-700 ease-in-out",
+              "object-cover object-center saturate-[1.1] contrast-[1.05] transition-opacity duration-700 ease-in-out",
               key === servicio ? "opacity-100" : "opacity-0",
             )}
           />

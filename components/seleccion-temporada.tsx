@@ -20,12 +20,12 @@ const POR_SERVICIO = 4
 const DESTACADOS: Record<ServicioProducto, string[]> = {
   pasteleria: [
     "torta-con-cheesecake-de-maracuya",
-    "torta-de-amapola",
+    "torta-opera",
     "torta-con-cheesecake-de-mora",
-    "torta-con-cheesecake-de-oreo",
+    "tiramisu",
   ],
   reposteria: ["cheesecake-de-maracuya", "milhojas", "brazo-de-reina", "tartaleta-de-frutas"],
-  panaderia: ["roscon-de-coco", "corazones", "hojaldre-de-bocadillo-y-queso", "pan-de-breva"],
+  panaderia: ["roscon-de-coco", "corazones", "churros", "pan-de-breva"],
 }
 
 const tieneFoto = (p: Producto) => !p.imagen.includes("logo-dalizas")

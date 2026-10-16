@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
 import type { Producto } from "@/lib/types/producto"
 import { cn } from "@/lib/utils"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
 
 type ProductQuickViewProps = {
   producto: Producto | null
@@ -68,17 +69,15 @@ export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewPro
               </p>
 
               <div className="mt-6 flex flex-col items-start gap-3">
-                <a
-                  href={`https://wa.me/573108336425?text=${encodeURIComponent(
-                    `Hola, me interesa información sobre: ${producto.nombre}`,
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <WhatsAppCTA
+                  mensaje={`Hola, quiero cotizar: ${producto.nombre}`}
+                  ruta={`/productos/${producto.slug}`}
+                  sedesSlugs={producto.sedes}
                   className="inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover sm:w-auto"
                 >
                   Consultar esta creación
                   <ArrowRight className="h-4 w-4 shrink-0" />
-                </a>
+                </WhatsAppCTA>
                 <Link
                   href={`/productos/${producto.slug}`}
                   className="text-sm font-medium text-primary underline-offset-4 hover:underline"

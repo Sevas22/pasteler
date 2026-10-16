@@ -5,6 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { Clock, ImageIcon, MapPin, MessageCircle, Navigation, Phone, QrCode } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Horario } from "@/components/horario"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { CatalogFichaButton } from "@/components/catalog-ficha-card"
 import { ProductQuickView } from "@/components/product-quick-view"
 import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
@@ -59,9 +61,11 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
               {location.address}
             </span>
             {location.hours ? (
-              <span className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-[#C9A96E]" />
-                {location.hours}
+              <span className="flex items-start gap-2">
+                <Clock className="mt-0.5 h-4 w-4 text-[#C9A96E]" />
+                <span>
+                  <Horario texto={location.hours} />
+                </span>
               </span>
             ) : null}
             {location.phone ? (
@@ -82,12 +86,15 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 py-8 sm:px-6 md:flex-row md:justify-between lg:px-8">
           <div className="flex flex-wrap items-center justify-center gap-3">
             {location.whatsapp ? (
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary-hover">
-                <a href={`https://wa.me/${location.whatsapp}`} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Pedir por WhatsApp
-                </a>
-              </Button>
+              <WhatsAppCTA
+                mensaje={`Hola, quiero hacer un pedido en la sede ${location.name}`}
+                ruta={`/tiendas/${location.slug}`}
+                sedesSlugs={[location.slug]}
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+              >
+                <MessageCircle className="h-5 w-5" />
+                Pedir por WhatsApp
+              </WhatsAppCTA>
             ) : null}
             {location.mapsUrl ? (
               <Button asChild size="lg" variant="outline" className="border-primary/30 text-primary">

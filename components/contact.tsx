@@ -8,6 +8,8 @@ import { MessageCircleMore, Phone, MapPin, Clock, Facebook, MessageCircle } from
 import type { Location } from "@/lib/data/locations"
 import type { Course } from "@/lib/data/courses"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
+import { WHATSAPP_RESPALDO, waLink } from "@/lib/whatsapp"
 
 type ContactProps = {
   locations: Location[]
@@ -16,6 +18,13 @@ type ContactProps = {
 
 export function Contact({ locations, courses }: ContactProps) {
   const principal = locations.find((l) => l.isPrincipal) ?? locations[0]
+  // Horario común (el de la sede principal) y, aparte, las sedes que tienen uno distinto.
+  const horarios = [
+    ...(principal?.hours ? principal.hours.split(/\s*·\s*/).filter(Boolean) : []),
+    ...locations
+      .filter((l) => l.hours && l.hours !== principal?.hours)
+      .map((l) => `${l.name}: ${l.hours.split(/\s*·\s*/).filter(Boolean).join(" · ")}`),
+  ]
   const contactInfo = [
     {
       icon: Phone,
@@ -32,7 +41,7 @@ export function Contact({ locations, courses }: ContactProps) {
     {
       icon: Clock,
       title: "Horario",
-      details: principal?.hours ? principal.hours.split(": ") : ["Lunes a Sábado", "8:00 AM - 7:00 PM"],
+      details: horarios,
     },
     {
       icon: Facebook,
@@ -45,6 +54,7 @@ export function Contact({ locations, courses }: ContactProps) {
     name: "",
     phone: "",
     course: "",
+    sede: principal?.slug ?? "",
     message: "",
   })
 
@@ -68,8 +78,10 @@ export function Contact({ locations, courses }: ContactProps) {
       formData.phone ? `Mi teléfono de contacto: ${formData.phone}.` : "",
     ].filter(Boolean)
 
-    const waNumber = principal?.whatsapp || "573108336425"
-    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(lines.join("\n\n"))}`
+    const sedeElegida = locations.find((l) => l.slug === formData.sede) ?? principal
+    const waNumber = sedeElegida?.whatsapp || WHATSAPP_RESPALDO
+    lines.push(`Te escribo desde: ${window.location.origin}${window.location.pathname}`)
+    const waUrl = waLink(waNumber, lines.join("\n\n"))
     window.open(waUrl, "_blank", "noopener,noreferrer")
   }
 
@@ -117,6 +129,24 @@ export function Contact({ locations, courses }: ContactProps) {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="sede" className="text-foreground">¿A qué sede quieres escribir?</Label>
+              <select
+                id="sede"
+                value={formData.sede}
+                onChange={(e) => setFormData({ ...formData, sede: e.target.value })}
+                className="w-full rounded-[3px] border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                {locations
+                  .filter((l) => l.whatsapp)
+                  .map((l) => (
+                    <option key={l.slug} value={l.slug}>
+                      {l.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="course" className="text-foreground">Curso de interés (opcional)</Label>
               <select
                 id="course"
@@ -160,15 +190,13 @@ export function Contact({ locations, courses }: ContactProps) {
 
           <div>
             <div className="flex flex-col gap-3 border-b border-border/70 pb-8">
-              <a
-                href={`https://wa.me/${principal?.whatsapp || "573108336425"}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <WhatsAppCTA
+                mensaje="Hola, quiero información"
                 className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden />
-                WhatsApp: {principal?.phone || "310 833 6425"}
-              </a>
+                Escribir por WhatsApp
+              </WhatsAppCTA>
               <a
                 href="https://www.facebook.com/PasteleriaDaliza"
                 target="_blank"

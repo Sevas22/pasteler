@@ -64,7 +64,7 @@ export function OficioPilares() {
             <div className="group relative aspect-square overflow-hidden rounded-2xl shadow-[0_24px_50px_-26px_rgba(58,38,32,0.45)]">
               <Image
                 src="/images/productos/torta-de-amapola-torta-1.webp"
-                alt="Torta de amapola Daliza"
+                alt="Torta Ópera Daliza"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 sizes="(max-width: 1024px) 40vw, 220px"

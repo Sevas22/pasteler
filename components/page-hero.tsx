@@ -49,20 +49,26 @@ export function PageHero({ src, alt = "", background, title, description, priori
         aria-hidden
       />
 
-      <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 sm:px-8 sm:pb-16 lg:px-12">
-        <div className="grid gap-5 sm:grid-cols-[1.3fr_1fr] sm:items-end sm:gap-10">
-          <h1
-            className="text-balance text-5xl font-normal leading-[1.05] text-[#F7EFE4] drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-7xl"
-            style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
-          >
-            {title}
-          </h1>
-          {description ? (
-            <p className="max-w-md text-sm leading-relaxed text-[#F1E6D8] drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)] sm:text-base">
-              {description}
-            </p>
-          ) : null}
-        </div>
+      {/* Franja oscura a la izquierda: da lectura al título sin tapar el producto */}
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#1c100e]/70 via-[#1c100e]/25 via-[45%] to-transparent to-[75%]"
+        aria-hidden
+      />
+
+      {/* pb alto: la barra fija inferior (sede + pedido) mide ~64 px y no debe tapar el texto */}
+      <div className="relative mx-auto w-full max-w-6xl px-5 pb-28 sm:px-8 sm:pb-32 lg:px-12">
+        <div className="mb-5 h-px w-14 bg-[#E3C98F]/80" aria-hidden />
+        <h1
+          className="max-w-3xl text-balance text-5xl font-normal leading-[1.05] text-[#F7EFE4] drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] sm:text-6xl lg:text-7xl"
+          style={{ fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }}
+        >
+          {title}
+        </h1>
+        {description ? (
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#F1E6D8] drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] sm:text-base">
+            {description}
+          </p>
+        ) : null}
       </div>
     </section>
   )

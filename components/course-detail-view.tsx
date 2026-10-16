@@ -6,6 +6,7 @@ import type { Course } from "@/lib/data/courses"
 import { cn } from "@/lib/utils"
 import { Reveal, RevealStagger, RevealItem } from "@/components/motion/reveal"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
 
 type CourseDetailViewProps = {
   course: Course
@@ -14,9 +15,6 @@ type CourseDetailViewProps = {
 
 export function CourseDetailView({ course, otros }: CourseDetailViewProps) {
   const contactHref = `/contacto?curso=${encodeURIComponent(course.title)}`
-  const waHref = `https://wa.me/573108336425?text=${encodeURIComponent(
-    `Hola, quiero información sobre el curso: ${course.title}`,
-  )}`
 
   return (
     <article>
@@ -150,12 +148,14 @@ export function CourseDetailView({ course, otros }: CourseDetailViewProps) {
                 <p className="font-serif text-xl italic font-normal text-heading">{course.level}</p>
                 <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{course.description}</p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <Button asChild className="w-full rounded-full py-6 text-base font-semibold" size="lg">
-                    <Link href={waHref} target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="mr-2 h-5 w-5" />
-                      Inscribirme por WhatsApp
-                    </Link>
-                  </Button>
+                  <WhatsAppCTA
+                    mensaje={`Hola, quiero información sobre el curso: ${course.title}`}
+                    ruta={`/cursos/${course.slug}`}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                    Inscribirme por WhatsApp
+                  </WhatsAppCTA>
                   <Button asChild variant="outline" className="w-full rounded-full border-primary/30 text-primary">
                     <Link href={contactHref}>Solicitar información</Link>
                   </Button>

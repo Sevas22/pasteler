@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Location } from "@/lib/data/locations"
+import { Horario } from "@/components/horario"
 import { RevealStagger, RevealItem, Reveal } from "@/components/motion/reveal"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
 
@@ -125,7 +126,7 @@ export function Locations({ locations }: LocationsProps) {
                     <span
                       className={`text-sm ${location.isPrincipal ? "text-primary-foreground/90" : "text-muted-foreground"}`}
                     >
-                      {location.hours}
+                      <Horario texto={location.hours} />
                     </span>
                   </div>
                 </div>

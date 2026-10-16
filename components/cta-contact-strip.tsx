@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Heart, MessageCircle } from "lucide-react"
 import { HandStamp } from "@/components/ornaments/hand-stamp"
 import { BANNERS } from "@/lib/media"
+import { WhatsAppCTA } from "@/components/whatsapp-cta"
 
 export function CtaContactStrip() {
   return (
@@ -33,15 +34,13 @@ export function CtaContactStrip() {
         <p className="mt-4 text-sm text-[#D8C7B8] sm:text-base">El arte de celebrar con Daliza.</p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          <a
-            href="https://wa.me/573108336425"
-            target="_blank"
-            rel="noopener noreferrer"
+          <WhatsAppCTA
+            mensaje="Hola, quiero información para una celebración"
             className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover sm:w-auto"
           >
             <MessageCircle className="h-4 w-4" aria-hidden />
             Escribir por WhatsApp
-          </a>
+          </WhatsAppCTA>
           <Link
             href="/contacto"
             className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/40 px-7 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:w-auto"
