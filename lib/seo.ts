@@ -24,8 +24,8 @@ export const NEGOCIO = {
   nombresAlternos: ["Dalizas Pastelería Fina", "Daliza Pastelería"],
   descripcion:
     "Pastelería fina, repostería y panadería en Bosa, Bogotá: tortas personalizadas con papel de azúcar, cheesecakes, postres y pan artesanal, con sedes en Bosa y Ciudadela Colsubsidio.",
-  logo: "/images/logo-dalizas-transparente.png",
-  imagenSocial: "/images/banners/hero-pasteleria-cinco-rebanadas.webp",
+  logo: "/images/logo-dalizas-512.png",
+  imagenSocial: "/images/banners/hero-tortas-surtido.webp",
   facebook: "https://www.facebook.com/PasteleriaDaliza",
   telefonoPrincipal: "+573108336425",
 } as const

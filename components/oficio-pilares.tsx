@@ -1,7 +1,6 @@
 import Image from "next/image"
 import { Cake, Croissant, GraduationCap, Handshake, ImagePlus, MapPin, PackageCheck } from "lucide-react"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
-import { HandStamp } from "@/components/ornaments/hand-stamp"
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
@@ -72,16 +71,13 @@ export function OficioPilares() {
             </div>
             <div className="group relative aspect-square overflow-hidden rounded-2xl shadow-[0_24px_50px_-26px_rgba(58,38,32,0.45)]">
               <Image
-                src="/images/productos/cruasan-de-chocolate.webp"
+                src="/images/productos/cruasan-de-bocadillo.webp"
                 alt="Croissants de panadería Daliza"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 sizes="(max-width: 1024px) 40vw, 220px"
               />
             </div>
-          </div>
-          <div className="absolute -left-5 bottom-[10%] z-10 rounded-full bg-background p-2 shadow-[0_12px_30px_-10px_rgba(58,38,32,0.35)] sm:-left-8">
-            <HandStamp />
           </div>
         </div>
 

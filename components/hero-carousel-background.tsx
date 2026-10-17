@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils"
 export type HeroCarouselSlide = {
   src: string
   alt: string
+  /** Clases extra solo para esta imagen (p. ej. un zoom distinto por foto) */
+  className?: string
 }
 
 type HeroCarouselBackgroundProps = {
@@ -19,6 +21,13 @@ type HeroCarouselBackgroundProps = {
   imageClassName?: string
   /** Posición del contenedor de puntos (p. ej. encima de una barra inferior) */
   dotsContainerClassName?: string
+  /** Nombre accesible del carrusel */
+  ariaLabel?: string
+  /** Valor de `sizes` para next/image */
+  sizes?: string
+  /** Índice controlado desde afuera (p. ej. miniaturas); si se omite, el carrusel lo maneja solo */
+  index?: number
+  onIndexChange?: (index: number) => void
 }
 
 /**
@@ -30,14 +39,34 @@ export function HeroCarouselBackground({
   className,
   imageClassName,
   dotsContainerClassName,
+  ariaLabel = "Imágenes destacadas de pastelería",
+  sizes = "100vw",
+  index: controlledIndex,
+  onIndexChange,
 }: HeroCarouselBackgroundProps) {
-  const [index, setIndex] = useState(0)
+  const [internalIndex, setInternalIndex] = useState(0)
   const [paused, setPaused] = useState(false)
+  const index = controlledIndex ?? internalIndex
 
-  const next = useCallback(() => setIndex((i) => (i + 1) % slides.length), [slides.length])
+  // Solo se descargan la foto visible y la siguiente (más las ya vistas): con 10 u 11 fotos apiladas,
+  // antes se bajaban todas de golpe aunque solo se viera una.
+  const [cargadas, setCargadas] = useState<ReadonlySet<number>>(() => new Set([index, (index + 1) % Math.max(1, slides.length)]))
+  useEffect(() => {
+    const siguiente = (index + 1) % Math.max(1, slides.length)
+    setCargadas((prev) => (prev.has(index) && prev.has(siguiente) ? prev : new Set([...prev, index, siguiente])))
+  }, [index, slides.length])
+
+  const setIndex = useCallback(
+    (i: number) => {
+      if (controlledIndex === undefined) setInternalIndex(i)
+      onIndexChange?.(i)
+    },
+    [controlledIndex, onIndexChange],
+  )
+  const next = useCallback(() => setIndex((index + 1) % slides.length), [index, setIndex, slides.length])
   const prev = useCallback(
-    () => setIndex((i) => (i - 1 + slides.length) % slides.length),
-    [slides.length],
+    () => setIndex((index - 1 + slides.length) % slides.length),
+    [index, setIndex, slides.length],
   )
 
   useEffect(() => {
@@ -57,7 +86,7 @@ export function HeroCarouselBackground({
       onMouseLeave={() => setPaused(false)}
       role="region"
       aria-roledescription="carrusel"
-      aria-label="Imágenes destacadas de pastelería"
+      aria-label={ariaLabel}
     >
       <p className="sr-only" aria-live="polite">
         {current?.alt}
@@ -72,14 +101,15 @@ export function HeroCarouselBackground({
           )}
           aria-hidden={i !== index}
         >
-          <Image
-            src={slide.src}
-            alt=""
-            fill
-            className={cn("object-cover object-center", imageClassName)}
-            sizes="100vw"
-            priority={i === 0}
-          />
+          {cargadas.has(i) || i === index ? (
+            <Image
+              src={slide.src}
+              alt=""
+              fill
+              className={cn("object-cover object-center", imageClassName, slide.className)}
+              sizes={sizes}
+            />
+          ) : null}
         </div>
       ))}
 

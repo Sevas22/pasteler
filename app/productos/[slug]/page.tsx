@@ -4,10 +4,15 @@ import { LayoutShell } from "@/components/layout-shell"
 import { ProductDetailView } from "@/components/product-detail-view"
 import { JsonLd } from "@/components/json-ld"
 import { grafo, migasSchema, productoSchema } from "@/lib/seo"
-import { getProductoBySlugPublic, getOtrosProductosPublic } from "@/lib/data/productos"
+import { getProductoBySlugPublic, getOtrosProductosPublic, getProductosPublic } from "@/lib/data/productos"
 
 type Props = {
   params: Promise<{ slug: string }>
+}
+
+/** Fichas pre-generadas (servidas desde caché). Un producto nuevo se genera en su primera visita. */
+export async function generateStaticParams() {
+  return (await getProductosPublic()).filter((p) => p.active).map((p) => ({ slug: p.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

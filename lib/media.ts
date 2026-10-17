@@ -58,10 +58,36 @@ export function buildGalleryItems(productos: readonly Producto[]): GalleryItem[]
 
 /** Banners editados (carpeta `public/images/banners`). */
 export const BANNERS = {
+  /**
+   * `lado`: dónde queda libre la foto para poner el texto encima.
+   * `encuadre`: qué parte de la foto se conserva cuando la pantalla la recorta. En pantallas más
+   *   angostas que la foto se recorta por los lados (manda la X: se conserva el lado del texto para
+   *   empujar las tortas lejos de él); en pantallas más anchas se recorta arriba/abajo (manda la Y).
+   * `zoom`: punto desde el que se amplía. Va en el borde de las tortas que mira al texto, para que
+   *   al crecer se alejen del texto en vez de montarse sobre él.
+   */
   hero: [
-    { src: "/images/banners/hero-pasteleria-cinco-rebanadas.webp", alt: "Rebanadas de tortas y cheesecakes Daliza" },
-    { src: "/images/banners/hero-pasteleria-frutos-rojos.webp", alt: "Cheesecakes con frutos rojos, caramelo y chocolate" },
-    { src: "/images/banners/hero-pasteleria-onda-dorada.webp", alt: "Cuatro rebanadas de pastelería fina Daliza" },
+    {
+      src: "/images/banners/hero-tortas-surtido.webp",
+      alt: "Tortas y cheesecakes Daliza decorados con fresas",
+      lado: "izquierda",
+      encuadre: "0% 45%",
+      zoom: "45% 55%",
+    },
+    {
+      src: "/images/banners/hero-torta-amapola.webp",
+      alt: "Torta de amapola Daliza con fresas y chocolate",
+      lado: "izquierda",
+      encuadre: "0% 45%",
+      zoom: "58% 50%",
+    },
+    {
+      src: "/images/banners/hero-torta-cheesecake-maracuya.webp",
+      alt: "Torta con cheesecake de maracuyá Daliza",
+      lado: "derecha",
+      encuadre: "100% 55%",
+      zoom: "52% 55%",
+    },
   ],
   panaderia: "/images/banners/panaderia-surtido-crema.webp",
   pasteleria: "/images/banners/pasteleria-tartaletas-rollos-claro.webp",
@@ -70,9 +96,9 @@ export const BANNERS = {
   historia: "/images/banners/panaderia-canasta.webp",
   /** Cabecera de /productos según el servicio elegido */
   productosServicio: {
-    todos: "/images/banners/hero-pasteleria-frutos-rojos.webp",
+    todos: "/images/banners/hero-tortas-surtido.webp",
     panaderia: "/images/banners/panaderia-lino-flores.webp",
-    pasteleria: "/images/banners/hero-pasteleria-onda-dorada.webp",
+    pasteleria: "/images/banners/hero-torta-cheesecake-maracuya.webp",
     reposteria: "/images/banners/reposteria-rebanadas-caramelo.webp",
   },
   paginas: {
@@ -81,22 +107,103 @@ export const BANNERS = {
     contacto: "/images/banners/panaderia-dorada.webp",
     galeria: "/images/banners/panaderia-dorada-densa.webp",
     blog: "/images/banners/reposteria-tarta-vino.webp",
+    preguntas: "/images/banners/pasteleria-brillos.webp",
   },
 } as const
 
-/** Tortas personalizadas de cumpleaños y celebraciones (solo galería, no son productos del catálogo). */
-export const TORTAS_PERSONALIZADAS: readonly { src: string; alt: string; size: string }[] = [
-  { src: "/images/galeria/tortas/torta-01.webp", alt: "Torta personalizada temática de fútbol", size: "col-span-2 row-span-2" },
-  { src: "/images/galeria/tortas/torta-02.webp", alt: "Torta personalizada de Snoopy y Charlie Brown", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-03.webp", alt: "Torta personalizada rosada de Barbie", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-04.webp", alt: "Torta de primera comunión", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-05.webp", alt: "Torta de cumpleaños con estampado de leopardo", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-06.webp", alt: "Torta de cumpleaños de Snoopy de dos pisos", size: "col-span-2 row-span-2" },
-  { src: "/images/galeria/tortas/torta-07.webp", alt: "Torta roja de cumpleaños decorada con moños", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-08.webp", alt: "Torta personalizada de Bluey", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-09.webp", alt: "Torta de bautizo con ángel", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-10.webp", alt: "Torta de dos pisos de Barbie", size: "col-span-1" },
-  { src: "/images/galeria/tortas/torta-11.webp", alt: "Torta elegante con rosas rojas y número dorado", size: "col-span-2 row-span-2" },
+/**
+ * Tortas personalizadas de cumpleaños y celebraciones (no son productos del catálogo).
+ * Se muestran en la pasarela 3D de /galeria y en el carrusel del inicio. Para cambiar una foto, reemplaza
+ * el archivo en /public/images/galeria/tortas (cuadrado, idealmente 1000×1000) y ajusta sus textos aquí.
+ */
+export const TORTAS_PERSONALIZADAS: readonly {
+  src: string
+  alt: string
+  nombre: string
+  ocasion: string
+  descripcion: string
+}[] = [
+  {
+    src: "/images/galeria/tortas/torta-01.webp",
+    alt: "Torta personalizada temática de fútbol",
+    nombre: "Torta de fútbol",
+    ocasion: "Cumpleaños",
+    descripcion:
+      "Torta temática de fútbol con figuras en papel de azúcar, balones, estrellas doradas y el nombre del cumpleañero. La personalizamos con el equipo, el jugador y la edad que quieras.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-02.webp",
+    alt: "Torta personalizada de Snoopy y Charlie Brown",
+    nombre: "Torta de Snoopy",
+    ocasion: "Cumpleaños infantil",
+    descripcion:
+      "Snoopy, Charlie Brown y sus amigos en una torta llena de color, con el nombre del cumpleañero. Ideal para fiestas infantiles.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-03.webp",
+    alt: "Torta personalizada rosada de Barbie",
+    nombre: "Torta de Barbie",
+    ocasion: "Cumpleaños",
+    descripcion:
+      "Torta rosada de dos pisos inspirada en Barbie, con figuras en papel de azúcar, detalles brillantes, el nombre y la edad.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-04.webp",
+    alt: "Torta de primera comunión",
+    nombre: "Torta de primera comunión",
+    ocasion: "Primera comunión",
+    descripcion:
+      "Torta blanca y dorada para primera comunión, con figuras religiosas y los nombres de los niños. Elegante y llena de significado.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-05.webp",
+    alt: "Torta de cumpleaños con estampado de leopardo",
+    nombre: "Torta de leopardo",
+    ocasion: "Cumpleaños",
+    descripcion: "Torta de cumpleaños con estampado de leopardo y un mensaje de felicitación. Un diseño moderno para celebrar con estilo.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-06.webp",
+    alt: "Torta de cumpleaños de Snoopy de dos pisos",
+    nombre: "Torta de Snoopy de dos pisos",
+    ocasion: "Cumpleaños infantil",
+    descripcion: "Torta de dos pisos con Snoopy como protagonista, pensada para celebraciones grandes y fotos memorables.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-07.webp",
+    alt: "Torta roja de cumpleaños decorada con moños",
+    nombre: "Torta roja con moños",
+    ocasion: "Cumpleaños",
+    descripcion: "Torta roja decorada con moños, un diseño romántico y delicado para un cumpleaños especial.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-08.webp",
+    alt: "Torta personalizada de Bluey",
+    nombre: "Torta de Bluey",
+    ocasion: "Cumpleaños infantil",
+    descripcion: "Torta inspirada en Bluey, con los personajes favoritos de los más pequeños, el nombre y la edad del cumpleañero.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-09.webp",
+    alt: "Torta de bautizo con ángel",
+    nombre: "Torta de bautizo",
+    ocasion: "Bautizo",
+    descripcion: "Torta de bautizo con ángel y detalles suaves, para celebrar en familia un día muy especial.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-10.webp",
+    alt: "Torta de dos pisos de Barbie",
+    nombre: "Torta de Barbie de dos pisos",
+    ocasion: "Cumpleaños",
+    descripcion: "Torta de dos pisos inspirada en Barbie, con figuras, color rosa y el nombre de la cumpleañera.",
+  },
+  {
+    src: "/images/galeria/tortas/torta-11.webp",
+    alt: "Torta elegante con rosas rojas y número dorado",
+    nombre: "Torta de rosas rojas",
+    ocasion: "Celebración",
+    descripcion: "Torta elegante con rosas rojas y número dorado, perfecta para aniversarios y celebraciones de adultos.",
+  },
 ]
 
 export const MEDIA = {

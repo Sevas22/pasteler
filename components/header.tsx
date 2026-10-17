@@ -8,6 +8,8 @@ import { Menu, UserRound, X, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { BrandLogo } from "@/components/brand-logo"
+import { useLocations } from "@/components/locations-context"
+import { WHATSAPP_RESPALDO, waLink } from "@/lib/whatsapp"
 
 
 const navigation = [
@@ -43,6 +45,10 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
+  // "Contáctanos" abre directo el WhatsApp de la sede principal
+  const locations = useLocations()
+  const principal = locations.find((l) => l.isPrincipal) ?? locations[0]
+  const whatsappPrincipal = waLink(principal?.whatsapp || WHATSAPP_RESPALDO, "Hola, quiero información de Daliza Pastelería Fina")
 
   useEffect(() => {
     setMounted(true)
@@ -93,10 +99,15 @@ export function Header() {
               </div>
               <div className="py-6">
                 <Button asChild className="w-full">
-                  <Link href="/contacto" onClick={() => setMobileMenuOpen(false)}>
+                  <a
+                    href={whatsappPrincipal}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     <Phone className="mr-2 h-4 w-4" />
                     Contáctanos
-                  </Link>
+                  </a>
                 </Button>
               </div>
             </div>
@@ -163,10 +174,10 @@ export function Header() {
             asChild
             className="hidden h-9 rounded-full border border-brand-gold/60 bg-transparent text-primary duration-200 hover:bg-primary-hover hover:text-primary-foreground xl:inline-flex"
           >
-            <Link href="/contacto" className="flex items-center gap-2">
+            <a href={whatsappPrincipal} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
               Contáctanos
-            </Link>
+            </a>
           </Button>
         </div>
 

@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, X } from "lucide-react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
@@ -8,10 +7,22 @@ import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-hel
 import type { Producto } from "@/lib/types/producto"
 import { cn } from "@/lib/utils"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
+import { HeroCarouselBackground, type HeroCarouselSlide } from "@/components/hero-carousel-background"
 
 type ProductQuickViewProps = {
   producto: Producto | null
   onOpenChange: (open: boolean) => void
+}
+
+/** Foto principal + extras, en orden y sin repetir. */
+function slidesDe(producto: Producto): HeroCarouselSlide[] {
+  const fotos = [...new Set([producto.imagen, ...(producto.imagenesExtra ?? [])])].filter(Boolean)
+  return fotos.map((src, i) => ({
+    src,
+    alt: producto.nombre,
+    // La foto principal trae 3 porciones: se amplía para ver una sola. Las extras, las tortas enteras y el logo van sin ampliar.
+    className: cn(i === 0 && !src.includes("-torta-") && !src.includes("logo-dalizas") && "scale-[1.7]"),
+  }))
 }
 
 /** Vista rápida de un producto en modal — sin salir del catálogo. */
@@ -27,17 +38,13 @@ export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewPro
             <DialogTitle className="sr-only">{producto.nombre}</DialogTitle>
 
             <div className="relative h-56 w-full overflow-hidden sm:h-full">
-              <Image
-                src={producto.imagen}
-                alt={producto.nombre}
-                fill
-                className={cn(
-                  "object-cover",
-                  // Las fotos traen 3 porciones: se amplía para ver una sola. Las tortas enteras y el logo van sin ampliar.
-                  !producto.imagen.includes("-torta-") && !producto.imagen.includes("logo-dalizas") && "scale-[1.7]",
-                )}
+              <HeroCarouselBackground
+                key={producto.slug}
+                slides={slidesDe(producto)}
+                intervalMs={3500}
+                ariaLabel={`Fotos de ${producto.nombre}`}
                 sizes="(max-width: 640px) 100vw, 50vw"
-                priority
+                dotsContainerClassName="bottom-3"
               />
             </div>
 

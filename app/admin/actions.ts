@@ -190,6 +190,7 @@ export async function saveCourseAction(_prevState: ActionResult, formData: FormD
   }
 
   revalidateSite()
+  updateTag("cursos")
   redirect(courseId ? "/admin/cursos?ok=1&msg=updated" : "/admin/cursos?ok=1&msg=created")
 }
 
@@ -198,4 +199,5 @@ export async function deleteCourseAction(courseId: string): Promise<void> {
   const supabase = await createClient()
   await supabase.from("courses").delete().eq("id", courseId)
   revalidateSite()
+  updateTag("cursos")
 }

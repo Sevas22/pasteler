@@ -1,8 +1,7 @@
-import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Handshake, ImagePlus, MessageCircle, PackageCheck } from "lucide-react"
-import { HandStamp } from "@/components/ornaments/hand-stamp"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
+import { TortasCarrusel } from "@/components/tortas-carrusel"
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
@@ -43,31 +42,7 @@ export function TortasPersonalizadas() {
 
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <div className="relative mx-auto w-full max-w-md lg:mx-0">
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-[0_30px_70px_-25px_rgba(0,0,0,0.8)]">
-            <Image
-              src="/images/galeria/tortas/torta-01.webp"
-              alt="Torta personalizada con diseño de fútbol en papel de azúcar"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 90vw, 440px"
-            />
-          </div>
-          <div className="absolute -bottom-8 -right-4 w-[46%] overflow-hidden rounded-2xl border-4 border-[#2a1210] shadow-[0_24px_50px_-20px_rgba(0,0,0,0.8)] sm:-right-8">
-            <div className="relative aspect-square w-full">
-              <Image
-                src="/images/galeria/tortas/torta-03.webp"
-                alt="Torta personalizada de Barbie con papel de azúcar"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 40vw, 200px"
-              />
-            </div>
-          </div>
-          <div className="absolute -left-4 top-6 hidden sm:block sm:-left-8">
-            <div className="rounded-full bg-[#2a1210] p-1.5">
-              <HandStamp tone="gold" icon={ImagePlus} text="PAPEL DE AZÚCAR • DALIZA •" />
-            </div>
-          </div>
+          <TortasCarrusel />
         </div>
 
         <div>

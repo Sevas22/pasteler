@@ -8,6 +8,8 @@ import type { Producto } from "@/lib/types/producto"
 import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
 import { ProductQuickView } from "@/components/product-quick-view"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
+import { HeroCarouselBackground } from "@/components/hero-carousel-background"
+import { cn } from "@/lib/utils"
 
 type ProductDetailViewProps = {
   producto: Producto
@@ -16,6 +18,8 @@ type ProductDetailViewProps = {
 
 export function ProductDetailView({ producto, relacionados }: ProductDetailViewProps) {
   const [quickView, setQuickView] = useState<Producto | null>(null)
+  const [fotoActiva, setFotoActiva] = useState(0)
+  const fotos = [...new Set([producto.imagen, ...(producto.imagenesExtra ?? [])])].filter(Boolean)
   const contactHref = `/contacto?servicio=${encodeURIComponent(producto.nombre)}`
 
   return (
@@ -32,21 +36,32 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
         <div className="mt-6 grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-[0_25px_55px_-25px_rgba(58,38,32,0.4)]">
-              <Image src={producto.imagen} alt={producto.nombre} fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 560px" />
+              <HeroCarouselBackground
+                slides={fotos.map((src) => ({ src, alt: producto.nombre }))}
+                intervalMs={4500}
+                index={fotoActiva}
+                onIndexChange={setFotoActiva}
+                ariaLabel={`Fotos de ${producto.nombre}`}
+                sizes="(max-width: 1024px) 100vw, 560px"
+              />
             </div>
 
-            {producto.imagenesExtra && producto.imagenesExtra.length > 0 ? (
-              <div className="mt-4 grid grid-cols-3 gap-3">
-                {producto.imagenesExtra.map((src, i) => (
-                  <div key={src} className="relative aspect-square overflow-hidden rounded-lg">
-                    <Image
-                      src={src}
-                      alt={`${producto.nombre} — imagen ${i + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="180px"
-                    />
-                  </div>
+            {fotos.length > 1 ? (
+              <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
+                {fotos.map((src, i) => (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => setFotoActiva(i)}
+                    aria-label={`Ver imagen ${i + 1} de ${producto.nombre}`}
+                    aria-current={i === fotoActiva}
+                    className={cn(
+                      "relative aspect-square overflow-hidden rounded-lg ring-2 ring-offset-2 ring-offset-background transition",
+                      i === fotoActiva ? "ring-primary" : "ring-transparent opacity-75 hover:opacity-100",
+                    )}
+                  >
+                    <Image src={src} alt="" fill className="object-cover" sizes="120px" />
+                  </button>
                 ))}
               </div>
             ) : null}

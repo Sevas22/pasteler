@@ -6,7 +6,8 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { SERVICIOS_PRODUCTO, formatCategoriaLabel } from "@/lib/data/productos-helpers"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
-import type { Producto, ServicioProducto } from "@/lib/types/producto"
+import type { Producto } from "@/lib/types/producto"
+import { seleccionar } from "@/lib/data/seleccion-temporada"
 import { cn } from "@/lib/utils"
 
 type SeleccionTemporadaProps = {
@@ -14,33 +15,6 @@ type SeleccionTemporadaProps = {
 }
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
-const POR_SERVICIO = 4
-
-/** Productos destacados por servicio (si falta alguno se completa con otros que tengan foto). */
-const DESTACADOS: Record<ServicioProducto, string[]> = {
-  pasteleria: [
-    "torta-con-cheesecake-de-maracuya",
-    "torta-opera",
-    "torta-con-cheesecake-de-mora",
-    "tiramisu",
-  ],
-  reposteria: ["cheesecake-de-maracuya", "milhojas", "brazo-de-reina", "tartaleta-de-frutas"],
-  panaderia: ["roscon-de-coco", "corazones", "churros", "pan-de-breva"],
-}
-
-const tieneFoto = (p: Producto) => !p.imagen.includes("logo-dalizas")
-
-function seleccionar(productos: Producto[], servicio: ServicioProducto): Producto[] {
-  const delServicio = productos.filter((p) => p.active && p.servicio === servicio && tieneFoto(p))
-  const elegidos = DESTACADOS[servicio]
-    .map((slug) => delServicio.find((p) => p.slug === slug))
-    .filter((p): p is Producto => Boolean(p))
-  for (const p of delServicio) {
-    if (elegidos.length >= POR_SERVICIO) break
-    if (!elegidos.includes(p)) elegidos.push(p)
-  }
-  return elegidos.slice(0, POR_SERVICIO)
-}
 
 export function SeleccionTemporada({ productos }: SeleccionTemporadaProps) {
   const pestanas = useMemo(

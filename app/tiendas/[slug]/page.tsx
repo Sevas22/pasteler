@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { LayoutShell } from "@/components/layout-shell"
 import { TiendaDetailView } from "@/components/tienda-detail-view"
-import { getLocationBySlug } from "@/lib/data/locations"
+import { getLocationBySlugPublic, getLocationsPublic } from "@/lib/data/locations"
 import { getProductosByLocationSlugPublic } from "@/lib/data/productos"
 import { generateQrDataUrl, getLocationUrl } from "@/lib/qr"
 import { MEDIA } from "@/lib/media"
@@ -13,9 +13,14 @@ type Props = {
   params: Promise<{ slug: string }>
 }
 
+/** Páginas de sede pre-generadas: abren al instante al escanear el QR. Una sede nueva se genera en su primera visita. */
+export async function generateStaticParams() {
+  return (await getLocationsPublic()).map((l) => ({ slug: l.slug }))
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const location = await getLocationBySlug(slug)
+  const location = await getLocationBySlugPublic(slug)
   if (!location) {
     return { title: "Sede" }
   }
@@ -30,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TiendaDetallePage({ params }: Props) {
   const { slug } = await params
-  const location = await getLocationBySlug(slug)
+  const location = await getLocationBySlugPublic(slug)
   if (!location) {
     notFound()
   }

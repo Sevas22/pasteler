@@ -10,14 +10,15 @@ import { NEGOCIO, SITE_URL, grafo, organizacionSchema, sitioWebSchema } from '@/
  * Montserrat = "tipografía funcional" (texto). Sin script/cursiva: el lettering "Daliza" vive
  * solo en el logo (imagen), no como fuente de uso general.
  */
+// Solo 'latin': ya incluye tildes y ñ. 'latin-ext' duplicaba los archivos de fuente sin necesidad.
 const montserrat = Montserrat({
-  subsets: ['latin', 'latin-ext'],
+  subsets: ['latin'],
   variable: '--font-sans',
   weight: ['400', '500', '600', '700'],
 })
 
 const playfairDisplay = Playfair_Display({
-  subsets: ['latin', 'latin-ext'],
+  subsets: ['latin'],
   variable: '--font-serif',
   style: ['normal', 'italic'],
 })
@@ -65,8 +66,8 @@ export const metadata: Metadata = {
   formatDetection: { telephone: true, address: true, email: false },
   category: 'food',
   icons: {
-    icon: [{ url: "/images/logo-dalizas-transparente.png", type: "image/png" }],
-    apple: "/images/logo-dalizas-transparente.png",
+    icon: [{ url: "/icon-48.png", sizes: "48x48", type: "image/png" }],
+    apple: [{ url: "/apple-icon-180.png", sizes: "180x180", type: "image/png" }],
   },
 }
 

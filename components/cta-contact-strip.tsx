@@ -1,7 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Heart, MessageCircle } from "lucide-react"
-import { HandStamp } from "@/components/ornaments/hand-stamp"
+import { MessageCircle } from "lucide-react"
 import { BANNERS } from "@/lib/media"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 
@@ -16,13 +15,6 @@ export function CtaContactStrip() {
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#1c100e]/85 via-[#2a1210]/60 to-[#2a1210]/45" aria-hidden />
-
-      <HandStamp
-        tone="cream"
-        icon={Heart}
-        text="EL ARTE DE CELEBRAR • DALIZA •"
-        className="absolute bottom-6 left-6 hidden sm:flex"
-      />
 
       <div className="relative mx-auto w-full max-w-2xl px-5 text-center sm:px-8">
         <p

@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { Clock, MapPin, MessageCircle } from "lucide-react"
 import type { Location } from "@/lib/data/locations"
-import { DripEdge } from "@/components/ornaments/drip"
 import { generateQrDataUrl, getLocationUrl } from "@/lib/qr"
 import { Horario } from "@/components/horario"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
@@ -26,8 +25,6 @@ export async function SedesBanda({ locations }: SedesBandaProps) {
       data-no-section-divider
       className="relative flex items-center overflow-hidden bg-[#3A2620] px-5 pb-16 pt-24 text-[#F3E9DC] sm:min-h-[calc(100svh-4rem)] sm:px-8 sm:pb-16 sm:pt-28 lg:px-12"
     >
-      <DripEdge fill="#C9A96E" className="absolute inset-x-0 top-0 h-9 w-full -translate-y-px sm:h-12" />
-
       <div className="relative mx-auto w-full max-w-7xl">
         <div className="text-center">
           <p className="flex items-center justify-center gap-3 text-xs font-medium uppercase tracking-[0.22em] text-[#E3C98F]">

@@ -6,11 +6,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Aplica a todo excepto assets estáticos, para poder proteger /admin
-     * y mantener viva la sesión en el resto del sitio.
-     */
-    "/((?!_next/static|_next/image|favicon.ico|images/|fonts/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  /*
+   * Solo el panel admin necesita la sesión de Supabase. Antes corría en todo el sitio: cada visita
+   * esperaba una consulta a Supabase Auth y las páginas públicas no se podían servir desde caché.
+   */
+  matcher: ["/admin/:path*"],
 }

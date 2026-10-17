@@ -3,8 +3,8 @@ import { LayoutShell } from "@/components/layout-shell"
 import { ContactoHero } from "@/components/contacto-hero"
 import { Contact } from "@/components/contact"
 import { FaqSection } from "@/components/faq-section"
-import { getLocations } from "@/lib/data/locations"
-import { getCourses } from "@/lib/data/courses"
+import { getLocationsPublic } from "@/lib/data/locations"
+import { getCoursesPublic } from "@/lib/data/courses"
 
 export const metadata: Metadata = {
   title: "Contacto: pide tu torta por WhatsApp",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactoPage() {
-  const [locations, courses] = await Promise.all([getLocations(), getCourses()])
+  const [locations, courses] = await Promise.all([getLocationsPublic(), getCoursesPublic()])
   return (
     <LayoutShell>
       <ContactoHero locations={locations} />

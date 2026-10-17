@@ -425,24 +425,172 @@
   }
 }
 
-/* Páginas con banner a pantalla completa (home y páginas internas): las secciones se "encuadran" al desplazarse. */
-html:has(:is(#inicio, [data-snap-hero])) {
-  scroll-snap-type: y proximity;
-  scroll-padding-top: 4rem;
+/* Títulos que aparecen al bajar y se van al subir (components/motion/animar-al-scroll.tsx). */
+.anim-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(6px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-  html:has(:is(#inicio, [data-snap-hero])) {
-    scroll-snap-type: y mandatory;
+/* Las etiquetas pequeñas en mayúsculas entran un poco antes y "se abren" en el espaciado. */
+p.uppercase.anim-scroll {
+  transform: translateY(14px);
+  letter-spacing: 0.45em;
+  transition-property: opacity, transform, filter, letter-spacing;
+}
+
+.anim-scroll[data-visible] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+p.uppercase.anim-scroll[data-visible] {
+  letter-spacing: revert-layer;
+}
+
+/* Aparición al hacer scroll (components/motion/reveal.tsx): CSS puro, el JS solo pone data-visible. */
+.reveal,
+.reveal-item {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 22px));
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal[data-visible],
+.reveal-stagger[data-visible] > .reveal-item {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
-html:has(:is(#inicio, [data-snap-hero])) main > * {
-  scroll-snap-align: start;
+/* Botón flotante de WhatsApp: onda suave que se expande cada pocos segundos. */
+@keyframes whatsapp-onda {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  70%,
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
-html:has(:is(#inicio, [data-snap-hero])) footer {
-  scroll-snap-align: end;
+.whatsapp-onda {
+  animation: whatsapp-onda 2.6s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-onda {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Hero del inicio: el texto entra desde su lado, pieza por pieza (el retraso va en cada .hero-paso) */
+@keyframes hero-desde-izquierda {
+  from {
+    opacity: 0;
+    transform: translateX(-56px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes hero-desde-derecha {
+  from {
+    opacity: 0;
+    transform: translateX(56px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes hero-linea-crece {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes hero-progreso {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes hero-pulso {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 45%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+}
+
+.hero-entra-izquierda .hero-paso {
+  animation: hero-desde-izquierda 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-entra-derecha .hero-paso {
+  animation: hero-desde-derecha 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-linea {
+  animation: hero-linea-crece 0.9s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-progreso {
+  animation-name: hero-progreso;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.hero-pulso {
+  animation: hero-pulso 2.2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-paso,
+  .hero-linea,
+  .hero-progreso,
+  .hero-pulso {
+    animation: none !important;
+  }
+}
+
+/*
+ * Sin "encuadre" (scroll-snap): antes, en escritorio, el scroll saltaba obligatoriamente de sección en sección,
+ * lo que hacía sentir el sitio pesado. Ahora el desplazamiento es libre; solo se deja espacio para el menú fijo.
+ */
+html {
+  scroll-padding-top: 4rem;
 }
 
 /* Carrusel de proveedores: desplazamiento infinito, pausa al pasar el mouse. */
@@ -456,7 +604,13 @@ html:has(:is(#inicio, [data-snap-hero])) footer {
 }
 
 .proveedores-track {
-  animation: proveedores-scroll 38s linear infinite;
+  animation: proveedores-scroll 45s linear infinite;
+}
+
+/* Segunda cinta: sentido contrario y otra velocidad, para que las filas no se muevan "en bloque". */
+.proveedores-track-inversa {
+  animation-direction: reverse;
+  animation-duration: 55s;
 }
 
 .proveedores-wrap:hover .proveedores-track {

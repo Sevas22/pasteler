@@ -3,22 +3,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { ArrowRight, Cherry, Play } from "lucide-react"
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
-import { HERO_YOUTUBE_ID } from "@/lib/branding-video"
+import { ArrowRight, Cherry } from "lucide-react"
 import { SERVICIOS_PRODUCTO } from "@/lib/data/productos-helpers"
 import { BANNERS } from "@/lib/media"
 import { cn } from "@/lib/utils"
 
-const heroVideoEmbedSrc = `https://www.youtube.com/embed/${HERO_YOUTUBE_ID}?autoplay=1&rel=0&modestbranding=1`
-
-const SERVICIO_PILLS = [{ slug: "todos", label: "Todos" }, ...SERVICIOS_PRODUCTO] as const
-
-const INDICE = [
-  { n: "01", label: "Tortas", href: "/productos?servicio=pasteleria" },
-  { n: "02", label: "Postres", href: "/productos?servicio=reposteria" },
-  { n: "03", label: "Cursos", href: "/cursos" },
-] as const
+const SERVICIO_PILLS = [...SERVICIOS_PRODUCTO, { slug: "todos", label: "Todos" }] as const
 
 const SLIDE_MS = 6500
 
@@ -28,50 +18,76 @@ const SLIDES_TEXTO = [
     eyebrow: "Pastelería fina en Bosa, Bogotá",
     titulo: "Un antojo para",
     italica: "cada momento.",
-    texto: "Tortas, postres y especialidades de autor, horneados cada día en nuestras cuatro sedes.",
+    texto: "Tortas, cheesecakes y postres hechos a mano en nuestras sedes de Bosa y Ciudadela Colsubsidio.",
     cta: "Explorar catálogo",
     href: "/productos",
   },
   {
-    eyebrow: "Cheesecakes y tortas",
+    eyebrow: "Tortas de la casa",
     titulo: "Sabores que se",
     italica: "quedan contigo.",
-    texto: "Caramelo, frutos rojos, chocolate y crema: porciones generosas para compartir (o no).",
+    texto: "Amapola, frutos rojos, chocolate y crema: tortas para compartir en cada celebración.",
     cta: "Ver pastelería",
     href: "/productos?servicio=pasteleria",
   },
   {
-    eyebrow: "Hecho a mano",
-    titulo: "Cada rebanada,",
+    eyebrow: "Tortas con cheesecake",
+    titulo: "Cada porción,",
     italica: "un pequeño lujo.",
-    texto: "Cuéntanos qué celebras y personalizamos tu pedido con el detalle que lo hace especial.",
-    cta: "Personalizar mi pedido",
-    href: "/contacto",
+    texto: "Nuestra torta con cheesecake de maracuyá: cremosa, fresca y lista para tu próxima celebración.",
+    cta: "Ver esta torta",
+    href: "/productos/torta-con-cheesecake-de-maracuya",
   },
 ] as const
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
 export function HeroClient() {
-  const [videoOpen, setVideoOpen] = useState(false)
   const [slide, setSlide] = useState(0)
+  // El zoom del primer banner arranca tras el primer pintado (si no, ya vendría ampliado desde el servidor)
+  const [montado, setMontado] = useState(false)
   const texto = SLIDES_TEXTO[slide]
+  const lado = BANNERS.hero[slide].lado
+
+  // Banners 2 y 3: se cargan cuando la página ya terminó (el primero cambia a los 6,5 s, hay tiempo de sobra)
+  const [bannersExtra, setBannersExtra] = useState(false)
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-    const id = window.setInterval(() => setSlide((s) => (s + 1) % BANNERS.hero.length), SLIDE_MS)
-    return () => window.clearInterval(id)
+    const id = window.requestAnimationFrame(() => setMontado(true))
+    return () => window.cancelAnimationFrame(id)
   }, [])
+
+  useEffect(() => {
+    let t = 0
+    const cargar = () => {
+      t = window.setTimeout(() => setBannersExtra(true), 800)
+    }
+    if (document.readyState === "complete") cargar()
+    else window.addEventListener("load", cargar, { once: true })
+    return () => {
+      window.removeEventListener("load", cargar)
+      window.clearTimeout(t)
+    }
+  }, [])
+
+  // Un temporizador por banner: al elegir uno a mano, la cuenta (y la barra de progreso) vuelve a empezar
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const id = window.setTimeout(() => setSlide((s) => (s + 1) % BANNERS.hero.length), SLIDE_MS)
+    return () => window.clearTimeout(id)
+  }, [slide])
 
   return (
     <section
       id="inicio"
       data-no-section-divider
-      className="relative isolate flex flex-col overflow-hidden bg-[#1c100e] lg:h-[100svh] lg:min-h-[700px]"
+      className="relative isolate flex flex-col overflow-hidden bg-[#F7EFE4] lg:h-[100svh] lg:min-h-[700px]"
     >
       {/* Banners: en desktop son el fondo a todo el ancho; en móvil van como bloque bajo el texto */}
-      <div className="relative order-last mx-5 mb-12 mt-10 aspect-[16/10] overflow-hidden rounded-2xl shadow-[0_30px_60px_-30px_rgba(0,0,0,0.7)] sm:mx-8 lg:absolute lg:inset-0 lg:z-0 lg:order-none lg:m-0 lg:aspect-auto lg:rounded-none lg:shadow-none">
+      <div className="relative order-last mx-5 mb-12 mt-10 aspect-[16/9] overflow-hidden rounded-2xl shadow-[0_30px_60px_-30px_rgba(58,38,32,0.45)] sm:mx-8 lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-16 lg:z-0 lg:order-none lg:m-0 lg:aspect-auto lg:rounded-none lg:shadow-none">
         {BANNERS.hero.map((b, i) => (
+          // Solo el primer banner viaja con la página; los demás se piden después de que esta termina de cargar
+          (i === 0 || bannersExtra) && (
           <Image
             key={b.src}
             src={b.src}
@@ -79,23 +95,36 @@ export function HeroClient() {
             fill
             priority={i === 0}
             sizes="100vw"
+            style={{ objectPosition: b.encuadre, transformOrigin: b.zoom }}
             className={cn(
-              "object-cover saturate-[1.1] contrast-[1.04] transition-opacity duration-[1400ms] ease-in-out lg:object-[75%_center]",
-              i === slide ? "opacity-100" : "opacity-0",
+              "object-cover motion-reduce:!scale-100",
+              // Zoom lento hacia la torta mientras el banner está activo; al salir vuelve a 1 cuando ya se desvaneció
+              i === slide
+                ? "opacity-100 [transition:opacity_1400ms_ease-in-out,scale_9s_ease-out]"
+                : "opacity-0 [transition:opacity_1400ms_ease-in-out,scale_0s_1400ms]",
+              i === slide && montado ? "scale-[1.08]" : "scale-100",
             )}
           />
+          )
         ))}
-        {/* Degradados chocolate: dan lectura al texto sin lavar el color del producto */}
+        {/* Velo crema del lado libre de la foto: da lectura al texto sin tapar las tortas */}
         <div
-          className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#1c100e]/95 via-[#2a1210]/60 via-[38%] to-transparent to-[68%] lg:block"
+          className={cn(
+            "pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F7EFE4]/95 via-[#F7EFE4]/65 via-[30%] to-transparent to-[48%] transition-opacity duration-[1400ms] lg:block",
+            lado === "izquierda" ? "opacity-100" : "opacity-0",
+          )}
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-40 bg-gradient-to-t from-[#1c100e]/80 to-transparent lg:block"
+          className={cn(
+            "pointer-events-none absolute inset-0 hidden bg-gradient-to-l from-[#F7EFE4]/95 via-[#F7EFE4]/65 via-[30%] to-transparent to-[48%] transition-opacity duration-[1400ms] lg:block",
+            lado === "derecha" ? "opacity-100" : "opacity-0",
+          )}
           aria-hidden
         />
 
-        <div className="absolute bottom-4 right-4 flex gap-2 lg:bottom-10 lg:right-12" role="tablist" aria-label="Banners">
+        {/* lg:right-32: deja libre la esquina del botón flotante de WhatsApp */}
+        <div className="absolute bottom-4 right-4 flex gap-2 lg:bottom-10 lg:right-32" role="tablist" aria-label="Banners">
           {BANNERS.hero.map((b, i) => (
             <button
               key={b.src}
@@ -105,120 +134,79 @@ export function HeroClient() {
               aria-label={`Ver banner ${i + 1}`}
               onClick={() => setSlide(i)}
               className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
-                i === slide ? "w-8 bg-[#E3C98F]" : "w-3 bg-white/50 hover:bg-white/80",
+                "relative h-1.5 overflow-hidden rounded-full shadow-sm transition-all duration-300",
+                i === slide ? "w-12 bg-white/80" : "w-3 bg-white/80 hover:bg-white",
               )}
-            />
+            >
+              {/* Barra que se llena mientras dura el banner */}
+              {i === slide ? (
+                <span
+                  key={slide}
+                  className="hero-progreso absolute inset-y-0 left-0 rounded-full bg-primary"
+                  style={{ animationDuration: `${SLIDE_MS}ms` }}
+                  aria-hidden
+                />
+              ) : null}
+            </button>
           ))}
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 gap-10 px-5 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:px-12 lg:pb-16 lg:pt-32">
-        <div>
+      {/* En desktop el texto se pega al borde libre de cada foto (no al centro), para no montarse sobre las tortas */}
+      <div className="relative z-10 flex w-full flex-1 px-5 pt-28 sm:px-8 sm:pt-32 lg:items-center lg:px-14 lg:pb-16 lg:pt-24 xl:px-16 2xl:px-24">
+        <div
+          key={slide}
+          className={cn(
+            "max-w-xl lg:max-w-[26rem] 2xl:max-w-[30rem]",
+            lado === "derecha" ? "hero-entra-derecha lg:ml-auto" : "hero-entra-izquierda",
+          )}
+        >
           <h1 className="sr-only">Daliza Pastelería Fina: tortas personalizadas, postres y panadería en Bosa, Bogotá</h1>
-          <div key={slide} className="hero-text-in min-h-[19rem] sm:min-h-[22rem] lg:min-h-[24rem]">
-              <p className="flex items-center gap-2.5 text-sm font-medium text-[#EADBCB]">
-                <span className="h-px w-8 bg-[#E3C98F]/70" aria-hidden />
-                <Cherry className="h-3.5 w-3.5 shrink-0 text-[#E3C98F]" strokeWidth={1.85} aria-hidden />
-                {texto.eyebrow}
-              </p>
+          <div className="min-h-[17rem] sm:min-h-[20rem] lg:min-h-[20rem]">
+            <p className="hero-paso flex items-center gap-2.5 text-sm font-medium text-primary" style={{ animationDelay: "0ms" }}>
+              <span className="hero-linea h-px w-8 bg-primary/50" aria-hidden />
+              <Cherry className="h-3.5 w-3.5 shrink-0" strokeWidth={1.85} aria-hidden />
+              {texto.eyebrow}
+            </p>
 
-              <h2
-                className="mt-4 text-balance text-[2.75rem] font-normal leading-[1.05] text-[#F7EFE4] drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] sm:text-6xl lg:text-[4.5rem]"
-                style={SERIF}
-              >
-                {texto.titulo} <span className="italic text-[#E3C98F]">{texto.italica}</span>
-              </h2>
+            <h2
+              className="hero-paso mt-4 text-balance text-[2.75rem] font-normal leading-[1.05] text-heading sm:text-6xl lg:text-[3.4rem] xl:text-[3.6rem] 2xl:text-[4rem]"
+              style={{ ...SERIF, animationDelay: "90ms" }}
+            >
+              {texto.titulo} <span className="italic text-primary">{texto.italica}</span>
+            </h2>
 
-              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#EADBCB] sm:text-base">{texto.texto}</p>
+            <p
+              className="hero-paso mt-5 max-w-md text-[15px] leading-relaxed text-foreground/80 sm:text-base"
+              style={{ animationDelay: "180ms" }}
+            >
+              {texto.texto}
+            </p>
           </div>
 
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Servicios">
+          <div className="hero-paso flex flex-wrap gap-2" style={{ animationDelay: "270ms" }} role="tablist" aria-label="Servicios">
             {SERVICIO_PILLS.map((s) => (
               <Link
                 key={s.slug}
                 href={s.slug === "todos" ? "/productos" : `/productos?servicio=${s.slug}`}
-                className="rounded-full border border-white/35 bg-white/10 px-4 py-2 text-sm font-medium text-[#F7EFE4] backdrop-blur-sm transition-colors hover:border-[#E3C98F] hover:bg-white/20 hover:text-[#E3C98F]"
+                className="rounded-full border border-primary/25 bg-white/70 px-4 py-2 text-sm font-medium text-heading backdrop-blur-sm transition-colors hover:border-primary hover:text-primary"
               >
                 {s.label}
               </Link>
             ))}
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-5">
+          <div className="hero-paso mt-8 flex flex-wrap items-center gap-5" style={{ animationDelay: "360ms" }}>
             <Link
               href={texto.href}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#D64545] px-7 text-sm font-semibold text-white shadow-[0_12px_30px_-10px_rgba(214,69,69,0.8)] transition-colors hover:bg-[#E35252]"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground shadow-[0_12px_30px_-12px_rgba(120,30,30,0.6)] transition-colors hover:bg-primary-hover"
             >
               {texto.cta}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
-            <button
-              type="button"
-              onClick={() => setVideoOpen(true)}
-              className="inline-flex items-center gap-2.5 text-sm font-medium text-[#F7EFE4] underline-offset-4 transition hover:underline"
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/50 bg-white/10 text-[#F7EFE4]">
-                <Play className="h-3 w-3 fill-current" aria-hidden />
-              </span>
-              Ver video
-            </button>
-          </div>
-        </div>
-
-        <div className="hidden lg:-mb-6 lg:block lg:self-end lg:justify-self-end">
-          <div className="rounded-2xl border border-white/20 bg-[#1c100e]/60 p-6 shadow-[0_25px_50px_-25px_rgba(0,0,0,0.7)] backdrop-blur-md lg:w-80">
-            <p className="text-2xl font-normal leading-tight text-[#F7EFE4]" style={SERIF}>
-              Frescura <span className="italic text-[#E3C98F]">que enamora.</span>
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-[#D8C7B8]">
-              Descubre nuestra selección de tortas, postres y cursos.
-            </p>
-            <ul className="mt-5 flex flex-col divide-y divide-white/15 border-t border-white/15">
-              {INDICE.map((item) => (
-                <li key={item.label}>
-                  <Link href={item.href} className="group flex items-center justify-between gap-4 py-3 text-[#F7EFE4]">
-                    <span className="flex items-baseline gap-3">
-                      <span className="text-xs italic text-[#E3C98F]">{item.n}</span>
-                      <span
-                        className="text-lg font-normal transition-colors group-hover:text-[#E3C98F]"
-                        style={SERIF}
-                      >
-                        {item.label}
-                      </span>
-                    </span>
-                    <ArrowRight
-                      className="h-4 w-4 text-[#E3C98F] transition-transform group-hover:translate-x-1"
-                      aria-hidden
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>
-
-      <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
-        <DialogContent
-          className="w-[calc(100%-1.5rem)] max-w-4xl gap-0 overflow-hidden border-0 bg-black p-0 sm:w-full [&_button[data-slot=dialog-close]]:text-white [&_button[data-slot=dialog-close]]:hover:bg-white/15 [&_button[data-slot=dialog-close]]:hover:opacity-100"
-          showCloseButton
-        >
-          <DialogTitle className="sr-only">Video Daliza Pastelería Fina</DialogTitle>
-          {videoOpen ? (
-            <div className="aspect-video w-full bg-black">
-              <iframe
-                title="YouTube — Daliza"
-                src={heroVideoEmbedSrc}
-                className="h-full w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                referrerPolicy="strict-origin-when-cross-origin"
-              />
-            </div>
-          ) : null}
-        </DialogContent>
-      </Dialog>
     </section>
   )
 }

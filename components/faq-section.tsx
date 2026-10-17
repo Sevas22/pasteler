@@ -1,41 +1,14 @@
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Reveal } from "@/components/motion/reveal"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
-import { JsonLd } from "@/components/json-ld"
-import { grafo, preguntasSchema } from "@/lib/seo"
+import { FAQS_DESTACADAS as faqs } from "@/lib/faqs"
 
-export const faqs = [
-  {
-    question: "¿Con cuánta anticipación debo pedir mi torta?",
-    answer:
-      "Entre más pronto nos escribas, mejor: los diseños personalizados, las tortas con papel de azúcar y los pedidos grandes necesitan más tiempo de preparación. Escríbenos por WhatsApp a tu sede, cuéntanos la fecha y te confirmamos disponibilidad.",
-  },
-  {
-    question: "¿Hacen envíos o solo se recoge en tienda?",
-    answer:
-      "Puedes recoger tu pedido en cualquiera de nuestras sedes en Bogotá (Bosa y Ciudadela Colsubsidio). Coordina con tu sede más cercana por WhatsApp si necesitas que te lo entreguemos.",
-  },
-  {
-    question: "¿Puedo personalizar sabor, tamaño o decoración?",
-    answer:
-      "Sí — la mayoría de nuestras creaciones se pueden ajustar en tamaño y decoración. Cuéntanos tu idea por WhatsApp y te confirmamos opciones y valor.",
-  },
-  {
-    question: "¿Manejan productos para alergias o dietas especiales?",
-    answer:
-      "Consulta con tu sede sobre alérgenos o ingredientes específicos antes de confirmar tu pedido — cada creación puede variar en composición.",
-  },
-  {
-    question: "¿Cómo funcionan los cursos de pastelería?",
-    answer:
-      "Estamos definiendo la nueva programación de cursos de pastelería. Escríbenos por WhatsApp y te avisamos apenas abramos inscripciones.",
-  },
-] as const
-
+/** Selección corta de preguntas. El listado completo (y su JSON-LD FAQPage) vive en /preguntas-frecuentes. */
 export function FaqSection() {
   return (
     <section data-no-section-divider className="bg-background py-16 sm:py-20 md:py-24">
-      <JsonLd data={grafo(preguntasSchema(faqs))} />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="text-center">
@@ -61,6 +34,16 @@ export function FaqSection() {
               </AccordionItem>
             ))}
           </Accordion>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/preguntas-frecuentes"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Ver todas las preguntas frecuentes
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </div>
         </Reveal>
       </div>
     </section>

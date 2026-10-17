@@ -16,12 +16,13 @@ const ENLACES = [
   { href: "/tiendas", label: "Tiendas" },
   { href: "/galeria", label: "Galería" },
   { href: "/blog", label: "Blog" },
+  { href: "/preguntas-frecuentes", label: "Preguntas frecuentes" },
   { href: "/contacto", label: "Contacto" },
 ] as const
 
 export function Footer({ locations }: FooterProps) {
   return (
-    <footer className="relative overflow-hidden bg-[#3A2620] pb-20 text-[#F3E9DC] sm:pb-16">
+    <footer className="relative overflow-hidden bg-[#3A2620] text-[#F3E9DC]">
       <SoftCircle color="gold" size={360} className="-right-32 -top-32" />
       <SoftCircle color="cherry" size={240} className="-left-20 bottom-0" />
 

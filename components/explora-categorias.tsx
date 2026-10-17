@@ -7,19 +7,19 @@ const CATEGORIAS = [
     titulo: "Tortas",
     texto: "Creaciones que hacen cada ocasión especial",
     href: "/productos?servicio=pasteleria",
-    imagen: "/images/producto-torta-mousse-chocolate-daliza.png",
+    imagen: "/images/productos/torta-con-cheesecake-de-maracuya-torta-1.webp",
   },
   {
     titulo: "Postres",
     texto: "Pequeños placeres para grandes momentos",
     href: "/productos?servicio=reposteria",
-    imagen: "/images/producto-mousse-fresa-individual-daliza.png",
+    imagen: "/images/productos/milhojas.webp",
   },
   {
-    titulo: "Cursos",
-    texto: "Aprende el arte de la pastelería fina",
-    href: "/cursos",
-    imagen: "/images/hero-pastry.jpg",
+    titulo: "Panadería",
+    texto: "Pan artesanal hecho en nuestras sedes",
+    href: "/productos?servicio=panaderia",
+    imagen: "/images/productos/roscones.webp",
   },
 ] as const
 

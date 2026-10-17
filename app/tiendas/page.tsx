@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { LayoutShell } from "@/components/layout-shell"
 import { TiendasGrid } from "@/components/tiendas-grid"
-import { getLocations } from "@/lib/data/locations"
+import { getLocationsPublic } from "@/lib/data/locations"
 import { getProductosByLocationSlugPublic } from "@/lib/data/productos"
 import { generateQrDataUrl, getLocationUrl } from "@/lib/qr"
 import { BANNERS, MEDIA } from "@/lib/media"
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 }
 
 export default async function TiendasPage() {
-  const locations = await getLocations()
+  const locations = await getLocationsPublic()
 
   const enriched = await Promise.all(
     locations.map(async (l) => {

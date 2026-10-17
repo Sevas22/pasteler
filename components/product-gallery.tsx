@@ -17,7 +17,7 @@ type ProductGalleryProps = {
   className?: string
 }
 
-const SERVICIO_PILLS = [{ slug: "todos" as const, label: "Todos" }, ...SERVICIOS_PRODUCTO]
+const SERVICIO_PILLS = [...SERVICIOS_PRODUCTO, { slug: "todos" as const, label: "Todos" }]
 
 export function ProductGallery({
   productos,

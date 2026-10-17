@@ -3,7 +3,7 @@
  * Variante: logotipo sobre fondo oscuro (footer / piezas oscuras).
  */
 export const BRANDING = {
-  logoPrincipal: "/images/logo-dalizas-transparente.png",
+  logoPrincipal: "/images/logo-dalizas.webp",
   logoVariante: "/images/logo-daliza-variante.svg",
   logoAlt: "Daliza — Pastelería Fina",
 } as const

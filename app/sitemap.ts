@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next"
 import { ARTICULOS } from "@/lib/blog"
-import { getLocations } from "@/lib/data/locations"
+import { getLocationsPublic } from "@/lib/data/locations"
 import { getProductosPublic } from "@/lib/data/productos"
 import { absoluteUrl } from "@/lib/seo"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [productos, sedes] = await Promise.all([getProductosPublic(), getLocations()])
+  const [productos, sedes] = await Promise.all([getProductosPublic(), getLocationsPublic()])
   const ahora = new Date()
 
   const fijas: MetadataRoute.Sitemap = [
@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl("/galeria"), lastModified: ahora, changeFrequency: "weekly", priority: 0.7 },
     { url: absoluteUrl("/blog"), lastModified: ahora, changeFrequency: "weekly", priority: 0.8 },
     { url: absoluteUrl("/contacto"), lastModified: ahora, changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/preguntas-frecuentes"), lastModified: ahora, changeFrequency: "monthly", priority: 0.7 },
     { url: absoluteUrl("/cursos"), lastModified: ahora, changeFrequency: "monthly", priority: 0.4 },
   ]
 

@@ -3,9 +3,9 @@ import type { ServicioProducto } from "@/lib/types/producto"
 /** Sin dependencias de Supabase — seguro de importar desde componentes de cliente. */
 
 export const SERVICIOS_PRODUCTO = [
-  { slug: "panaderia", label: "Panadería" },
   { slug: "pasteleria", label: "Pastelería" },
   { slug: "reposteria", label: "Repostería" },
+  { slug: "panaderia", label: "Panadería" },
 ] as const
 
 const SERVICE_LABEL: Record<ServicioProducto, string> = {

@@ -27,7 +27,7 @@ type ProductRow = {
 }
 
 const PRODUCT_COLUMNS = "*, product_locations(locations(slug))"
-const PLACEHOLDER_IMAGE = "/images/logo-dalizas-transparente.png"
+const PLACEHOLDER_IMAGE = "/images/logo-dalizas-placeholder.webp"
 /** Todo lo que cambie un producto invalida este tag (ver revalidateTag en admin/actions.ts). */
 const PRODUCTOS_TAG = "productos"
 

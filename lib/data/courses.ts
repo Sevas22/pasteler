@@ -1,4 +1,6 @@
+import { unstable_cache } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 
 export type Course = {
   id: string
@@ -40,7 +42,7 @@ function mapCourse(row: CourseRow): Course {
     title: row.title,
     description: row.description,
     descripcionLarga: row.description_long,
-    image: row.image_url ?? "/images/logo-dalizas-transparente.png",
+    image: row.image_url ?? "/images/logo-dalizas-placeholder.webp",
     imagenesExtra: row.extra_images ?? [],
     duration: row.duration ?? "",
     students: row.students ?? "",
@@ -51,6 +53,36 @@ function mapCourse(row: CourseRow): Course {
   }
 }
 
+/** Cursos activos para el sitio público. Cacheado (sin cookies); el panel admin lo refresca con updateTag("cursos"). */
+export const getCoursesPublic = unstable_cache(
+  async (): Promise<Course[]> => {
+    const { data, error } = await createPublicClient().from("courses").select("*").order("sort_order", { ascending: true })
+    if (error) {
+      console.error("[getCoursesPublic]", error.message)
+      return []
+    }
+    return (data as CourseRow[]).map(mapCourse)
+  },
+  ["cursos-public"],
+  { tags: ["cursos"], revalidate: 300 },
+)
+
+export const getCursoBySlugPublic = unstable_cache(
+  async (slug: string): Promise<Course | undefined> => {
+    const { data, error } = await createPublicClient().from("courses").select("*").eq("slug", slug).maybeSingle()
+    if (error || !data) return undefined
+    return mapCourse(data as CourseRow)
+  },
+  ["curso-by-slug"],
+  { tags: ["cursos"], revalidate: 300 },
+)
+
+export async function getOtrosCursosPublic(slug: string, max = 2): Promise<Course[]> {
+  const courses = await getCoursesPublic()
+  return courses.filter((c) => c.slug !== slug).slice(0, max)
+}
+
+/** Cursos según la sesión (con sesión admin incluye inactivos). Para el panel admin. */
 export async function getCourses(): Promise<Course[]> {
   const supabase = await createClient()
   const { data, error } = await supabase

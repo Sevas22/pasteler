@@ -1,4 +1,6 @@
+import { unstable_cache } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 
 export type Location = {
   id: string
@@ -48,7 +50,36 @@ function mapLocation(row: LocationRow): Location {
   }
 }
 
-/** Sedes visibles públicamente (activas), ordenadas para mostrar en el sitio. */
+// ── Lecturas públicas (sin cookies — cacheables, para las páginas del sitio) ──
+// Sin cookies las páginas se pueden servir desde caché; el panel admin las refresca con updateTag("locations").
+
+/** Sedes activas para el sitio público. Cacheado; se invalida al crear/editar/borrar una sede. */
+export const getLocationsPublic = unstable_cache(
+  async (): Promise<Location[]> => {
+    const { data, error } = await createPublicClient().from("locations").select("*").order("sort_order", { ascending: true })
+    if (error) {
+      console.error("[getLocationsPublic]", error.message)
+      return []
+    }
+    return (data as LocationRow[]).map(mapLocation)
+  },
+  ["locations-public"],
+  { tags: ["locations"], revalidate: 300 },
+)
+
+export const getLocationBySlugPublic = unstable_cache(
+  async (slug: string): Promise<Location | undefined> => {
+    const { data, error } = await createPublicClient().from("locations").select("*").eq("slug", slug).maybeSingle()
+    if (error || !data) return undefined
+    return mapLocation(data as LocationRow)
+  },
+  ["location-by-slug"],
+  { tags: ["locations"], revalidate: 300 },
+)
+
+// ── Lecturas admin (cookies de sesión — ven también las sedes inactivas) ──
+
+/** Sedes según la sesión: con sesión admin incluye las inactivas. Para el panel admin. */
 export async function getLocations(): Promise<Location[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
