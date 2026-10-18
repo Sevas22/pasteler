@@ -80,7 +80,7 @@ export function AudioBienvenida() {
         <button
           type="button"
           onClick={() => audioRef.current?.play().catch(() => {})}
-          className="hero-pulso fixed bottom-8 left-[88px] z-[60] sm:bottom-11 sm:left-[118px] lg:bottom-12 lg:left-[134px] inline-flex items-center gap-2 rounded-full border border-[#C9A96E]/50 bg-[#2a1210]/90 px-4 py-2.5 text-sm font-medium text-[#F7EFE4] shadow-lg backdrop-blur-md transition-colors hover:bg-[#2a1210]"
+          className="hero-pulso fixed bottom-5 left-5 z-[60] inline-flex items-center gap-2 rounded-full border border-[#C9A96E]/50 bg-[#2a1210]/90 px-4 py-2.5 text-sm font-medium text-[#F7EFE4] shadow-lg backdrop-blur-md transition-colors hover:bg-[#2a1210]"
         >
           <Volume2 className="h-4 w-4 text-[#E3C98F]" aria-hidden />
           Escuchar
@@ -90,7 +90,7 @@ export function AudioBienvenida() {
         <button
           type="button"
           onClick={cerrar}
-          className="fixed bottom-8 left-[88px] z-[60] sm:bottom-11 sm:left-[118px] lg:bottom-12 lg:left-[134px] inline-flex items-center gap-2 rounded-full border border-[#C9A96E]/40 bg-[#2a1210]/90 px-4 py-2 text-xs font-medium text-[#F7EFE4] shadow-lg backdrop-blur-md transition-colors hover:bg-[#2a1210]"
+          className="fixed bottom-5 left-5 z-[60] inline-flex items-center gap-2 rounded-full border border-[#C9A96E]/40 bg-[#2a1210]/90 px-4 py-2 text-xs font-medium text-[#F7EFE4] shadow-lg backdrop-blur-md transition-colors hover:bg-[#2a1210]"
         >
           <VolumeX className="h-4 w-4 text-[#E3C98F]" aria-hidden />
           Silenciar

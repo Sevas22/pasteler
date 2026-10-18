@@ -16,6 +16,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl("/blog"), lastModified: ahora, changeFrequency: "weekly", priority: 0.8 },
     { url: absoluteUrl("/contacto"), lastModified: ahora, changeFrequency: "monthly", priority: 0.7 },
     { url: absoluteUrl("/preguntas-frecuentes"), lastModified: ahora, changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/tratamiento-de-datos"), lastModified: ahora, changeFrequency: "yearly", priority: 0.2 },
+    { url: absoluteUrl("/politica-de-privacidad"), lastModified: ahora, changeFrequency: "yearly", priority: 0.2 },
     { url: absoluteUrl("/cursos"), lastModified: ahora, changeFrequency: "monthly", priority: 0.4 },
   ]
 

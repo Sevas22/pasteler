@@ -7,12 +7,10 @@ import { Clock, ImageIcon, MapPin, MessageCircle, Navigation, Phone, QrCode } fr
 import { Button } from "@/components/ui/button"
 import { Horario } from "@/components/horario"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
-import { CatalogFichaButton } from "@/components/catalog-ficha-card"
-import { ProductQuickView } from "@/components/product-quick-view"
-import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
+import { CatalogoProductos, type ServicioFiltro } from "@/components/catalogo-productos"
 import type { Location } from "@/lib/data/locations"
 import type { Producto } from "@/lib/types/producto"
-import { RevealStagger, RevealItem, Reveal } from "@/components/motion/reveal"
+import { Reveal } from "@/components/motion/reveal"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
 import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
@@ -24,7 +22,10 @@ type TiendaDetailViewProps = {
 }
 
 export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: TiendaDetailViewProps) {
-  const [quickView, setQuickView] = useState<Producto | null>(null)
+  // Igual que el catálogo general: abre en Pastelería si la sede la tiene
+  const [servicio, setServicio] = useState<ServicioFiltro>(
+    productos.some((p) => p.servicio === "pasteleria") ? "pasteleria" : "todos",
+  )
 
   return (
     <article>
@@ -153,27 +154,13 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
               </Button>
             </div>
           ) : (
-            <RevealStagger className="mt-10 grid gap-6 sm:mt-12 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
-              {productos.map((p) => (
-                <RevealItem key={p.id}>
-                  <CatalogFichaButton
-                    onClick={() => setQuickView(p)}
-                    imageSrc={p.imagen}
-                    imageAlt={p.nombre}
-                    title={p.nombre}
-                    pillLeft={formatCategoriaLabel(p.categoria)}
-                    pillRight={getServicioLabel(p.servicio)}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="h-full"
-                  />
-                </RevealItem>
-              ))}
-            </RevealStagger>
+            <div className="mx-auto mt-10 max-w-6xl sm:mt-12">
+              <CatalogoProductos productos={productos} servicio={servicio} onServicioChange={setServicio} />
+            </div>
           )}
         </div>
       </section>
 
-      <ProductQuickView producto={quickView} onOpenChange={(open) => !open && setQuickView(null)} />
     </article>
   )
 }

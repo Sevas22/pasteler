@@ -1,3 +1,4 @@
+import { NEGOCIO } from "@/lib/seo"
 import { Phone, MapPin, Clock, Facebook, MessageCircle } from "lucide-react"
 import type { Location } from "@/lib/data/locations"
 import type { Course } from "@/lib/data/courses"
@@ -41,7 +42,7 @@ export function Contact({ locations, courses }: ContactProps) {
     {
       icon: Facebook,
       title: "Redes sociales",
-      details: ["@PasteleriaDaliza"],
+      details: ["Facebook: Dalizas"],
     },
   ]
 
@@ -75,7 +76,7 @@ export function Contact({ locations, courses }: ContactProps) {
                 Escribir por WhatsApp
               </WhatsAppCTA>
               <a
-                href="https://www.facebook.com/PasteleriaDaliza"
+                href={NEGOCIO.redes.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-border px-6 text-sm font-medium text-foreground transition-colors hover:border-primary/50 hover:text-primary"

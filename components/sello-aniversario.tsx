@@ -4,18 +4,18 @@ import Link from "next/link"
 const SELLO = "/images/sello-16-anos.webp"
 
 /**
- * Sello flotante "16 años de experiencia" en la esquina inferior izquierda de todas las páginas.
+ * Sello flotante "16 años de experiencia" en la esquina superior izquierda, bajo el menú de todas las páginas.
  * Flota suavemente y cada tanto le pasa un brillo dorado (solo sobre el sello, gracias a la máscara).
  */
 export function SelloAniversario() {
   return (
-    <div className="sello-entrada fixed bottom-4 left-3 z-[55] sm:bottom-6 sm:left-5">
+    <div className="sello-entrada fixed left-3 top-[76px] z-40 sm:left-5 sm:top-20">
       <Link
         href="/#nosotros"
         aria-label="Daliza: 16 años de experiencia. Conoce nuestra historia"
         className="group relative block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C9A96E]"
       >
-        <span className="block origin-bottom-left transition-transform duration-300 ease-out group-hover:scale-110">
+        <span className="block origin-top-left transition-transform duration-300 ease-out group-hover:scale-110">
           <span className="sello-flotar relative block h-[72px] w-[72px] sm:h-[96px] sm:w-[96px] lg:h-[110px] lg:w-[110px]">
             {/* Resplandor dorado detrás */}
             <span

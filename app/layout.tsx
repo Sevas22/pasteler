@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Montserrat, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { GoogleAnalytics } from '@/components/google-analytics'
 import './globals.css'
 import { JsonLd } from '@/components/json-ld'
 import { NEGOCIO, SITE_URL, grafo, organizacionSchema, sitioWebSchema } from '@/lib/seo'
@@ -84,6 +85,7 @@ export default function RootLayout({
         <JsonLd data={grafo(organizacionSchema(), sitioWebSchema())} />
         {children}
         <Analytics />
+        <GoogleAnalytics />
       </body>
     </html>
   )

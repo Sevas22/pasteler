@@ -1,5 +1,6 @@
 "use client"
 
+import { NEGOCIO } from "@/lib/seo"
 import { MapPin, Phone, Clock, Navigation, MessageCircle } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -192,7 +193,7 @@ export function Locations({ locations }: LocationsProps) {
               size="lg"
               className="border-primary text-primary hover:bg-primary-hover hover:text-primary-foreground"
             >
-              <a href="https://www.facebook.com/PasteleriaDaliza" target="_blank" rel="noopener noreferrer">
+              <a href={NEGOCIO.redes.facebook} target="_blank" rel="noopener noreferrer">
                 Facebook
               </a>
             </Button>

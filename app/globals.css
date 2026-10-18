@@ -506,7 +506,7 @@ p.uppercase.anim-scroll[data-visible] {
 @keyframes sello-entrada {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.6) rotate(-18deg);
+    transform: translateY(-24px) scale(0.6) rotate(-18deg);
   }
   to {
     opacity: 1;

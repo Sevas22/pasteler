@@ -26,7 +26,7 @@ export const NEGOCIO = {
     "Pastelería fina, repostería y panadería en Bosa, Bogotá: tortas personalizadas con papel de azúcar, cheesecakes, postres y pan artesanal, con sedes en Bosa y Ciudadela Colsubsidio.",
   logo: "/images/logo-dalizas-512.png",
   imagenSocial: "/images/banners/hero-tortas-surtido.webp",
-  facebook: "https://www.facebook.com/PasteleriaDaliza",
+  facebook: "https://www.facebook.com/profile.php?id=61595539589501",
   email: "pasteleradalizas9@gmail.com",
   /**
    * Redes sociales. Para activar una, pon aquí su enlace completo (p. ej. "https://www.instagram.com/usuario").
@@ -34,11 +34,14 @@ export const NEGOCIO = {
    */
   redes: {
     instagram: "",
-    facebook: "https://www.facebook.com/PasteleriaDaliza",
+    facebook: "https://www.facebook.com/profile.php?id=61595539589501",
     tiktok: "",
     youtube: "https://www.youtube.com/@Pasteleriadalizas",
   },
   telefonoPrincipal: "+573108336425",
+  /** Para las páginas legales: si se dejan vacíos, se usa el nombre comercial y no se muestra NIT. */
+  razonSocial: "",
+  nit: "",
 } as const
 
 /* ───────────── Horarios → openingHoursSpecification ───────────── */

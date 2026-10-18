@@ -7,14 +7,20 @@ import { MisionVision } from "@/components/mision-vision"
 import { SeleccionTemporada } from "@/components/seleccion-temporada"
 import { PasosTorta } from "@/components/pasos-torta/pasos-torta"
 import { ProveedoresCarrusel } from "@/components/proveedores-carrusel"
+import { SolicitudHome } from "@/components/solicitud-home"
 import { JsonLd } from "@/components/json-ld"
 import { grafo, sedeSchema } from "@/lib/seo"
 import { getLocationsPublic } from "@/lib/data/locations"
 import { getProductosPublic } from "@/lib/data/productos"
+import { getCoursesPublic } from "@/lib/data/courses"
 import { productosSeleccion } from "@/lib/data/seleccion-temporada"
 
 export default async function HomePage() {
-  const [locations, productos] = await Promise.all([getLocationsPublic(), getProductosPublic()])
+  const [locations, productos, courses] = await Promise.all([
+    getLocationsPublic(),
+    getProductosPublic(),
+    getCoursesPublic(),
+  ])
 
   return (
     <LayoutShell>
@@ -26,6 +32,7 @@ export default async function HomePage() {
       <OficioPilares />
       <SeleccionTemporada productos={productosSeleccion(productos)} />
       <PasosTorta />
+      <SolicitudHome locations={locations} courses={courses} />
       <ProveedoresCarrusel />
     </LayoutShell>
   )

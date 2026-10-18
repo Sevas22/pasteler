@@ -45,6 +45,8 @@ const ENLACES_FRANJA = [
   { href: "/tiendas", label: "Nuestras sedes" },
   { href: "/blog", label: "Blog" },
   { href: "/contacto", label: "Contacto" },
+  { href: "/tratamiento-de-datos", label: "Tratamiento de datos" },
+  { href: "/politica-de-privacidad", label: "Privacidad" },
 ]
 
 /** Título de columna con la línea dorada y el corazón al centro. */
@@ -271,6 +273,17 @@ export function Footer({ locations }: FooterProps) {
           <p className="text-sm text-[#D9B77D]" style={SERIF}>
             © {new Date().getFullYear()} Daliza Pastelería Fina. Todos los derechos reservados.
           </p>
+          <a
+            href="https://www.codifikai.com/"
+            target="_blank"
+            rel="noopener"
+            className="group inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/15 px-3.5 py-1 text-xs text-[#F7EFE4]/70 transition-colors hover:border-[#22D3EE]/40 hover:text-[#F7EFE4]"
+          >
+            Developed by
+            <span className="bg-gradient-to-r from-[#22D3EE] via-[#3B82F6] to-[#A855F7] bg-clip-text font-semibold tracking-wide text-transparent">
+              CodifikAI
+            </span>
+          </a>
         </div>
       </div>
     </footer>

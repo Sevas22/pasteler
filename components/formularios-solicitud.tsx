@@ -13,6 +13,7 @@ import {
   type TipoSolicitud,
 } from "@/lib/solicitudes"
 import { cn } from "@/lib/utils"
+import { evento } from "@/lib/analytics"
 
 /** Tres formularios (PQRS, cotizador y cursos) que guardan en la bandeja /admin/solicitudes. */
 
@@ -122,6 +123,11 @@ function Formulario({
   const uid = useId()
 
   useEffect(() => setPagina(window.location.pathname + window.location.search), [])
+
+  // Analytics: cada solicitud enviada con éxito cuenta como un lead, con el formulario de origen
+  useEffect(() => {
+    if (estado?.ok) evento("generate_lead", { formulario: tipo, pagina: window.location.pathname })
+  }, [estado, tipo])
 
   if (estado?.ok && estado !== descartado) {
     return (
@@ -338,8 +344,15 @@ function Formulario({
           <input type="checkbox" name="acepta_datos" required className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--primary)]" {...aria("acepta_datos")} />
           <span>
             Autorizo a Daliza Pastelería Fina a tratar mis datos personales para responder esta solicitud y
-            contactarme con información de productos y cursos, conforme a la Ley 1581 de 2012. Puedo consultar,
-            actualizar o pedir la eliminación de mis datos escribiendo a pasteleradalizas9@gmail.com.
+            contactarme con información de productos y cursos, según la{" "}
+            <a href="/tratamiento-de-datos" target="_blank" className="font-medium text-primary underline underline-offset-2">
+              Política de tratamiento de datos
+            </a>{" "}
+            y la{" "}
+            <a href="/politica-de-privacidad" target="_blank" className="font-medium text-primary underline underline-offset-2">
+              Política de privacidad
+            </a>
+            . Puedo consultar, actualizar o pedir la eliminación de mis datos escribiendo a pasteleradalizas9@gmail.com.
           </span>
         </label>
         {error("acepta_datos")}
