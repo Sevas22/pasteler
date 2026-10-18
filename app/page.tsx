@@ -5,10 +5,8 @@ import { NuestraHistoria } from "@/components/nuestra-historia"
 import { OficioPilares } from "@/components/oficio-pilares"
 import { MisionVision } from "@/components/mision-vision"
 import { SeleccionTemporada } from "@/components/seleccion-temporada"
-import { TortasPersonalizadas } from "@/components/tortas-personalizadas"
-import { SedesBanda } from "@/components/sedes-banda"
+import { PasosTorta } from "@/components/pasos-torta/pasos-torta"
 import { ProveedoresCarrusel } from "@/components/proveedores-carrusel"
-import { CtaContactStrip } from "@/components/cta-contact-strip"
 import { JsonLd } from "@/components/json-ld"
 import { grafo, sedeSchema } from "@/lib/seo"
 import { getLocationsPublic } from "@/lib/data/locations"
@@ -27,10 +25,8 @@ export default async function HomePage() {
       <MisionVision />
       <OficioPilares />
       <SeleccionTemporada productos={productosSeleccion(productos)} />
-      <TortasPersonalizadas />
-      <SedesBanda locations={locations} />
+      <PasosTorta />
       <ProveedoresCarrusel />
-      <CtaContactStrip />
     </LayoutShell>
   )
 }

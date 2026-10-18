@@ -17,8 +17,9 @@ type ProductosPageProps = {
 
 export default async function ProductosPage({ searchParams }: ProductosPageProps) {
   const [productos, params] = await Promise.all([getProductosPublic(), searchParams])
-  const servicioValido = isServicioProducto(params.servicio ?? "")
-  const initialServicio = servicioValido ? (params.servicio as never) : "todos"
+  // Sin filtro en la URL el catálogo abre en Pastelería; "Todos" se pide explícito con ?servicio=todos
+  const servicio = params.servicio ?? ""
+  const initialServicio = servicio === "todos" ? "todos" : isServicioProducto(servicio) ? servicio : "pasteleria"
   return (
     <LayoutShell>
       <ProductGallery productos={productos} initialServicio={initialServicio} />

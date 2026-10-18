@@ -9,6 +9,7 @@ import { RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { ARTICULOS, formatearFecha } from "@/lib/blog"
 import { BANNERS } from "@/lib/media"
 import { absoluteUrl, grafo, migasSchema } from "@/lib/seo"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 export const metadata: Metadata = {
   title: "Blog de pastelería y panadería: guías y consejos",
@@ -56,7 +57,8 @@ export default function BlogPage() {
         description="Guías y consejos para pedir, elegir y disfrutar tus tortas, postres y panes."
       />
 
-      <section data-no-section-divider className="bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+      <section data-no-section-divider className="relative isolate overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+        <FondoMarca variante="arriba" />
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-wide text-primary/80">Artículos</p>
           <div className="mt-2 h-px w-full bg-border" aria-hidden />

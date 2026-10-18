@@ -14,6 +14,7 @@ import type { Location } from "@/lib/data/locations"
 import type { Producto } from "@/lib/types/producto"
 import { RevealStagger, RevealItem, Reveal } from "@/components/motion/reveal"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type TiendaDetailViewProps = {
   location: Location
@@ -128,7 +129,8 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
         </div>
       </section>
 
-      <section className="bg-background py-16 sm:py-20 md:py-24">
+      <section className="relative isolate overflow-hidden bg-background py-16 sm:py-20 md:py-24">
+        <FondoMarca variante="suave" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="mx-auto max-w-2xl px-1 text-center sm:px-0">

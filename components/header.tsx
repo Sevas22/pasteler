@@ -8,6 +8,7 @@ import { Menu, UserRound, X, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { BrandLogo } from "@/components/brand-logo"
+import { RedesSociales } from "@/components/redes-sociales"
 import { useLocations } from "@/components/locations-context"
 import { WHATSAPP_RESPALDO, waLink } from "@/lib/whatsapp"
 
@@ -132,6 +133,11 @@ export function Header() {
             d="M0,0 L320,0 L320,64 C285,64 270,72 255,88 C240,102 215,104 160,104 C105,104 80,102 65,88 C50,72 35,64 0,64 Z"
           />
         </svg>
+      </div>
+
+      {/* Redes sociales en el espacio libre de la izquierda (solo pantallas grandes, donde sobra margen) */}
+      <div className="absolute left-6 top-0 z-10 hidden h-16 items-center 2xl:flex">
+        <RedesSociales tamano="sm" />
       </div>
 
       <nav className="relative mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6 lg:px-8">

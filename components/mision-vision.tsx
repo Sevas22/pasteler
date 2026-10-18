@@ -4,6 +4,7 @@ import { FlourishDivider } from "@/components/ornaments/flourish-divider"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
 import { Reveal } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
@@ -102,7 +103,8 @@ function Texto({ bloque }: { bloque: Bloque }) {
 /** Misión y visión: dos bloques en zigzag (texto y foto alternados), con los pilares de cada uno. */
 export function MisionVision() {
   return (
-    <section data-no-section-divider className="relative overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-24 lg:px-12">
+    <section data-no-section-divider className="isolate relative overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-24 lg:px-12">
+      <FondoMarca variante="lateral" />
       <SoftCircle color="cherry" size={280} className="-right-24 top-10" />
       <SoftCircle color="gold" size={320} className="-left-28 bottom-0" />
 

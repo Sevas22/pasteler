@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/json-ld"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { ARTICULOS, formatearFecha, getArticulo, type Bloque } from "@/lib/blog"
 import { articuloSchema, grafo, migasSchema, preguntasSchema } from "@/lib/seo"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -129,7 +130,8 @@ export default async function ArticuloPage({ params }: Props) {
         )}
       />
 
-      <article className="bg-background px-5 pb-20 pt-32 sm:px-8 sm:pt-36 lg:px-12">
+      <article className="relative isolate overflow-hidden bg-background px-5 pb-20 pt-32 sm:px-8 sm:pt-36 lg:px-12">
+        <FondoMarca variante="suave" />
         <div className="mx-auto max-w-3xl">
           <nav aria-label="Migas de pan" className="text-sm text-muted-foreground">
             <Link href="/" className="hover:text-primary">Inicio</Link>

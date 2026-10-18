@@ -10,6 +10,7 @@ import { ProductQuickView } from "@/components/product-quick-view"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { HeroCarouselBackground } from "@/components/hero-carousel-background"
 import { cn } from "@/lib/utils"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type ProductDetailViewProps = {
   producto: Producto
@@ -20,10 +21,11 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
   const [quickView, setQuickView] = useState<Producto | null>(null)
   const [fotoActiva, setFotoActiva] = useState(0)
   const fotos = [...new Set([producto.imagen, ...(producto.imagenesExtra ?? [])])].filter(Boolean)
-  const contactHref = `/contacto?servicio=${encodeURIComponent(producto.nombre)}`
+  const contactHref = `/contacto?formulario=cotizacion&producto=${encodeURIComponent(producto.nombre)}#contacto`
 
   return (
-    <article className="bg-background px-5 pb-20 pt-24 sm:px-8 sm:pt-28 lg:px-12">
+    <article className="relative isolate overflow-hidden bg-background px-5 pb-20 pt-24 sm:px-8 sm:pt-28 lg:px-12">
+      <FondoMarca variante="suave" />
       <div className="mx-auto max-w-6xl">
         <nav className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
           <Link href="/" className="transition-colors hover:text-primary">Inicio</Link>

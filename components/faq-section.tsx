@@ -4,11 +4,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Reveal } from "@/components/motion/reveal"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
 import { FAQS_DESTACADAS as faqs } from "@/lib/faqs"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 /** Selección corta de preguntas. El listado completo (y su JSON-LD FAQPage) vive en /preguntas-frecuentes. */
 export function FaqSection() {
   return (
-    <section data-no-section-divider className="bg-background py-16 sm:py-20 md:py-24">
+    <section data-no-section-divider className="relative isolate overflow-hidden bg-background py-16 sm:py-20 md:py-24">
+      <FondoMarca variante="abajo" />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="text-center">

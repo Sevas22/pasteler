@@ -6,6 +6,7 @@ import { Horario } from "@/components/horario"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { RevealStagger, RevealItem } from "@/components/motion/reveal"
 import { HandStamp } from "@/components/ornaments/hand-stamp"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type TiendaItem = {
   location: Location
@@ -20,7 +21,8 @@ type TiendasGridProps = {
 
 export function TiendasGrid({ items }: TiendasGridProps) {
   return (
-    <section data-no-section-divider className="bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+    <section data-no-section-divider className="relative isolate overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+      <FondoMarca variante="arriba" />
       <div className="mx-auto max-w-6xl">
         <p className="text-sm font-semibold uppercase tracking-wide text-primary/80">Bogotá</p>
         <div className="mt-2 h-px w-full bg-border" aria-hidden />

@@ -14,7 +14,7 @@ type CourseDetailViewProps = {
 }
 
 export function CourseDetailView({ course, otros }: CourseDetailViewProps) {
-  const contactHref = `/contacto?curso=${encodeURIComponent(course.title)}`
+  const contactHref = `/contacto?formulario=curso&curso=${encodeURIComponent(course.slug)}#contacto`
 
   return (
     <article>

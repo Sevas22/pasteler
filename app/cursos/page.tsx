@@ -5,6 +5,7 @@ import { LayoutShell } from "@/components/layout-shell"
 import { PageHero } from "@/components/page-hero"
 import { HandStamp } from "@/components/ornaments/hand-stamp"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { BANNERS } from "@/lib/media"
 
@@ -34,8 +35,9 @@ export default function CursosPage() {
 
       <section
         data-no-section-divider
-        className="relative flex items-center overflow-hidden bg-background px-5 py-20 sm:min-h-[calc(100svh-4rem)] sm:px-8 sm:py-14 lg:px-12"
+        className="relative isolate flex items-center overflow-hidden bg-background px-5 py-20 sm:min-h-[calc(100svh-4rem)] sm:px-8 sm:py-14 lg:px-12"
       >
+        <FondoMarca variante="abajo" />
         <SoftCircle color="wine" size={320} className="-right-24 top-0" />
         <SoftCircle color="gold" size={280} className="-left-24 bottom-0" />
 

@@ -5,7 +5,6 @@ import { ArrowRight, X } from "lucide-react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
 import type { Producto } from "@/lib/types/producto"
-import { cn } from "@/lib/utils"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { HeroCarouselBackground, type HeroCarouselSlide } from "@/components/hero-carousel-background"
 
@@ -17,12 +16,8 @@ type ProductQuickViewProps = {
 /** Foto principal + extras, en orden y sin repetir. */
 function slidesDe(producto: Producto): HeroCarouselSlide[] {
   const fotos = [...new Set([producto.imagen, ...(producto.imagenesExtra ?? [])])].filter(Boolean)
-  return fotos.map((src, i) => ({
-    src,
-    alt: producto.nombre,
-    // La foto principal trae 3 porciones: se amplía para ver una sola. Las extras, las tortas enteras y el logo van sin ampliar.
-    className: cn(i === 0 && !src.includes("-torta-") && !src.includes("logo-dalizas") && "scale-[1.7]"),
-  }))
+  // Todas las fotos completas, tal como se ven en la ficha (sin recortar a una sola porción)
+  return fotos.map((src) => ({ src, alt: producto.nombre }))
 }
 
 /** Vista rápida de un producto en modal — sin salir del catálogo. */

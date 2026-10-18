@@ -4,13 +4,14 @@ import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, LogOut, MapPin, Menu, Package, GraduationCap, X } from "lucide-react"
+import { Inbox, LayoutDashboard, LogOut, MapPin, Menu, Package, GraduationCap, X } from "lucide-react"
 import { BrandLogo } from "@/components/brand-logo"
 import { cn } from "@/lib/utils"
 import { signOutAction } from "@/app/admin/actions"
 
 const links = [
   { href: "/admin", label: "Panel", icon: LayoutDashboard },
+  { href: "/admin/solicitudes", label: "Solicitudes", icon: Inbox },
   { href: "/admin/productos", label: "Productos", icon: Package },
   { href: "/admin/sucursales", label: "Sucursales", icon: MapPin },
   { href: "/admin/cursos", label: "Cursos", icon: GraduationCap },

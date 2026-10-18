@@ -201,3 +201,52 @@ export async function deleteCourseAction(courseId: string): Promise<void> {
   revalidateSite()
   updateTag("cursos")
 }
+
+// ── Solicitudes (PQRS, cotizaciones, cursos) ─────────────────────────────
+
+const ESTADOS_VALIDOS = ["nuevo", "en_proceso", "por_recontactar", "cerrado", "descartado"]
+
+/** Guarda el seguimiento: estado, fecha para volver a contactar y una nota nueva (se suma al historial). */
+export async function guardarSeguimientoAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+  const session = await requireAdminSession()
+  const supabase = await createClient()
+
+  const id = String(formData.get("id") ?? "").trim()
+  const estado = String(formData.get("estado") ?? "").trim()
+  const proximo = String(formData.get("proximo_contacto") ?? "").trim()
+  const nota = String(formData.get("nota") ?? "").trim()
+
+  if (!id) return { error: "Solicitud no encontrada." }
+  if (!ESTADOS_VALIDOS.includes(estado)) return { error: "Estado no válido." }
+  if (proximo && !/^\d{4}-\d{2}-\d{2}$/.test(proximo)) return { error: "Fecha de recontacto no válida." }
+  if (nota.length > 2000) return { error: "La nota es demasiado larga (máximo 2000 caracteres)." }
+
+  const cambios: Record<string, unknown> = { estado, proximo_contacto: proximo || null }
+
+  if (nota) {
+    const { data: actual } = await supabase.from("solicitudes").select("notas").eq("id", id).maybeSingle()
+    const fecha = new Intl.DateTimeFormat("es-CO", {
+      timeZone: "America/Bogota",
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date())
+    const entrada = `[${fecha} · ${session.email || "admin"}]\n${nota}`
+    // La más reciente arriba
+    cambios.notas = actual?.notas ? `${entrada}\n\n${actual.notas}` : entrada
+  }
+
+  const { error } = await supabase.from("solicitudes").update(cambios).eq("id", id)
+  if (error) return { error: `No se pudo guardar: ${error.message}` }
+
+  revalidatePath("/admin/solicitudes", "layout")
+  revalidatePath("/admin")
+  return {}
+}
+
+export async function eliminarSolicitudAction(id: string): Promise<void> {
+  await requireAdminSession()
+  const supabase = await createClient()
+  await supabase.from("solicitudes").delete().eq("id", id)
+  revalidatePath("/admin/solicitudes", "layout")
+  revalidatePath("/admin")
+}

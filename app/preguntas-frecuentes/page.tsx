@@ -9,6 +9,7 @@ import { construirFaqs } from "@/lib/faqs"
 import { getLocationsPublic } from "@/lib/data/locations"
 import { BANNERS } from "@/lib/media"
 import { grafo, migasSchema, preguntasSchema } from "@/lib/seo"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 export const metadata: Metadata = {
   title: "Preguntas frecuentes: pedidos, sedes, horarios y tortas",
@@ -47,7 +48,8 @@ export default async function PreguntasFrecuentesPage() {
         description="Todo lo que necesitas saber para pedir tu torta, encontrar tu sede y disfrutar tus postres."
       />
 
-      <section data-no-section-divider className="bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+      <section data-no-section-divider className="relative isolate overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+        <FondoMarca variante="suave" />
         <div className="mx-auto max-w-3xl">
           <nav aria-label="Temas" className="flex flex-wrap gap-2">
             {grupos.map((g) => (

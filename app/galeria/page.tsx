@@ -9,6 +9,7 @@ import { formatCategoriaLabel, getProductosPublic } from "@/lib/data/productos"
 import { GaleriaPasarela, type EncabezadoPasarela, type ItemPasarela } from "@/components/galeria-pasarela"
 import { Reveal } from "@/components/motion/reveal"
 import type { Producto, ServicioProducto } from "@/lib/types/producto"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 export const metadata: Metadata = {
   title: "Galería de tortas personalizadas, postres y pan",
@@ -55,8 +56,11 @@ export default async function GaleriaPage() {
     <LayoutShell>
       <PageHero
         src={BANNERS.paginas.galeria}
-        alt="Panadería artesanal Daliza"
+        alt="Tartaleta de frutas Daliza con fresas, mora y melocotón"
         priority
+        alto="medio"
+        tono="claro"
+        focus="object-[80%_center] lg:object-[center_30%]"
         title={
           <>
             Arte dulce en <span className="italic text-[#E3C98F]">cada detalle.</span>
@@ -75,7 +79,8 @@ export default async function GaleriaPage() {
         return items.length ? <GaleriaPasarela key={servicio} items={items} encabezado={encabezado} /> : null
       })}
 
-      <section data-no-section-divider className="bg-background py-16 sm:py-20">
+      <section data-no-section-divider className="relative isolate overflow-hidden bg-background py-16 sm:py-20">
+        <FondoMarca variante="abajo" />
         <Reveal>
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 sm:flex-row sm:justify-center sm:px-6 lg:px-8">
             <Button asChild className="w-full min-h-[48px] sm:w-auto sm:min-h-10">

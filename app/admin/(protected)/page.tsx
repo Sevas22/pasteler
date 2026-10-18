@@ -1,12 +1,18 @@
 import Link from "next/link"
-import { AlertTriangle, CheckCircle2, GraduationCap, MapPin, Package, Plus } from "lucide-react"
+import { AlertTriangle, CalendarClock, CheckCircle2, GraduationCap, Inbox, MapPin, Package, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getProductos } from "@/lib/data/productos"
 import { getLocations } from "@/lib/data/locations"
 import { getCourses } from "@/lib/data/courses"
+import { getResumenSolicitudes } from "@/lib/data/solicitudes"
 
 export default async function AdminDashboardPage() {
-  const [productos, locations, courses] = await Promise.all([getProductos(), getLocations(), getCourses()])
+  const [productos, locations, courses, resumen] = await Promise.all([
+    getProductos(),
+    getLocations(),
+    getCourses(),
+    getResumenSolicitudes(),
+  ])
 
   const cards = [
     {
@@ -49,6 +55,35 @@ export default async function AdminDashboardPage() {
     <div>
       <h1 className="font-serif text-3xl font-normal text-heading">Hola 👋</h1>
       <p className="mt-1 text-muted-foreground">Aquí tienes un resumen de tu pastelería en Daliza.</p>
+
+      {resumen.disponible && (
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <Link
+            href="/admin/solicitudes?estado=nuevo"
+            className="flex items-center gap-4 rounded-2xl border border-primary/30 bg-primary/[0.05] p-5 transition-colors hover:border-primary/60"
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <Inbox className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-2xl font-semibold text-heading">{resumen.nuevas}</p>
+              <p className="text-sm text-muted-foreground">solicitudes nuevas sin atender</p>
+            </div>
+          </Link>
+          <Link
+            href="/admin/solicitudes?agenda=hoy"
+            className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <CalendarClock className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-2xl font-semibold text-heading">{resumen.porRecontactarHoy}</p>
+              <p className="text-sm text-muted-foreground">clientes para recontactar hoy o atrasados</p>
+            </div>
+          </Link>
+        </div>
+      )}
 
       <div className="mt-8 grid gap-5 sm:grid-cols-3">
         {cards.map((card) => (

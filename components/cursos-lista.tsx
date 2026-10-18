@@ -4,6 +4,7 @@ import { ArrowRight, Check, GraduationCap } from "lucide-react"
 import type { Course } from "@/lib/data/courses"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
 import { HandStamp } from "@/components/ornaments/hand-stamp"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type CursosListaProps = {
   courses: Course[]
@@ -11,7 +12,8 @@ type CursosListaProps = {
 
 export function CursosLista({ courses }: CursosListaProps) {
   return (
-    <section data-no-section-divider className="relative overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+    <section data-no-section-divider className="isolate relative overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+      <FondoMarca variante="arriba" />
       <SoftCircle color="gold" size={280} className="-right-20 top-0" />
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-20">

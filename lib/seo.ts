@@ -27,6 +27,17 @@ export const NEGOCIO = {
   logo: "/images/logo-dalizas-512.png",
   imagenSocial: "/images/banners/hero-tortas-surtido.webp",
   facebook: "https://www.facebook.com/PasteleriaDaliza",
+  email: "pasteleradalizas9@gmail.com",
+  /**
+   * Redes sociales. Para activar una, pon aquí su enlace completo (p. ej. "https://www.instagram.com/usuario").
+   * Mientras esté vacía, el ícono se muestra en el footer pero no es clicable, y no se anuncia a Google.
+   */
+  redes: {
+    instagram: "",
+    facebook: "https://www.facebook.com/PasteleriaDaliza",
+    tiktok: "",
+    youtube: "https://www.youtube.com/@Pasteleriadalizas",
+  },
   telefonoPrincipal: "+573108336425",
 } as const
 
@@ -104,10 +115,12 @@ export function organizacionSchema() {
     url: SITE_URL,
     logo: absoluteUrl(NEGOCIO.logo),
     description: NEGOCIO.descripcion,
-    sameAs: [NEGOCIO.facebook],
+    sameAs: Object.values(NEGOCIO.redes).filter(Boolean),
+    email: NEGOCIO.email,
     contactPoint: {
       "@type": "ContactPoint",
       telephone: NEGOCIO.telefonoPrincipal,
+      email: NEGOCIO.email,
       contactType: "customer service",
       areaServed: "CO",
       availableLanguage: "es",
@@ -148,7 +161,7 @@ export function sedeSchema(location: Location) {
     ...(location.mapsUrl ? { hasMap: location.mapsUrl } : {}),
     openingHoursSpecification: horariosSchema(location.hours),
     areaServed: { "@type": "City", name: "Bogotá" },
-    sameAs: [NEGOCIO.facebook],
+    sameAs: Object.values(NEGOCIO.redes).filter(Boolean),
   }
 }
 

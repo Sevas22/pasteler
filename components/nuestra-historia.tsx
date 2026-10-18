@@ -2,6 +2,7 @@ import Image from "next/image"
 import { BANNERS } from "@/lib/media"
 import { FlourishDivider } from "@/components/ornaments/flourish-divider"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 /**
  * Historia de marca: solo lo que es verificable (sede principal real, 4 sedes reales,
@@ -9,7 +10,8 @@ import { SoftCircle } from "@/components/ornaments/soft-circle"
  */
 export function NuestraHistoria() {
   return (
-    <section data-no-section-divider className="relative overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-24 lg:px-12">
+    <section data-no-section-divider className="isolate relative overflow-hidden bg-background px-5 py-16 sm:px-8 sm:py-24 lg:px-12">
+      <FondoMarca variante="abajo" />
       <SoftCircle color="gold" size={300} className="-left-24 bottom-0" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">

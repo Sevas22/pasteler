@@ -188,7 +188,7 @@ export function HeroClient() {
             {SERVICIO_PILLS.map((s) => (
               <Link
                 key={s.slug}
-                href={s.slug === "todos" ? "/productos" : `/productos?servicio=${s.slug}`}
+                href={`/productos?servicio=${s.slug}`}
                 className="rounded-full border border-primary/25 bg-white/70 px-4 py-2 text-sm font-medium text-heading backdrop-blur-sm transition-colors hover:border-primary hover:text-primary"
               >
                 {s.label}

@@ -5,6 +5,7 @@ import { MapPin } from "lucide-react"
 import type { Location } from "@/lib/data/locations"
 import { PageHero } from "@/components/page-hero"
 import { BANNERS } from "@/lib/media"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type ContactoHeroProps = {
   locations: Location[]
@@ -42,7 +43,8 @@ export function ContactoHero({ locations }: ContactoHeroProps) {
         description="Elige la sede más cercana. Cada ubicación tiene su propio contacto para pedidos y consultas de cursos."
       />
 
-      <section data-no-section-divider className="bg-background px-5 pb-10 pt-10 sm:px-8 lg:px-12">
+      <section data-no-section-divider className="relative isolate overflow-hidden bg-background px-5 pb-14 pt-12 sm:px-8 lg:px-16 lg:pt-16">
+        <FondoMarca variante="suave" />
       <div className="mx-auto max-w-6xl">
         <div id="mapa-contacto">
           <div className="relative overflow-hidden rounded-2xl">

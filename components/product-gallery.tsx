@@ -10,6 +10,7 @@ import { ImageIcon } from "lucide-react"
 import { BANNERS } from "@/lib/media"
 import { PageHero } from "@/components/page-hero"
 import { cn } from "@/lib/utils"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type ProductGalleryProps = {
   productos: Producto[]
@@ -68,7 +69,8 @@ export function ProductGallery({
         ))}
       />
 
-      <section data-no-section-divider className={cn("bg-background px-5 pb-16 pt-10 sm:px-8 lg:px-12", className)}>
+      <section data-no-section-divider className={cn("relative isolate overflow-hidden bg-background px-5 pb-16 pt-12 sm:px-8 lg:px-12 lg:pt-16", className)}>
+        <FondoMarca variante="suave" />
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap gap-2">
           {SERVICIO_PILLS.map((s) => (

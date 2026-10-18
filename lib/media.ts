@@ -105,7 +105,7 @@ export const BANNERS = {
     cursos: "/images/banners/pasteleria-brillos.webp",
     tiendas: "/images/banners/panaderia-bokeh.webp",
     contacto: "/images/banners/panaderia-dorada.webp",
-    galeria: "/images/banners/panaderia-dorada-densa.webp",
+    galeria: "/images/banners/galeria-tartaleta-frutas.webp",
     blog: "/images/banners/reposteria-tarta-vino.webp",
     preguntas: "/images/banners/pasteleria-brillos.webp",
   },

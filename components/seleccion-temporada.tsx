@@ -9,6 +9,7 @@ import { SoftCircle } from "@/components/ornaments/soft-circle"
 import type { Producto } from "@/lib/types/producto"
 import { seleccionar } from "@/lib/data/seleccion-temporada"
 import { cn } from "@/lib/utils"
+import { FondoMarca } from "@/components/ornaments/fondo-marca"
 
 type SeleccionTemporadaProps = {
   productos: Producto[]
@@ -32,8 +33,9 @@ export function SeleccionTemporada({ productos }: SeleccionTemporadaProps) {
   return (
     <section
       data-no-section-divider
-      className="relative flex items-center overflow-hidden bg-background px-5 py-20 sm:min-h-[calc(100svh-4rem)] sm:px-8 sm:py-12 lg:px-12"
+      className="isolate relative flex items-center overflow-hidden bg-background px-5 py-20 sm:min-h-[calc(100svh-4rem)] sm:px-8 sm:py-12 lg:px-12"
     >
+      <FondoMarca variante="abajo" />
       <SoftCircle color="gold" size={320} className="-right-20 -top-16" />
       <SoftCircle color="cherry" size={240} className="-left-16 bottom-0" />
 

@@ -1,0 +1,518 @@
+/* "Nuestras sedes" — composición panorámica: encabezado editorial + fila de cinco tarjetas. */
+
+.seccion {
+  --vino: #8b2e2e;
+  --vino-profundo: #711d26;
+  --dorado: #c9a96e;
+  --texto: #57473f;
+  --anillo: 180px; /* diámetro de la foto circular */
+  --anillo-sube: 78px; /* cuánto sobresale la foto por encima de la tarjeta */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #f8f5f2;
+  padding: clamp(84px, 8vw, 124px) 0 clamp(120px, 10vw, 160px);
+  font-family: var(--font-sans), "Montserrat", system-ui, sans-serif;
+}
+
+/* Como página completa (/tiendas): baja el contenido para que el menú fijo y su "barriguita" no lo tapen. */
+.pagina {
+  padding-top: clamp(150px, 11vw, 190px);
+}
+
+.fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.contenido {
+  position: relative;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 4vw, 72px);
+}
+
+/* ───────── Encabezado ───────── */
+
+.encabezado {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(600px, 1.4fr) minmax(320px, 0.7fr) minmax(260px, 0.5fr);
+  align-items: end;
+  column-gap: clamp(24px, 3vw, 56px);
+  row-gap: 24px;
+  margin-bottom: calc(var(--anillo-sube) + 56px);
+}
+
+.etiqueta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--vino);
+}
+
+.etiqueta span {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--vino);
+  opacity: 0.55;
+}
+
+.titulo {
+  margin: 22px 0 0;
+  font-family: var(--font-serif), "Playfair Display", Georgia, serif;
+  font-size: clamp(58px, 5vw, 96px);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--vino);
+}
+
+.titulo em {
+  font-style: italic;
+}
+
+.bajada {
+  margin: 0;
+  max-width: 340px;
+  padding-bottom: 8px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--texto);
+}
+
+.manuscrito {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-self: end;
+  font-size: clamp(42px, 3.3vw, 60px);
+  line-height: 1;
+  color: var(--vino-profundo);
+  transform: rotate(-5deg);
+}
+
+.manuscritoLinea2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18em;
+  padding-left: 1.3em;
+}
+
+.corazonFirma {
+  width: 0.8em;
+  height: 0.8em;
+  transform: rotate(12deg);
+}
+
+.subrayado {
+  width: 140px;
+  height: auto;
+  margin: 2px 0 0 1.5em;
+}
+
+.subrayado path {
+  fill: none;
+  stroke: var(--dorado);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.corazonA,
+.corazonB,
+.hoja {
+  position: absolute;
+  pointer-events: none;
+}
+
+.corazonA {
+  width: 52px;
+  left: 27%;
+  bottom: calc(-1 * var(--anillo-sube) - 30px);
+  transform: rotate(-10deg);
+}
+
+.corazonB {
+  width: 62px;
+  right: -8px;
+  bottom: calc(-1 * var(--anillo-sube) - 12px);
+  transform: rotate(14deg);
+}
+
+.hoja {
+  width: 32px;
+  left: 50%;
+  top: -36px;
+  transform: rotate(8deg);
+  opacity: 0.85;
+}
+
+/* ───────── Fila de tarjetas ───────── */
+
+.fila {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(16px, 1.6vw, 30px);
+}
+
+.celda {
+  display: flex;
+  min-width: 0;
+}
+
+.tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 480px;
+  padding: calc(var(--anillo) - var(--anillo-sube) + 18px) 22px 24px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(201, 169, 110, 0.15);
+  /* Arco superior que abraza la foto circular */
+  border-radius: 140px 140px 26px 26px / 120px 120px 26px 26px;
+  box-shadow: 0 16px 40px rgba(92, 49, 39, 0.07);
+  transition:
+    transform 350ms var(--ease),
+    box-shadow 350ms var(--ease);
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 46px rgba(92, 49, 39, 0.11);
+}
+
+.anilloFoto {
+  position: absolute;
+  top: calc(-1 * var(--anillo-sube));
+  left: 50%;
+  width: var(--anillo);
+  height: var(--anillo);
+  padding: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 30px rgba(90, 45, 35, 0.08);
+  transform: translateX(-50%);
+}
+
+.foto {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #f1e6dc;
+}
+
+.imagen {
+  object-fit: cover;
+  transition: transform 350ms var(--ease);
+}
+
+.imagenLogo {
+  object-fit: contain;
+  padding: 16%;
+  transition: transform 350ms var(--ease);
+}
+
+.tarjeta:hover .imagen,
+.tarjeta:hover .imagenLogo {
+  transform: scale(1.025);
+}
+
+.nombre {
+  margin: 0 0 14px;
+  font-family: var(--font-serif), "Playfair Display", Georgia, serif;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--vino);
+  text-wrap: balance;
+}
+
+.qr {
+  display: block;
+  padding: 6px;
+  border-radius: 12px;
+  background: #fff;
+  transition: transform 350ms var(--ease);
+}
+
+.qr img {
+  display: block;
+  width: 104px;
+  height: 104px;
+}
+
+.qr:hover {
+  transform: scale(1.04);
+}
+
+.datos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin: 18px 0 22px;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--texto);
+}
+
+.datos li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.icono {
+  width: 19px;
+  height: 19px;
+  margin-top: 1px;
+  fill: none;
+  stroke: var(--vino);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.whatsapp {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  margin-top: auto;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8b2e2e, #a51f31);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 350ms var(--ease),
+    box-shadow 350ms var(--ease);
+}
+
+.whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(139, 46, 46, 0.2);
+}
+
+.iconoWhatsapp {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+}
+
+.whatsappTexto {
+  flex: 1;
+}
+
+.flecha {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.qr:focus-visible,
+.whatsapp:focus-visible {
+  outline: 3px solid var(--dorado);
+  outline-offset: 3px;
+}
+
+/* ───────── Laptops (cinco tarjetas más compactas) ───────── */
+
+@media (max-width: 1499px) {
+  .seccion {
+    --anillo: 150px;
+    --anillo-sube: 64px;
+  }
+  .encabezado {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.7fr) minmax(0, 0.55fr);
+  }
+  .tarjeta {
+    min-height: 450px;
+    padding-inline: 16px;
+  }
+  .nombre {
+    font-size: 22px;
+  }
+  .qr img {
+    width: 96px;
+    height: 96px;
+  }
+  .datos {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1279px) {
+  .seccion {
+    --anillo: 132px;
+    --anillo-sube: 56px;
+  }
+  .encabezado {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.7fr);
+  }
+  .manuscrito {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    align-self: start;
+  }
+  .bajada {
+    grid-column: 2;
+  }
+  .tarjeta {
+    padding-inline: 14px;
+  }
+  .nombre {
+    font-size: 20px;
+  }
+  .datos {
+    font-size: 12.5px;
+  }
+  .whatsapp {
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .iconoWhatsapp {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ───────── Tablet y móvil: carrusel horizontal nativo ───────── */
+
+@media (max-width: 1199px) {
+  .seccion {
+    --anillo: 150px;
+    --anillo-sube: 64px;
+  }
+  .encabezado {
+    margin-bottom: 8px;
+  }
+  .corazonA {
+    bottom: -24px;
+  }
+  .corazonB {
+    bottom: 0;
+  }
+  .fila {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Espacio para la foto que sobresale y la sombra (el scroll horizontal recorta lo que se sale) */
+    padding: calc(var(--anillo-sube) + 18px) clamp(20px, 4vw, 72px) 28px;
+    margin-inline: calc(-1 * clamp(20px, 4vw, 72px));
+    scroll-padding-inline: clamp(20px, 4vw, 72px);
+  }
+  .fila::-webkit-scrollbar {
+    display: none;
+  }
+  .celda {
+    flex: 0 0 min(42vw, 320px);
+    scroll-snap-align: center;
+  }
+  .nombre {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 999px) {
+  .encabezado {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .manuscrito,
+  .bajada {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .manuscrito {
+    justify-self: end;
+    margin-right: 4%;
+  }
+  .hoja {
+    left: auto;
+    right: 8%;
+    top: -28px;
+  }
+}
+
+@media (max-width: 820px) {
+  .seccion {
+    --anillo: 140px;
+    --anillo-sube: 60px;
+  }
+  .titulo {
+    font-size: clamp(44px, 12vw, 64px);
+  }
+  .bajada {
+    font-size: 16px;
+  }
+  .manuscrito {
+    font-size: 40px;
+  }
+  .celda {
+    /* Una tarjeta protagonista y ~10-15 % de la siguiente */
+    flex-basis: min(82vw, 320px);
+  }
+  .tarjeta {
+    min-height: 0;
+  }
+  .corazonA {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta,
+  .imagen,
+  .imagenLogo,
+  .qr,
+  .whatsapp {
+    transition: none;
+  }
+  .tarjeta:hover,
+  .whatsapp:hover,
+  .qr:hover,
+  .tarjeta:hover .imagen,
+  .tarjeta:hover .imagenLogo {
+    transform: none;
+  }
+}
