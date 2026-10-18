@@ -1,85 +1,124 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, GraduationCap, MessageCircle } from "lucide-react"
+import { ArrowRight, Cake } from "lucide-react"
 import { LayoutShell } from "@/components/layout-shell"
-import { PageHero } from "@/components/page-hero"
-import { HandStamp } from "@/components/ornaments/hand-stamp"
-import { SoftCircle } from "@/components/ornaments/soft-circle"
-import { FondoMarca } from "@/components/ornaments/fondo-marca"
-import { WhatsAppCTA } from "@/components/whatsapp-cta"
-import { BANNERS } from "@/lib/media"
+import { RedesSociales } from "@/components/redes-sociales"
+import { BRANDING } from "@/lib/branding"
 
 export const metadata: Metadata = {
-  title: "Cursos de pastelería, muy pronto",
+  title: "Cursos de pastelería, próximamente",
   description:
-    "Estamos preparando nuestros cursos de pastelería en Bogotá. Escríbenos y te avisamos primero cuando abramos inscripciones.",
+    "Muy pronto abriremos nuestros cursos de pastelería en Bogotá. Síguenos en redes y déjanos tus datos para avisarte cuando abran las inscripciones.",
   alternates: { canonical: "/cursos" },
 }
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
+/** Fotos de la composición (productos reales de Daliza). */
+const FOTOS = [
+  {
+    src: "/images/productos/torta-con-cheesecake-de-maracuya-torta-1.webp",
+    alt: "Torta con cheesecake de maracuyá",
+    clase: "left-[18%] top-[16%] z-20 h-[62%] w-[62%]",
+  },
+  {
+    src: "/images/productos/tartaleta-de-frutas-2.webp",
+    alt: "Tartaleta de frutas",
+    clase: "left-0 bottom-[2%] z-30 h-[40%] w-[40%]",
+  },
+  {
+    src: "/images/productos/cheesecake-de-mora-torta-1.webp",
+    alt: "Cheesecake de mora",
+    clase: "right-0 top-0 z-10 h-[44%] w-[44%]",
+  },
+] as const
+
 export default function CursosPage() {
   return (
     <LayoutShell>
-      <PageHero
-        src={BANNERS.paginas.cursos}
-        alt="Rebanadas y postres de pastelería fina Daliza"
-        priority
-        title={
-          <>
-            Cursos de pastelería, <span className="italic text-[#E3C98F]">muy pronto.</span>
-          </>
-        }
-        description="Estamos preparando una nueva experiencia para aprender el oficio con nosotros."
-      />
-
       <section
         data-no-section-divider
-        className="relative isolate flex items-center overflow-hidden bg-background px-5 py-20 sm:min-h-[calc(100svh-4rem)] sm:px-8 sm:py-14 lg:px-12"
+        className="relative isolate overflow-hidden bg-[#FBF4EA] px-5 pb-20 pt-32 sm:px-8 sm:pt-36 lg:flex lg:min-h-[100svh] lg:items-center lg:px-12 lg:pb-16 lg:pt-28"
       >
-        <FondoMarca variante="abajo" />
-        <SoftCircle color="wine" size={320} className="-right-24 top-0" />
-        <SoftCircle color="gold" size={280} className="-left-24 bottom-0" />
+        {/* Luz cálida de fondo, como de cocina iluminada */}
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+          <div className="absolute -left-40 top-0 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(255,236,200,0.9),transparent_65%)]" />
+          <div className="absolute -right-32 bottom-0 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(240,205,170,0.55),transparent_65%)]" />
+          <div className="absolute left-1/2 top-1/3 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(244,210,205,0.45),transparent_70%)]" />
+        </div>
 
-        <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-          <div className="relative">
-            <HandStamp icon={GraduationCap} text="PRÓXIMAMENTE • DALIZA •" className="h-28 w-28" />
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+          {/* Texto */}
+          <div className="flex flex-col items-center text-center">
+            <div className="flex items-center gap-4" aria-hidden>
+              <span className="h-px w-10 bg-[#C9A96E] sm:w-14" />
+              <Image src={BRANDING.logoPrincipal} alt="" width={140} height={70} className="h-14 w-auto sm:h-16" />
+              <span className="h-px w-10 bg-[#C9A96E] sm:w-14" />
+            </div>
+
+            <h1 className="mt-6">
+              <span
+                className="block text-5xl font-normal italic leading-none text-[#B08A4A] sm:text-6xl lg:text-7xl"
+                style={SERIF}
+              >
+                Próximamente
+              </span>
+              <span
+                className="mt-2 block text-balance text-[2.6rem] font-normal leading-[1.05] text-[#3A1A14] sm:text-6xl lg:text-[4.1rem]"
+                style={SERIF}
+              >
+                Cursos de Pastelería
+              </span>
+            </h1>
+
+            <div className="mt-6 flex items-center gap-3 text-[#C9A96E]" aria-hidden>
+              <span className="h-px w-20 bg-[#C9A96E]/70 sm:w-28" />
+              <Cake className="h-5 w-5" strokeWidth={1.6} />
+              <span className="h-px w-20 bg-[#C9A96E]/70 sm:w-28" />
+            </div>
+
+            <p className="mt-5 max-w-md text-base text-[#4A2A22] sm:text-lg">
+              Síguenos en redes para estar atentos a la apertura.
+            </p>
+
+            <RedesSociales className="mt-5 justify-center" />
+
+            <Link
+              href="/contacto?formulario=curso#contacto"
+              className="group mt-8 inline-flex min-h-14 items-center gap-3 rounded-full bg-[#9B1B3A] px-9 text-lg italic text-white shadow-[0_16px_34px_-14px_rgba(155,27,58,0.75)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#86152F]"
+              style={SERIF}
+            >
+              Inscripciones pronto
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
+            </Link>
+            <p className="mt-3 text-xs text-[#6B4A40]">Déjanos tus datos y te avisamos primero cuando abramos.</p>
           </div>
 
-          <p className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-brand-gold/60 bg-card px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-primary shadow-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" aria-hidden />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" aria-hidden />
-            </span>
-            Próximamente
-          </p>
-
-          <p
-            className="mt-6 text-balance text-4xl font-normal leading-[1.08] text-heading sm:text-5xl lg:text-6xl"
-            style={SERIF}
-          >
-            Estamos preparando <span className="italic text-primary">algo especial.</span>
-          </p>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Muy pronto compartiremos aquí nuestros cursos, con sus fechas y cupos. Escríbenos y serás de las primeras
-            personas en enterarte.
-          </p>
-
-          <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:gap-5">
-            <WhatsAppCTA
-              mensaje="Hola, quiero que me avisen cuando estén listos los cursos de pastelería"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden />
-              Quiero que me avisen
-            </WhatsAppCTA>
-            <Link
-              href="/productos"
-              className="inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline"
-            >
-              Mientras tanto, mira nuestros productos
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
+          {/* Composición de productos */}
+          <div className="relative mx-auto aspect-square w-full max-w-[520px]">
+            <div className="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(255,240,215,0.95),rgba(251,244,234,0)_70%)]" aria-hidden />
+            {FOTOS.map((f) => (
+              <div
+                key={f.src}
+                className={`absolute overflow-hidden rounded-full border-[6px] border-white shadow-[0_28px_50px_-24px_rgba(90,40,20,0.55)] ${f.clase}`}
+              >
+                <Image src={f.src} alt={f.alt} fill sizes="(min-width: 1024px) 330px, 60vw" className="object-cover" />
+              </div>
+            ))}
+            {/* Florecitas doradas */}
+            {[
+              "left-[6%] top-[10%]",
+              "right-[8%] bottom-[18%]",
+              "left-[46%] bottom-[0%]",
+            ].map((pos) => (
+              <svg key={pos} viewBox="0 0 20 20" className={`absolute h-5 w-5 text-[#C9A96E] ${pos}`} aria-hidden>
+                {[0, 72, 144, 216, 288].map((a) => (
+                  <ellipse key={a} cx="10" cy="6" rx="2.2" ry="3.6" fill="currentColor" opacity="0.75" transform={`rotate(${a} 10 10)`} />
+                ))}
+                <circle cx="10" cy="10" r="1.8" fill="#FFF6E6" />
+              </svg>
+            ))}
           </div>
         </div>
       </section>

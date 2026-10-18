@@ -33,9 +33,9 @@ export const NEGOCIO = {
    * Mientras esté vacía, el ícono se muestra en el footer pero no es clicable, y no se anuncia a Google.
    */
   redes: {
-    instagram: "",
+    instagram: "https://www.instagram.com/pasteleriadalizas",
     facebook: "https://www.facebook.com/profile.php?id=61595539589501",
-    tiktok: "",
+    tiktok: "https://www.tiktok.com/@pasteleria.daliza",
     youtube: "https://www.youtube.com/@Pasteleriadalizas",
   },
   telefonoPrincipal: "+573108336425",

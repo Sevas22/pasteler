@@ -45,7 +45,7 @@ type Props = { locations: Location[]; courses: Course[] }
 
 export function FormulariosSolicitud({ locations, courses }: Props) {
   const [activo, setActivo] = useState<TipoSolicitud>("cotizacion")
-  const [inicial, setInicial] = useState<{ producto?: string; curso?: string }>({})
+  const [inicial, setInicial] = useState<{ producto?: string; curso?: string; porciones?: string }>({})
 
   // Preselección desde los botones de producto y curso (?formulario=…&producto=… / &curso=…)
   useEffect(() => {
@@ -53,9 +53,10 @@ export function FormulariosSolicitud({ locations, courses }: Props) {
     const formulario = p.get("formulario")
     const producto = p.get("producto") ?? p.get("servicio") ?? undefined
     const curso = p.get("curso") ?? undefined
+    const porciones = p.get("porciones")?.trim().slice(0, 20) || undefined
     if (formulario === "pqrs" || formulario === "cotizacion" || formulario === "curso") setActivo(formulario)
     else if (curso) setActivo("curso")
-    setInicial({ producto, curso })
+    setInicial({ producto, curso, porciones })
   }, [])
 
   return (
@@ -93,7 +94,7 @@ export function FormulariosSolicitud({ locations, courses }: Props) {
           <p className="mb-5 text-sm text-muted-foreground">{ayuda}</p>
           <Formulario
             // Se remonta al llegar la preselección para que los valores por defecto la tomen
-            key={`${tipo}-${inicial.producto ?? ""}-${inicial.curso ?? ""}`}
+            key={`${tipo}-${inicial.producto ?? ""}-${inicial.curso ?? ""}-${inicial.porciones ?? ""}`}
             tipo={tipo}
             locations={locations}
             courses={courses}
@@ -114,7 +115,7 @@ function Formulario({
   tipo: TipoSolicitud
   locations: Location[]
   courses: Course[]
-  inicial: { producto?: string; curso?: string }
+  inicial: { producto?: string; curso?: string; porciones?: string }
 }) {
   const [estado, accion, enviando] = useActionState<EstadoEnvio, FormData>(enviarSolicitudAction, null)
   // La solicitud ya agradecida: al pulsar "Enviar otra" se vuelve a mostrar el formulario vacío
@@ -247,7 +248,7 @@ function Formulario({
               <input id={id("fecha_evento")} name="fecha_evento" type="date" className={CAMPO} />
             </Campo>
             <Campo etiqueta="Porciones / personas" htmlFor={id("porciones")} error={error("porciones")}>
-              <input id={id("porciones")} name="porciones" inputMode="numeric" placeholder="Ej. 20" className={CAMPO} />
+              <input id={id("porciones")} name="porciones" inputMode="numeric" defaultValue={inicial.porciones ?? ""} placeholder="Ej. 20" className={CAMPO} />
             </Campo>
             <Campo etiqueta="Presupuesto (opcional)" htmlFor={id("presupuesto")} error={error("presupuesto")}>
               <input id={id("presupuesto")} name="presupuesto" placeholder="Ej. $150.000" className={CAMPO} />

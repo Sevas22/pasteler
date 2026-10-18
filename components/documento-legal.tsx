@@ -56,12 +56,13 @@ export function DocumentoLegal({
                 <FileText className="h-4 w-4" aria-hidden />
                 Contenido
               </p>
-              <ol className="mt-4 space-y-1.5 text-sm">
+              {/* Celular: tira deslizable; computador: lista vertical */}
+              <ol className="-mx-5 mt-4 flex gap-2 overflow-x-auto px-5 pb-1 text-sm [scrollbar-width:none] lg:mx-0 lg:block lg:space-y-1.5 lg:overflow-visible lg:px-0 lg:pb-0">
                 {secciones.map((s, i) => (
-                  <li key={s.id}>
+                  <li key={s.id} className="shrink-0">
                     <a
                       href={`#${s.id}`}
-                      className="flex gap-2 rounded-md px-2 py-1 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+                      className="flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full border border-border px-3.5 py-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary lg:min-h-0 lg:items-start lg:whitespace-normal lg:rounded-md lg:border-0 lg:px-2 lg:py-1.5"
                     >
                       <span className="w-5 shrink-0 text-right font-medium text-[#C9A96E]">{i + 1}.</span>
                       {s.titulo}
@@ -69,7 +70,7 @@ export function DocumentoLegal({
                   </li>
                 ))}
               </ol>
-              <p className="mt-5 flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground">
+              <p className="mt-4 flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground lg:mt-5">
                 <CalendarDays className="h-3.5 w-3.5 text-[#C9A96E]" aria-hidden />
                 Vigente desde el {FECHA_LEGAL}
               </p>

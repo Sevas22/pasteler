@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ArrowRight, X } from "lucide-react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
@@ -7,6 +8,7 @@ import { formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-hel
 import type { Producto } from "@/lib/types/producto"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { HeroCarouselBackground, type HeroCarouselSlide } from "@/components/hero-carousel-background"
+import { SelectorPorciones, nombreConPorciones, vendePorPorciones } from "@/components/selector-porciones"
 
 type ProductQuickViewProps = {
   producto: Producto | null
@@ -22,6 +24,10 @@ function slidesDe(producto: Producto): HeroCarouselSlide[] {
 
 /** Vista rápida de un producto en modal — sin salir del catálogo. */
 export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewProps) {
+  const [porciones, setPorciones] = useState<number | null>(null)
+  // Cada producto abre sin tamaño elegido
+  useEffect(() => setPorciones(null), [producto?.slug])
+
   return (
     <Dialog open={Boolean(producto)} onOpenChange={onOpenChange}>
       <DialogContent
@@ -70,9 +76,18 @@ export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewPro
                 confirma los ingredientes con la tienda.
               </p>
 
+              {vendePorPorciones(producto) ? (
+                <SelectorPorciones
+                  valor={porciones}
+                  onChange={setPorciones}
+                  cotizarHref={`/contacto?formulario=cotizacion&producto=${encodeURIComponent(producto.nombre)}&porciones=${encodeURIComponent("Más de 30")}#contacto`}
+                  className="mt-5"
+                />
+              ) : null}
+
               <div className="mt-6 flex flex-col items-start gap-3">
                 <WhatsAppCTA
-                  mensaje={`Hola, quiero cotizar: ${producto.nombre}`}
+                  mensaje={`Hola, quiero cotizar: ${nombreConPorciones(producto.nombre, porciones)}`}
                   ruta={`/productos/${producto.slug}`}
                   sedesSlugs={producto.sedes}
                   className="inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover sm:w-auto"

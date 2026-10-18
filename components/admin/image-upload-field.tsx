@@ -89,8 +89,9 @@ export function ImageUploadField({ name, label, defaultValue, folder, onChangeUr
             </div>
           ) : null}
         </div>
-        <div className="flex flex-1 flex-col gap-2">
-          <p className="text-xs text-muted-foreground">Arrastra una imagen aquí o</p>
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          {/* En celular no se arrastran archivos: se toma foto o se elige de la galería */}
+          <p className="hidden text-xs text-muted-foreground sm:block">Arrastra una imagen aquí o</p>
           <input
             ref={inputRef}
             type="file"
@@ -101,7 +102,7 @@ export function ImageUploadField({ name, label, defaultValue, folder, onChangeUr
               if (file) handleFile(file)
             }}
           />
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button
               type="button"
               variant="outline"

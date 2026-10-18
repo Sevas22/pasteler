@@ -101,6 +101,21 @@ export async function deleteProductAction(productId: string): Promise<void> {
   updateTag("productos")
 }
 
+/** Activa o desactiva uno o varios productos (interruptor de la lista y cambio masivo). */
+export async function setProductosActivosAction(ids: string[], active: boolean): Promise<ActionResult> {
+  await requireAdminSession()
+  const limpios = ids.filter((id) => typeof id === "string" && id.length > 0).slice(0, 500)
+  if (limpios.length === 0) return { error: "No hay productos seleccionados." }
+
+  const supabase = await createClient()
+  const { error } = await supabase.from("products").update({ active }).in("id", limpios)
+  if (error) return { error: `No se pudo actualizar: ${error.message}` }
+
+  revalidateSite()
+  updateTag("productos")
+  return {}
+}
+
 // ── Sucursales ───────────────────────────────────────────────────────────
 
 export async function saveLocationAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {

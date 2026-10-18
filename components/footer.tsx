@@ -16,6 +16,7 @@ import {
 import type { Location } from "@/lib/data/locations"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { NEGOCIO } from "@/lib/seo"
+import { cn } from "@/lib/utils"
 import { RedesSociales } from "@/components/redes-sociales"
 import { Corazon, Hoja } from "@/components/sedes-dalizas/decoraciones"
 
@@ -167,7 +168,7 @@ export function Footer({ locations }: FooterProps) {
               <li key={href}>
                 <Link
                   href={href}
-                  className="group flex items-center gap-3.5 text-lg text-[#5A2E2E] transition-colors hover:text-[#8B2E2E]"
+                  className="group flex items-center gap-3.5 py-1 text-lg text-[#5A2E2E] transition-colors hover:text-[#8B2E2E]"
                   style={SERIF}
                 >
                   <Icono className="h-6 w-6 shrink-0 text-[#B08A4A] transition-transform group-hover:-translate-y-0.5" strokeWidth={1.6} aria-hidden />
@@ -198,27 +199,27 @@ export function Footer({ locations }: FooterProps) {
                 Bosa, Bogotá · {locations.length} sedes
               </Link>
             </li>
-            {/* Teléfonos de todas las sedes (las que comparten número salen una sola vez) */}
-            <li className="flex items-start gap-3.5">
-              <span className={CIRCULO}>
-                <Phone className="h-4 w-4" aria-hidden />
-              </span>
-              <ul className="flex flex-col gap-1.5 pt-1.5">
-                {telefonos.map(({ sede, numeros }) => (
-                  <li key={sede} className="text-[15px] leading-snug text-[#5A2E2E]" style={SERIF}>
-                    <span className="text-[#8B2E2E]">{sede}</span>
-                    {numeros.map((n) => (
-                      <span key={n}>
-                        {" · "}
-                        <a href={`tel:+57${n.replace(/\D/g, "")}`} className="whitespace-nowrap transition-colors hover:text-[#8B2E2E] hover:underline">
-                          {n}
-                        </a>
-                      </span>
-                    ))}
-                  </li>
-                ))}
-              </ul>
-            </li>
+            {/* Un renglón por número, cada uno con su círculo de llamada (las sedes que comparten número salen una vez) */}
+            {telefonos.flatMap(({ sede, numeros }) =>
+              numeros.map((n) => (
+                <li key={`${sede}-${n}`}>
+                  <a
+                    href={`tel:+57${n.replace(/\D/g, "")}`}
+                    aria-label={`Llamar a ${sede}: ${n}`}
+                    className="group flex items-center gap-3.5 text-[15px] leading-snug text-[#5A2E2E] transition-colors hover:text-[#8B2E2E]"
+                    style={SERIF}
+                  >
+                    <span className={cn(CIRCULO, "transition-transform group-hover:scale-105")}>
+                      <Phone className="h-4 w-4" aria-hidden />
+                    </span>
+                    <span>
+                      <span className="text-[#8B2E2E]">{sede}</span>
+                      <span className="whitespace-nowrap"> · {n}</span>
+                    </span>
+                  </a>
+                </li>
+              )),
+            )}
           </ul>
 
           <WhatsAppCTA
@@ -263,7 +264,7 @@ export function Footer({ locations }: FooterProps) {
               {ENLACES_FRANJA.map((e, i) => (
                 <li key={e.href} className="flex items-center gap-5">
                   {i > 0 ? <span className="hidden text-[#C9A96E] sm:inline" aria-hidden>|</span> : null}
-                  <Link href={e.href} className="transition-colors hover:text-[#E3C98F]">
+                  <Link href={e.href} className="inline-block py-2 transition-colors hover:text-[#E3C98F]">
                     {e.label}
                   </Link>
                 </li>

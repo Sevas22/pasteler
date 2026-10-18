@@ -12,7 +12,12 @@ function Marca({ proveedor, oculto }: { proveedor: Proveedor; oculto?: boolean }
   return (
     <li
       aria-hidden={oculto || undefined}
-      className="group/marca mr-4 flex h-24 w-48 shrink-0 items-center justify-center rounded-2xl border border-[#C9A96E]/25 bg-[#F7EFE4] px-6 shadow-[0_18px_40px_-24px_rgba(0,0,0,0.9)] transition-all duration-500 hover:-translate-y-1 hover:border-[#E3C98F] hover:shadow-[0_24px_50px_-20px_rgba(201,169,110,0.45)] sm:mr-6 sm:h-28 sm:w-60"
+      className={cn(
+        "group/marca mr-4 flex h-24 w-48 shrink-0 items-center justify-center rounded-2xl border px-6 shadow-[0_18px_40px_-24px_rgba(0,0,0,0.9)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_50px_-20px_rgba(201,169,110,0.45)] sm:mr-6 sm:h-28 sm:w-60",
+        proveedor.oscuro
+          ? "border-[#7C3AED]/40 bg-[#05060f] px-3 hover:border-[#22D3EE]/70"
+          : "border-[#C9A96E]/25 bg-[#F7EFE4] hover:border-[#E3C98F]",
+      )}
     >
       {proveedor.logo ? (
         <Image
@@ -23,9 +28,11 @@ function Marca({ proveedor, oculto }: { proveedor: Proveedor; oculto?: boolean }
           className={cn(
             "h-auto max-h-16 w-auto max-w-[80%] object-contain transition-all duration-500 sm:max-h-20",
             // En reposo: tonos sepia de la marca; al pasar el mouse, el logo con su color real
-            proveedor.silueta
-              ? "opacity-80 [filter:brightness(0)] group-hover/marca:opacity-100"
-              : "opacity-85 mix-blend-multiply [filter:grayscale(1)_sepia(0.35)] group-hover/marca:opacity-100 group-hover/marca:[filter:none]",
+            proveedor.oscuro
+              ? "max-w-[92%] opacity-95 group-hover/marca:opacity-100"
+              : proveedor.silueta
+                ? "opacity-80 [filter:brightness(0)] group-hover/marca:opacity-100"
+                : "opacity-85 mix-blend-multiply [filter:grayscale(1)_sepia(0.35)] group-hover/marca:opacity-100 group-hover/marca:[filter:none]",
           )}
         />
       ) : (

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ImageUploadField } from "@/components/admin/image-upload-field"
+import { GaleriaUploadField } from "@/components/admin/galeria-upload-field"
 import { FormSection } from "@/components/admin/form-section"
 import { ProductPreviewCard } from "@/components/admin/product-preview-card"
 import { saveProductAction, type ActionResult } from "@/app/admin/actions"
@@ -35,10 +36,13 @@ function slugify(value: string): string {
 function SubmitButton({ isEdit }: { isEdit: boolean }) {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" size="lg" disabled={pending} className="min-w-[10rem]">
+    // Celular y tableta: barra fija sobre la navegación inferior, para guardar sin bajar hasta el final
+    <div className="fixed inset-x-3 bottom-[5.25rem] z-20 rounded-2xl border border-border bg-card/95 p-2 shadow-lg backdrop-blur lg:static lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none">
+    <Button type="submit" size="lg" disabled={pending} className="w-full min-w-[10rem] lg:w-auto">
       {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
       {isEdit ? "Guardar cambios" : "Crear producto"}
     </Button>
+    </div>
   )
 }
 
@@ -71,7 +75,7 @@ export function ProductForm({ producto, locations }: ProductFormProps) {
   }
 
   return (
-    <form action={formAction} className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-start lg:gap-8">
+    <form action={formAction} className="grid grid-cols-[minmax(0,1fr)] gap-6 pb-20 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-8 lg:pb-0">
       {producto ? <input type="hidden" name="id" value={producto.id} /> : null}
 
       <div className="space-y-6">
@@ -180,19 +184,13 @@ export function ProductForm({ producto, locations }: ProductFormProps) {
             folder="productos"
             onChangeUrl={setImagen}
           />
-          <div className="space-y-2">
-            <Label htmlFor="imagenesExtra">URLs de imágenes extra (una por línea, opcional)</Label>
-            <Textarea
-              id="imagenesExtra"
-              name="imagenesExtra"
-              rows={3}
-              placeholder="https://…"
-              defaultValue={producto?.imagenesExtra?.join("\n") ?? ""}
-            />
-            <p className="text-xs text-muted-foreground">
-              Sube esas imágenes por separado y pega aquí sus URLs públicas, una por línea.
-            </p>
-          </div>
+          <GaleriaUploadField
+            name="imagenesExtra"
+            label="Imágenes extra (opcional)"
+            defaultValue={producto?.imagenesExtra ?? []}
+            folder="productos"
+            max={4}
+          />
         </FormSection>
 
         <FormSection

@@ -79,7 +79,7 @@ export function CatalogoProductos({ productos, servicio, onServicioChange }: Pro
               type="button"
               onClick={() => setFilter(c)}
               className={cn(
-                "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors",
+                "min-h-9 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors sm:min-h-0",
                 filter === c
                   ? "border-primary text-primary"
                   : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary",

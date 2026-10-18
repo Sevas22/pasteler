@@ -11,6 +11,7 @@ import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { HeroCarouselBackground } from "@/components/hero-carousel-background"
 import { cn } from "@/lib/utils"
 import { FondoMarca } from "@/components/ornaments/fondo-marca"
+import { SelectorPorciones, nombreConPorciones, vendePorPorciones } from "@/components/selector-porciones"
 
 type ProductDetailViewProps = {
   producto: Producto
@@ -21,7 +22,11 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
   const [quickView, setQuickView] = useState<Producto | null>(null)
   const [fotoActiva, setFotoActiva] = useState(0)
   const fotos = [...new Set([producto.imagen, ...(producto.imagenesExtra ?? [])])].filter(Boolean)
-  const contactHref = `/contacto?formulario=cotizacion&producto=${encodeURIComponent(producto.nombre)}#contacto`
+  const [porciones, setPorciones] = useState<number | null>(null)
+  const porPorciones = vendePorPorciones(producto)
+  const contactHref = `/contacto?formulario=cotizacion&producto=${encodeURIComponent(producto.nombre)}${
+    porciones ? `&porciones=${porciones}` : ""
+  }#contacto`
 
   return (
     <article className="relative isolate overflow-hidden bg-background px-5 pb-20 pt-24 sm:px-8 sm:pt-28 lg:px-12">
@@ -124,9 +129,17 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
                   Precio a consultar
                 </p>
               )}
+              {porPorciones ? (
+                <SelectorPorciones
+                  valor={porciones}
+                  onChange={setPorciones}
+                  cotizarHref={`/contacto?formulario=cotizacion&producto=${encodeURIComponent(producto.nombre)}&porciones=${encodeURIComponent("Más de 30")}#contacto`}
+                  className="mt-5"
+                />
+              ) : null}
               <div className="mt-5 flex flex-col gap-3">
                 <WhatsAppCTA
-                  mensaje={`Hola, quiero cotizar: ${producto.nombre}`}
+                  mensaje={`Hola, quiero cotizar: ${nombreConPorciones(producto.nombre, porciones)}`}
                   ruta={`/productos/${producto.slug}`}
                   sedesSlugs={producto.sedes}
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
@@ -142,7 +155,9 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
                 </Link>
               </div>
               <p className="mt-4 text-center text-xs text-muted-foreground">
-                Indica fecha, porciones y esta referencia — te confirmamos disponibilidad y valor.
+                {porPorciones
+                  ? "Indica la fecha de tu evento — te confirmamos disponibilidad y valor."
+                  : "Indica fecha, porciones y esta referencia — te confirmamos disponibilidad y valor."}
               </p>
             </div>
           </div>

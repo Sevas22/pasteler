@@ -26,10 +26,13 @@ function slugify(value: string): string {
 function SubmitButton({ isEdit }: { isEdit: boolean }) {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" size="lg" disabled={pending} className="min-w-[10rem]">
+    // Celular y tableta: barra fija sobre la navegación inferior, para guardar sin bajar hasta el final
+    <div className="fixed inset-x-3 bottom-[5.25rem] z-20 rounded-2xl border border-border bg-card/95 p-2 shadow-lg backdrop-blur lg:static lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none">
+    <Button type="submit" size="lg" disabled={pending} className="w-full min-w-[10rem] lg:w-auto">
       {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
       {isEdit ? "Guardar cambios" : "Crear curso"}
     </Button>
+    </div>
   )
 }
 
@@ -46,7 +49,7 @@ export function CourseForm({ course }: { course?: Course }) {
   }, [state])
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-6">
+    <form action={formAction} className="max-w-2xl space-y-6 pb-20 lg:pb-0">
       {course ? <input type="hidden" name="id" value={course.id} /> : null}
 
       <FormSection icon={Info} title="Información básica" description="Título y datos generales del curso.">

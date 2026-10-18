@@ -34,8 +34,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="flex min-h-screen flex-col bg-background lg:flex-row">
       <AdminSidebar email={session.email} />
-      <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">{children}</main>
-      <Toaster position="top-right" richColors />
+      {/* pb-24: espacio para la navegación inferior en celular */}
+      <main className="min-w-0 flex-1 overflow-y-auto p-4 pb-24 sm:p-6 sm:pb-24 lg:p-8">{children}</main>
+      <Toaster position="top-center" richColors />
     </div>
   )
 }

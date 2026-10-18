@@ -73,7 +73,7 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
             {location.phone ? (
               <a
                 href={`tel:+57${location.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-2 hover:underline"
+                className="flex items-center gap-2 py-1.5 hover:underline"
               >
                 <Phone className="h-4 w-4 text-[#C9A96E]" />
                 {location.phone}
@@ -121,7 +121,7 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
               <a
                 href={qrDataUrl}
                 download={`qr-daliza-${location.slug}.png`}
-                className="mt-1 inline-block text-xs font-semibold text-primary underline-offset-2 hover:underline"
+                className="mt-1 inline-block py-1.5 text-xs font-semibold text-primary underline-offset-2 hover:underline"
               >
                 Descargar
               </a>

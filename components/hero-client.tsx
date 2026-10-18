@@ -83,8 +83,8 @@ export function HeroClient() {
       data-no-section-divider
       className="relative isolate flex flex-col overflow-hidden bg-[#F7EFE4] lg:h-[100svh] lg:min-h-[700px]"
     >
-      {/* Banners: en desktop son el fondo a todo el ancho; en móvil van como bloque bajo el texto */}
-      <div className="relative order-last mx-5 mb-12 mt-10 aspect-[16/9] overflow-hidden rounded-2xl shadow-[0_30px_60px_-30px_rgba(58,38,32,0.45)] sm:mx-8 lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-16 lg:z-0 lg:order-none lg:m-0 lg:aspect-auto lg:rounded-none lg:shadow-none">
+      {/* Banners: en desktop son el fondo a todo el ancho; en celular y tableta van arriba, antes del texto */}
+      <div className="relative mx-4 mt-[6.5rem] aspect-[4/3] overflow-hidden rounded-[1.75rem] shadow-[0_30px_60px_-30px_rgba(58,38,32,0.45)] sm:mx-8 sm:mt-28 sm:aspect-[16/9] lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-16 lg:z-0 lg:m-0 lg:aspect-auto lg:rounded-none lg:shadow-none">
         {BANNERS.hero.map((b, i) => (
           // Solo el primer banner viaja con la página; los demás se piden después de que esta termina de cargar
           (i === 0 || bannersExtra) && (
@@ -95,9 +95,10 @@ export function HeroClient() {
             fill
             priority={i === 0}
             sizes="100vw"
-            style={{ objectPosition: b.encuadre, transformOrigin: b.zoom }}
+            // En celular se encuadra en las tortas (punto del zoom); en desktop, el encuadre que deja espacio al texto
+            style={{ "--pos-movil": b.zoom, "--pos-desk": b.encuadre, transformOrigin: b.zoom } as React.CSSProperties}
             className={cn(
-              "object-cover motion-reduce:!scale-100",
+              "object-cover [object-position:var(--pos-movil)] motion-reduce:!scale-100 lg:[object-position:var(--pos-desk)]",
               // Zoom lento hacia la torta mientras el banner está activo; al salir vuelve a 1 cuando ya se desvaneció
               i === slide
                 ? "opacity-100 [transition:opacity_1400ms_ease-in-out,scale_9s_ease-out]"
@@ -133,27 +134,32 @@ export function HeroClient() {
               aria-selected={i === slide}
               aria-label={`Ver banner ${i + 1}`}
               onClick={() => setSlide(i)}
-              className={cn(
-                "relative h-1.5 overflow-hidden rounded-full shadow-sm transition-all duration-300",
-                i === slide ? "w-12 bg-white/80" : "w-3 bg-white/80 hover:bg-white",
-              )}
+              // Zona táctil alta (py-3) alrededor de una barra fina: fácil de tocar con el dedo
+              className="group/punto -my-3 py-3"
             >
-              {/* Barra que se llena mientras dura el banner */}
-              {i === slide ? (
-                <span
-                  key={slide}
-                  className="hero-progreso absolute inset-y-0 left-0 rounded-full bg-primary"
-                  style={{ animationDuration: `${SLIDE_MS}ms` }}
-                  aria-hidden
-                />
-              ) : null}
+              <span
+                className={cn(
+                  "relative block h-1.5 overflow-hidden rounded-full shadow-sm transition-all duration-300",
+                  i === slide ? "w-12 bg-white/80" : "w-6 bg-white/80 group-hover/punto:bg-white sm:w-3",
+                )}
+              >
+                {/* Barra que se llena mientras dura el banner */}
+                {i === slide ? (
+                  <span
+                    key={slide}
+                    className="hero-progreso absolute inset-y-0 left-0 rounded-full bg-primary"
+                    style={{ animationDuration: `${SLIDE_MS}ms` }}
+                    aria-hidden
+                  />
+                ) : null}
+              </span>
             </button>
           ))}
         </div>
       </div>
 
       {/* En desktop el texto se pega al borde libre de cada foto (no al centro), para no montarse sobre las tortas */}
-      <div className="relative z-10 flex w-full flex-1 px-5 pt-28 sm:px-8 sm:pt-32 lg:items-center lg:px-14 lg:pb-16 lg:pt-24 xl:px-16 2xl:px-24">
+      <div className="relative z-10 flex w-full flex-1 px-5 pb-12 pt-8 sm:px-8 sm:pt-10 lg:items-center lg:px-14 lg:pb-16 lg:pt-24 xl:px-16 2xl:px-24">
         <div
           key={slide}
           className={cn(

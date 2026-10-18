@@ -21,7 +21,8 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
   return (
     <nav className="flex-1 space-y-1 p-3">
       {links.map((link) => {
-        const active = pathname === link.href || pathname.startsWith(`${link.href}/`)
+        const active =
+          link.href === "/admin" ? pathname === "/admin" : pathname === link.href || pathname.startsWith(`${link.href}/`)
         const Icon = link.icon
         return (
           <Link
@@ -106,12 +107,12 @@ export function AdminSidebar({ email }: { email: string }) {
 
   return (
     <>
-      {/* Barra superior móvil */}
-      <div className="flex items-center justify-between border-b border-border bg-card px-4 py-3 lg:hidden">
+      {/* Barra superior móvil (fija para tener siempre el menú a mano) */}
+      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/95 px-4 py-2.5 backdrop-blur lg:hidden">
         <BrandLogo variant="header" className="h-10" />
         <button
           type="button"
-          className="rounded-md p-2 text-foreground hover:bg-secondary"
+          className="flex h-11 w-11 items-center justify-center rounded-lg text-foreground hover:bg-secondary"
           onClick={() => setMobileOpen(true)}
         >
           <span className="sr-only">Abrir menú</span>
@@ -119,6 +120,42 @@ export function AdminSidebar({ email }: { email: string }) {
         </button>
       </div>
       {mobileDrawer}
+
+      {/* Navegación inferior en celular y tableta: las secciones al alcance del pulgar */}
+      <nav
+        aria-label="Secciones del panel"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      >
+        <ul className="mx-auto grid max-w-lg grid-cols-5">
+          {links.map((link) => {
+            const active =
+              link.href === "/admin" ? pathname === "/admin" : pathname === link.href || pathname.startsWith(`${link.href}/`)
+            const Icon = link.icon
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
+                    active ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex h-7 w-12 items-center justify-center rounded-full transition-colors",
+                      active && "bg-primary/10",
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  {link.label === "Sucursales" ? "Sedes" : link.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </nav>
 
       {/* Sidebar fija en escritorio */}
       <aside className="hidden h-full w-64 shrink-0 flex-col border-r border-border bg-card lg:flex">
