@@ -13,7 +13,7 @@ import { GaleriaUploadField } from "@/components/admin/galeria-upload-field"
 import { FormSection } from "@/components/admin/form-section"
 import { ProductPreviewCard } from "@/components/admin/product-preview-card"
 import { saveProductAction, type ActionResult } from "@/app/admin/actions"
-import { SERVICIOS_PRODUCTO } from "@/lib/data/productos-helpers"
+import { SERVICIOS_PRODUCTO, claveCategoria, formatCategoriaLabel, getServicioLabel } from "@/lib/data/productos-helpers"
 import type { Producto, ServicioProducto } from "@/lib/types/producto"
 import type { Location } from "@/lib/data/locations"
 import { cn } from "@/lib/utils"
@@ -21,6 +21,8 @@ import { cn } from "@/lib/utils"
 type ProductFormProps = {
   producto?: Producto
   locations: Location[]
+  /** Categorías que ya usan los productos, para elegirlas en vez de reescribirlas. */
+  categorias?: { nombre: string; servicio: ServicioProducto }[]
 }
 
 function slugify(value: string): string {
@@ -48,7 +50,7 @@ function SubmitButton({ isEdit }: { isEdit: boolean }) {
 
 const initialState: ActionResult = {}
 
-export function ProductForm({ producto, locations }: ProductFormProps) {
+export function ProductForm({ producto, locations, categorias = [] }: ProductFormProps) {
   const [state, formAction] = useActionState(saveProductAction, initialState)
   const [nombre, setNombre] = useState(producto?.nombre ?? "")
   const [slug, setSlug] = useState(producto?.slug ?? "")
@@ -60,6 +62,9 @@ export function ProductForm({ producto, locations }: ProductFormProps) {
   const [selectedSedes, setSelectedSedes] = useState<Set<string>>(
     new Set(locations.filter((l) => producto?.sedes.includes(l.slug)).map((l) => l.id)),
   )
+
+  const sugeridas = categorias.filter((c) => c.servicio === servicio)
+  const existeCategoria = categorias.some((c) => claveCategoria(c.nombre) === claveCategoria(categoria))
 
   useEffect(() => {
     if (state?.error) toast.error(state.error)
@@ -134,9 +139,10 @@ export function ProductForm({ producto, locations }: ProductFormProps) {
               <Input
                 id="categoria"
                 name="categoria"
-                placeholder="tortas, postres, tartas…"
+                placeholder="Elige una o escribe una nueva"
                 value={categoria}
                 onChange={(e) => setCategoria(e.target.value)}
+                autoComplete="off"
               />
             </div>
             <div className="space-y-2">
@@ -146,13 +152,45 @@ export function ProductForm({ producto, locations }: ProductFormProps) {
                 name="precio"
                 type="number"
                 min="0"
-                step="1000"
+                step="1"
+                inputMode="numeric"
                 value={precio}
                 onChange={(e) => setPrecio(e.target.value)}
                 placeholder="85000"
               />
             </div>
           </div>
+
+          {sugeridas.length > 0 ? (
+            <div className="space-y-2">
+              <p className="text-xs text-muted-foreground">
+                Categorías de {getServicioLabel(servicio)} ya creadas — toca una para usarla y no duplicarla:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {sugeridas.map((c) => (
+                  <button
+                    key={c.nombre}
+                    type="button"
+                    onClick={() => setCategoria(c.nombre)}
+                    aria-pressed={claveCategoria(categoria) === claveCategoria(c.nombre)}
+                    className={cn(
+                      "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+                      claveCategoria(categoria) === claveCategoria(c.nombre)
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary",
+                    )}
+                  >
+                    {formatCategoriaLabel(c.nombre)}
+                  </button>
+                ))}
+              </div>
+              {categoria.trim() && !existeCategoria ? (
+                <p className="text-xs text-amber-700">
+                  «{formatCategoriaLabel(categoria)}» es una categoría nueva: aparecerá como un filtro más en el catálogo.
+                </p>
+              ) : null}
+            </div>
+          ) : null}
         </FormSection>
 
         <FormSection icon={Tag} title="Descripción" description="Lo que verán tus clientes en la ficha del producto.">

@@ -1,12 +1,12 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { ImageIcon } from "lucide-react"
-import { SERVICIOS_PRODUCTO, formatCategoriaLabel } from "@/lib/data/productos-helpers"
+import { SERVICIOS_PRODUCTO, claveCategoria, formatCategoriaLabel } from "@/lib/data/productos-helpers"
 import type { Producto, ServicioProducto } from "@/lib/types/producto"
 import { ProductQuickView } from "@/components/product-quick-view"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import { cn } from "@/lib/utils"
 
 export type ServicioFiltro = ServicioProducto | "todos"
@@ -36,14 +36,21 @@ export function CatalogoProductos({ productos, servicio, onServicioChange }: Pro
     return productos.filter((p) => p.servicio === servicio)
   }, [productos, servicio])
 
+  // Se agrupa por clave normalizada: "Postres tradicionales" y "postres-tradicionales" son un solo filtro
   const categorias = useMemo(() => {
-    const s = new Set(itemsByServicio.map((p) => p.categoria))
-    return ["todas", ...Array.from(s)]
+    const porClave = new Map<string, string>()
+    for (const p of itemsByServicio) {
+      const clave = claveCategoria(p.categoria)
+      if (clave && !porClave.has(clave)) porClave.set(clave, p.categoria)
+    }
+    return [{ clave: "todas", etiqueta: "Todas las categorías" }].concat(
+      Array.from(porClave, ([clave, original]) => ({ clave, etiqueta: formatCategoriaLabel(original) })),
+    )
   }, [itemsByServicio])
 
   const visible = useMemo(() => {
     if (filter === "todas") return itemsByServicio
-    return itemsByServicio.filter((p) => p.categoria === filter)
+    return itemsByServicio.filter((p) => claveCategoria(p.categoria) === filter)
   }, [itemsByServicio, filter])
 
   return (
@@ -75,17 +82,17 @@ export function CatalogoProductos({ productos, servicio, onServicioChange }: Pro
         <div className="mt-4 flex flex-wrap gap-2">
           {categorias.map((c) => (
             <button
-              key={c}
+              key={c.clave}
               type="button"
-              onClick={() => setFilter(c)}
+              onClick={() => setFilter(c.clave)}
               className={cn(
                 "min-h-9 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors sm:min-h-0",
-                filter === c
+                filter === c.clave
                   ? "border-primary text-primary"
                   : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary",
               )}
             >
-              {c === "todas" ? "Todas las categorías" : formatCategoriaLabel(c)}
+              {c.etiqueta}
             </button>
           ))}
         </div>
@@ -114,7 +121,7 @@ export function CatalogoProductos({ productos, servicio, onServicioChange }: Pro
                 className="group flex h-full flex-col text-left"
               >
                 <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
-                  <Image
+                  <ImagenMiniatura
                     src={p.imagen}
                     alt={p.nombre}
                     fill

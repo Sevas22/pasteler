@@ -45,8 +45,8 @@ export const ARTICULOS: Articulo[] = [
       "Una torta personalizada con papel de azúcar lleva una imagen comestible impresa (el nombre, un personaje, una foto o un diseño) sobre la cobertura. Para pedirla en Bogotá solo necesitas la fecha, el número de personas, el sabor y la imagen que quieres; escríbele a tu sede Daliza por WhatsApp y te confirmamos disponibilidad y valor.",
     fecha: "2026-10-16",
     lecturaMin: 5,
-    imagen: "/images/galeria/tortas/torta-03.webp",
-    imagenAlt: "Torta personalizada decorada por Daliza Pastelería Fina en Bogotá",
+    imagen: "/images/galeria/tortas/torta-08.webp",
+    imagenAlt: "Torta personalizada de Bluey con imagen de papel de azúcar y nombre, de Daliza Pastelería Fina",
     cuerpo: [
       { t: "h2", x: "¿Qué es el papel de azúcar?" },
       {
@@ -123,8 +123,8 @@ export const ARTICULOS: Articulo[] = [
       "Como regla general, calcula una porción por invitado y suma unas pocas más si habrá repetición o si es el único postre. Una torta redonda mediana rinde alrededor de 10 a 12 porciones; para más personas conviene una torta más grande o dos sabores. Es una guía: la sede te confirma tamaños exactos.",
     fecha: "2026-10-16",
     lecturaMin: 4,
-    imagen: "/images/galeria/tortas/torta-07.webp",
-    imagenAlt: "Torta de celebración con porciones listas para servir",
+    imagen: "/images/galeria/tortas/torta-11.webp",
+    imagenAlt: "Torta de dos pisos con rosas rojas y número dorado para una celebración grande",
     cuerpo: [
       { t: "h2", x: "¿Cómo calculo las porciones para mi evento?" },
       {
@@ -334,8 +334,8 @@ export const ARTICULOS: Articulo[] = [
       "Transporta la torta sobre una superficie plana (el piso del carro o el baúl, nunca en el asiento inclinado), con el aire acondicionado puesto y sin frenazos. Una vez en casa, guárdala en la nevera y sácala unos minutos antes de servir.",
     fecha: "2026-10-16",
     lecturaMin: 4,
-    imagen: "/images/galeria/tortas/torta-10.webp",
-    imagenAlt: "Torta decorada lista para llevar, empacada en su caja",
+    imagen: "/images/galeria/tortas/torta-09.webp",
+    imagenAlt: "Torta de bautizo decorada con ángel y estrellas doradas, lista para transportar",
     cuerpo: [
       { t: "h2", x: "¿Cómo transporto una torta en el carro?" },
       {

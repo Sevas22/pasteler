@@ -22,7 +22,12 @@ type PageHeroProps = {
 
 const SERIF = { fontFamily: "var(--font-serif), ui-serif, Georgia, serif" }
 
-/** Banner borde a borde con el título encima. */
+/**
+ * Banner con el título.
+ * - Escritorio (desde 1024 px): foto a todo el fondo, borde a borde, con el título encima.
+ * - Celular y tableta: las fotos son panorámicas y en una pantalla vertical se verían como una franja muy
+ *   ampliada con el texto tapando el producto. Por eso la foto va arriba, completa, y el título debajo.
+ */
 export function PageHero({
   src,
   alt = "",
@@ -43,55 +48,68 @@ export function PageHero({
       data-no-section-divider
       data-snap-hero
       className={cn(
-        "relative isolate flex w-full overflow-hidden",
-        // Media pantalla: arranca debajo del menú fijo (64 px) para que la foto se vea completa
-        medio ? "mt-16 h-[50svh] min-h-[360px] items-center lg:min-h-[420px]" : "h-[100svh] min-h-[560px] items-end",
+        "relative isolate w-full overflow-hidden",
+        // Celular y tableta: la foto arranca debajo de la barra del menú (64 px). Escritorio: foto de fondo.
+        "max-lg:pt-16 lg:flex",
+        medio ? "lg:mt-16 lg:h-[50svh] lg:min-h-[420px] lg:items-center" : "lg:h-[100svh] lg:min-h-[560px] lg:items-end",
         claro ? "bg-[#F3EAE2]" : "bg-[#2a1210]",
         className,
       )}
     >
-      {background ??
-        (src ? (
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            priority={priority}
-            sizes="100vw"
-            className={cn("object-cover", !claro && "saturate-[1.1] contrast-[1.05]", focus)}
-          />
-        ) : null)}
+      {/* Foto: bloque 4:3 (16:9 en tableta) arriba en celular; fondo de toda la sección en escritorio */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/9] lg:absolute lg:inset-0 lg:aspect-auto">
+        {background ??
+          (src ? (
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              priority={priority}
+              sizes="100vw"
+              className={cn("object-cover", !claro && "saturate-[1.1] contrast-[1.05]", focus)}
+            />
+          ) : null)}
 
-      {claro ? (
-        // Velo crema del lado del texto: la foto clara se conserva intacta del lado del producto
+        {/* Celular y tableta: la foto se funde suavemente con el color de la sección donde empieza el título */}
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#F8F2EA]/95 via-[#F8F2EA]/70 via-[38%] to-transparent to-[62%] max-sm:bg-gradient-to-t max-sm:from-[#F8F2EA]/95 max-sm:via-[#F8F2EA]/70 max-sm:via-[45%] max-sm:to-transparent max-sm:to-[80%]"
+          className={cn(
+            "pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t to-transparent lg:hidden",
+            claro ? "from-[#F3EAE2]" : "from-[#2a1210]",
+          )}
           aria-hidden
         />
-      ) : (
-        <>
+
+        {claro ? (
+          // Velo crema del lado del texto: la foto clara se conserva intacta del lado del producto
           <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1c100e]/85 via-[#1c100e]/25 to-[#1c100e]/10"
+            className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F8F2EA]/95 via-[#F8F2EA]/70 via-[38%] to-transparent to-[62%] lg:block"
             aria-hidden
           />
-          {/* Apaga el brillo/velo claro que traen algunas fotos en las esquinas superiores */}
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#1c100e]/60 via-[#1c100e]/15 via-[40%] to-transparent to-[65%]"
-            aria-hidden
-          />
-          {/* Franja oscura a la izquierda: da lectura al título sin tapar el producto */}
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#1c100e]/70 via-[#1c100e]/25 via-[45%] to-transparent to-[75%]"
-            aria-hidden
-          />
-        </>
-      )}
+        ) : (
+          <>
+            <div
+              className="pointer-events-none absolute inset-0 hidden bg-gradient-to-t from-[#1c100e]/85 via-[#1c100e]/25 to-[#1c100e]/10 lg:block"
+              aria-hidden
+            />
+            {/* Apaga el brillo/velo claro que traen algunas fotos en las esquinas superiores */}
+            <div
+              className="pointer-events-none absolute inset-0 hidden bg-gradient-to-br from-[#1c100e]/60 via-[#1c100e]/15 via-[40%] to-transparent to-[65%] lg:block"
+              aria-hidden
+            />
+            {/* Franja oscura a la izquierda: da lectura al título sin tapar el producto */}
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0 hidden w-full bg-gradient-to-r from-[#1c100e]/70 via-[#1c100e]/25 via-[45%] to-transparent to-[75%] lg:block"
+              aria-hidden
+            />
+          </>
+        )}
+      </div>
 
       <div
         className={cn(
-          "relative mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12",
-          // Media pantalla: el texto va centrado (en móvil, abajo sobre el velo crema)
-          medio ? "py-8 max-sm:self-end" : "pb-28 sm:pb-32",
+          "relative mx-auto w-full max-w-6xl px-5 pb-12 pt-2 sm:px-8 lg:px-12",
+          // Escritorio: el título va sobre la foto (abajo en pantalla completa, centrado en media pantalla)
+          medio ? "lg:py-8" : "lg:pb-32 lg:pt-0",
         )}
       >
         <div className={cn("mb-5 h-px w-14", claro ? "bg-[#C9A96E]" : "bg-[#E3C98F]/80")} aria-hidden />
@@ -99,7 +117,7 @@ export function PageHero({
           className={cn(
             "text-balance font-normal leading-[1.05]",
             // En media pantalla el título va más angosto para no llegar a la foto del producto
-            medio ? "max-w-md text-4xl sm:text-5xl lg:max-w-lg lg:text-6xl" : "max-w-3xl text-5xl sm:text-6xl lg:text-7xl",
+            medio ? "max-w-md text-4xl sm:text-5xl lg:max-w-lg lg:text-6xl" : "max-w-3xl text-4xl sm:text-6xl lg:text-7xl",
             claro ? "text-[#5A2E2E] [&_.italic]:!text-[#8B2E2E]" : "text-[#F7EFE4] drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)]",
           )}
           style={SERIF}
@@ -109,7 +127,7 @@ export function PageHero({
         {description ? (
           <p
             className={cn(
-              "mt-5 max-w-md text-[15px] leading-relaxed sm:text-base",
+              "mt-4 max-w-md text-[15px] leading-relaxed sm:text-base lg:mt-5",
               claro ? "text-[#57473F]" : "text-[#F1E6D8] drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]",
             )}
           >

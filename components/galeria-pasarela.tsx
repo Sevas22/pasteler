@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { ArrowRight, ChevronLeft, ChevronRight, Plus } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import { cn } from "@/lib/utils"
 
 export type ItemPasarela = {
@@ -54,6 +55,8 @@ const ALTO_MENU = 64
 const ALTO_TEXTO = 72
 /** Más allá de esta distancia la tarjeta se oculta (y deja de recibir foco y clics). */
 const DISTANCIA_VISIBLE = 2.6
+/** Cuántas tarjetas a cada lado del centro cargan su foto (las demás esperan, sin descargar ni decodificar nada). */
+const VENTANA_FOTOS = 3
 
 const SERIF = { fontFamily: "var(--font-serif), 'Playfair Display', Georgia, serif" }
 const dosDigitos = (n: number) => String(n).padStart(2, "0")
@@ -83,10 +86,12 @@ function Tarjeta({
   refTarjeta,
   refBoton,
   clase,
+  cargarFoto = true,
 }: {
   item: ItemPasarela
   indice: number
   total: number
+  cargarFoto?: boolean
   onAbrir: (i: number, boton: HTMLButtonElement) => void
   onIr?: (i: number) => void
   estilo?: React.CSSProperties
@@ -107,14 +112,18 @@ function Tarjeta({
       )}
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#EDE5DD]">
-        <Image
-          src={item.imagen}
-          alt={item.nombre}
-          fill
-          sizes="(max-width: 640px) 75vw, 360px"
-          className="object-cover"
-          draggable={false}
-        />
+        {/* Solo las tarjetas cercanas al centro cargan su foto (las lejanas son un recuadro vacío) */}
+        {cargarFoto ? (
+          <ImagenMiniatura
+            src={item.imagen}
+            ancho={640}
+            alt={item.nombre}
+            fill
+            sizes="(max-width: 640px) 75vw, 360px"
+            className="object-cover"
+            draggable={false}
+          />
+        ) : null}
       </div>
       <div className="flex items-center justify-between gap-3 px-1 pt-3" style={{ minHeight: ALTO_TEXTO - 12 }}>
         <div className="min-w-0">
@@ -343,6 +352,7 @@ export function GaleriaPasarela({
   const botonesRef = useRef<(HTMLButtonElement | null)[]>([])
   const medidas = useRef({ separacion: 300, recorrido: 1 })
   const posicionRef = useRef(0)
+  const ocultasRef = useRef<boolean[]>([])
 
   const [activo, setActivo] = useState(0)
   const [abierto, setAbierto] = useState<number | null>(null)
@@ -379,14 +389,20 @@ export function GaleriaPasarela({
       if (!tarjeta) return
       const distancia = i - posicion
       const abs = Math.abs(distancia)
+      // Las tarjetas lejanas ya ocultas no se vuelven a tocar: en celular, mover 80 tarjetas por cuadro es lo que traba
+      const oculta = abs >= DISTANCIA_VISIBLE
+      if (oculta && ocultasRef.current[i]) return
+      ocultasRef.current[i] = oculta
       const escala = Math.max(AJUSTES.escalaMinima, 1 - abs * AJUSTES.reduccion)
       tarjeta.style.transform =
         `translate(-50%, -50%) translateX(${distancia * separacion}px) translateZ(${-abs * AJUSTES.profundidad}px) ` +
         `rotateY(${-distancia * AJUSTES.inclinacion}deg) scale(${escala})`
       tarjeta.style.zIndex = String(1000 - Math.round(abs * 100))
       tarjeta.style.opacity = String(limitar((DISTANCIA_VISIBLE - abs) / 0.6, 0, 1))
+      // Oculta de verdad (visibility) y sin capa propia en la GPU (will-change) cuando está lejos
+      tarjeta.style.visibility = oculta ? "hidden" : "visible"
+      tarjeta.style.willChange = oculta ? "auto" : "transform"
       // Solo la tarjeta del centro es interactiva con teclado; las ocultas no reciben clics ni foco
-      const oculta = abs >= DISTANCIA_VISIBLE
       tarjeta.inert = oculta
       tarjeta.style.pointerEvents = oculta ? "none" : "auto"
       tarjeta.style.cursor = abs < 0.5 ? "default" : "pointer"
@@ -565,12 +581,14 @@ export function GaleriaPasarela({
                   refBoton={(el) => {
                     botonesRef.current[i] = el
                   }}
-                  clase="absolute left-1/2 top-1/2 w-[var(--ancho-tarjeta,300px)] will-change-transform [backface-visibility:hidden]"
+                  cargarFoto={Math.abs(i - activo) <= VENTANA_FOTOS}
+                  clase="absolute left-1/2 top-1/2 w-[var(--ancho-tarjeta,300px)] [backface-visibility:hidden]"
                   estilo={{
                     // Posición inicial (antes de que corra el JS): la primera al centro, las demás a la derecha
                     transform: `translate(-50%, -50%) translateX(${i * 270}px) translateZ(${-i * AJUSTES.profundidad}px) rotateY(${-i * AJUSTES.inclinacion}deg) scale(${Math.max(AJUSTES.escalaMinima, 1 - i * AJUSTES.reduccion)})`,
                     zIndex: 1000 - i * 100,
                     opacity: i < DISTANCIA_VISIBLE ? 1 : 0,
+                    visibility: i < DISTANCIA_VISIBLE ? "visible" : "hidden",
                   }}
                 />
               ))}

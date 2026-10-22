@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import Link from "next/link"
 import { Clock, ImageIcon, MapPin, MessageCircle, Navigation, Phone, QrCode } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -30,9 +31,10 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
   return (
     <article>
       {/* Hero fotográfico — mismo lenguaje que la ficha de producto/curso */}
-      <div className="relative aspect-[5/4] min-h-[280px] w-full overflow-hidden bg-muted sm:aspect-[21/9] sm:min-h-[260px] md:aspect-[2.4/1] md:min-h-[360px]">
-        <Image
+      <div className="relative min-h-[30rem] w-full overflow-hidden bg-muted sm:aspect-[21/9] sm:min-h-[260px] md:aspect-[2.4/1] md:min-h-[360px]">
+        <ImagenMiniatura
           src={heroImage}
+          ancho={1280}
           alt=""
           fill
           priority

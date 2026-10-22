@@ -4,6 +4,7 @@ import { revalidatePath, updateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { requireAdminSession } from "@/lib/supabase/admin-guard"
+import { claveCategoria } from "@/lib/data/productos-helpers"
 
 export type ActionResult = { error: string } | { error?: undefined }
 
@@ -23,6 +24,23 @@ function linesToArray(value: FormDataEntryValue | null): string[] {
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)
+}
+
+/**
+ * Si la categoría escrita equivale a una que ya existe ("Postres tradicionales" = "postres-tradicionales"),
+ * se reutiliza esa escritura en vez de crear una categoría nueva.
+ */
+async function unificarCategoria(supabase: Awaited<ReturnType<typeof createClient>>, categoria: string): Promise<string> {
+  const clave = claveCategoria(categoria)
+  if (!clave) return categoria
+  const { data } = await supabase.from("products").select("categoria")
+  const conteo = new Map<string, number>()
+  for (const fila of data ?? []) {
+    const existente = String(fila.categoria ?? "")
+    if (claveCategoria(existente) === clave) conteo.set(existente, (conteo.get(existente) ?? 0) + 1)
+  }
+  if (conteo.size === 0) return categoria
+  return Array.from(conteo).sort((a, b) => b[1] - a[1])[0][0]
 }
 
 function revalidateSite() {
@@ -60,7 +78,7 @@ export async function saveProductAction(_prevState: ActionResult, formData: Form
     description: String(formData.get("descripcion") ?? "").trim(),
     description_long: String(formData.get("descripcionLarga") ?? "").trim(),
     servicio: String(formData.get("servicio") ?? "pasteleria"),
-    categoria: String(formData.get("categoria") ?? "").trim(),
+    categoria: await unificarCategoria(supabase, String(formData.get("categoria") ?? "").trim()),
     image_url: String(formData.get("imagen") ?? "").trim() || null,
     extra_images: linesToArray(formData.get("imagenesExtra")),
     highlights: linesToArray(formData.get("highlights")),

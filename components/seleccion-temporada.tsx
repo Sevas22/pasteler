@@ -1,11 +1,11 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { SERVICIOS_PRODUCTO, formatCategoriaLabel } from "@/lib/data/productos-helpers"
 import { SoftCircle } from "@/components/ornaments/soft-circle"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import type { Producto } from "@/lib/types/producto"
 import { seleccionar } from "@/lib/data/seleccion-temporada"
 import { cn } from "@/lib/utils"
@@ -79,7 +79,7 @@ export function SeleccionTemporada({ productos }: SeleccionTemporadaProps) {
             <li key={producto.slug}>
               <Link href={`/productos/${producto.slug}`} className="group block">
                 <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-muted shadow-[0_24px_50px_-28px_rgba(58,38,32,0.55)]">
-                  <Image
+                  <ImagenMiniatura
                     src={producto.imagen}
                     alt={producto.nombre}
                     fill

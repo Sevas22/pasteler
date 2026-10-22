@@ -1,10 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
 
-const SELLO = "/images/sello-16-anos.webp"
+const SELLO = "/images/sello-13-anos.webp"
 
 /**
- * Sello flotante "16 años de experiencia" en la esquina superior izquierda, bajo el menú de todas las páginas.
+ * Sello flotante "13 años de experiencia" en la esquina superior izquierda, bajo el menú de todas las páginas.
  * Flota suavemente y cada tanto le pasa un brillo dorado (solo sobre el sello, gracias a la máscara).
  */
 export function SelloAniversario() {
@@ -12,7 +12,7 @@ export function SelloAniversario() {
     <div className="sello-entrada fixed left-3 top-[76px] z-40 sm:left-5 sm:top-20">
       <Link
         href="/#nosotros"
-        aria-label="Daliza: 16 años de experiencia. Conoce nuestra historia"
+        aria-label="Daliza: 13 años de experiencia. Conoce nuestra historia"
         className="group relative block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C9A96E]"
       >
         <span className="block origin-top-left transition-transform duration-300 ease-out group-hover:scale-110">
@@ -43,7 +43,7 @@ export function SelloAniversario() {
 
         {/* Mensaje al pasar el mouse (escritorio) */}
         <span className="pointer-events-none absolute left-full top-1/2 ml-3 hidden -translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-full border border-[#C9A96E]/50 bg-[#2a1210] px-4 py-2 text-sm text-[#F7EFE4] opacity-0 shadow-lg transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 sm:block">
-          <span className="font-semibold text-[#E8CFA0]">16 años</span>{" "}
+          <span className="font-semibold text-[#E8CFA0]">13 años</span>{" "}
           endulzando tus celebraciones
         </span>
       </Link>

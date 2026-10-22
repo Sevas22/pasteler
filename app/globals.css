@@ -502,7 +502,7 @@ p.uppercase.anim-scroll[data-visible] {
   }
 }
 
-/* Sello "16 años": entra, flota suavemente y cada tanto le pasa un brillo dorado */
+/* Sello "13 años": entra, flota suavemente y cada tanto le pasa un brillo dorado */
 @keyframes sello-entrada {
   from {
     opacity: 0;

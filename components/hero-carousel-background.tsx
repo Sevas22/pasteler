@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import { useCallback, useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -102,8 +102,9 @@ export function HeroCarouselBackground({
           aria-hidden={i !== index}
         >
           {cargadas.has(i) || i === index ? (
-            <Image
+            <ImagenMiniatura
               src={slide.src}
+              ancho={1000}
               alt=""
               fill
               className={cn("object-cover object-center", imageClassName, slide.className)}

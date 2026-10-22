@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import Image from "next/image"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { LayoutShell } from "@/components/layout-shell"
@@ -68,8 +68,8 @@ export default function BlogPage() {
               <RevealItem key={a.slug} className="group flex flex-col">
                 <Link href={`/blog/${a.slug}`} className="flex flex-1 flex-col">
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
-                    <Image
-                      src={a.imagen}
+                    <ImagenMiniatura
+                      src={a.imagen} ancho={480}
                       alt={a.imagenAlt}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

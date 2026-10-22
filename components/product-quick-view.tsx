@@ -32,24 +32,26 @@ export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewPro
     <Dialog open={Boolean(producto)} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="grid w-[calc(100%-1.5rem)] max-w-4xl grid-cols-1 gap-0 overflow-hidden rounded-2xl border-brand-gold/30 bg-card p-0 sm:max-w-[calc(100%-2rem)] sm:grid-cols-2 md:max-w-4xl"
+        className="grid max-h-[92svh] w-[calc(100%-1.5rem)] grid-cols-1 gap-0 overflow-y-auto rounded-2xl border-brand-gold/30 bg-card p-0 sm:max-w-[calc(100%-2rem)] md:max-w-[54rem] md:grid-cols-[26rem_minmax(0,1fr)]"
       >
         {producto ? (
           <>
             <DialogTitle className="sr-only">{producto.nombre}</DialogTitle>
 
-            <div className="relative h-56 w-full overflow-hidden sm:h-full">
-              <HeroCarouselBackground
-                key={producto.slug}
-                slides={slidesDe(producto)}
-                intervalMs={3500}
-                ariaLabel={`Fotos de ${producto.nombre}`}
-                sizes="(max-width: 640px) 100vw, 50vw"
-                dotsContainerClassName="bottom-3"
-              />
+            <div className="md:flex md:items-center md:p-5 md:pr-0">
+              <div className="relative mx-auto aspect-square w-full max-w-[26rem] overflow-hidden md:max-w-none md:rounded-xl">
+                <HeroCarouselBackground
+                  key={producto.slug}
+                  slides={slidesDe(producto)}
+                  intervalMs={3500}
+                  ariaLabel={`Fotos de ${producto.nombre}`}
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  dotsContainerClassName="bottom-3"
+                />
+              </div>
             </div>
 
-            <div className="relative flex flex-col justify-center p-6 sm:p-10">
+            <div className="relative flex flex-col justify-center p-6 md:p-7">
               <button
                 type="button"
                 onClick={() => onOpenChange(false)}
@@ -60,18 +62,18 @@ export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewPro
               </button>
 
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Una creación Daliza</p>
-              <h2 className="mt-3 text-balance font-serif text-3xl font-normal leading-tight text-heading sm:text-4xl">
+              <h2 className="mt-2 text-balance pr-10 font-serif text-2xl font-normal leading-tight text-heading md:text-3xl">
                 {producto.nombre}
               </h2>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#C9A96E]">
+              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#C9A96E]">
                 {formatCategoriaLabel(producto.categoria)} · {getServicioLabel(producto.servicio)}
               </p>
 
-              <p className="mt-4 border-t border-border pt-4 text-base leading-relaxed text-foreground">
+              <p className="mt-3 border-t border-border pt-3 text-[15px] leading-relaxed text-foreground">
                 {producto.descripcion}
               </p>
 
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
                 Consulta el tamaño, el valor y la disponibilidad para tu fecha. Si tienes alguna alergia,
                 confirma los ingredientes con la tienda.
               </p>
@@ -81,11 +83,11 @@ export function ProductQuickView({ producto, onOpenChange }: ProductQuickViewPro
                   valor={porciones}
                   onChange={setPorciones}
                   cotizarHref={`/contacto?formulario=cotizacion&producto=${encodeURIComponent(producto.nombre)}&porciones=${encodeURIComponent("Más de 30")}#contacto`}
-                  className="mt-5"
+                  className="mt-4"
                 />
               ) : null}
 
-              <div className="mt-6 flex flex-col items-start gap-3">
+              <div className="mt-5 flex flex-col items-start gap-2.5">
                 <WhatsAppCTA
                   mensaje={`Hola, quiero cotizar: ${nombreConPorciones(producto.nombre, porciones)}`}
                   ruta={`/productos/${producto.slug}`}

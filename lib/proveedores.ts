@@ -17,5 +17,5 @@ export const PROVEEDORES: readonly Proveedor[] = [
   { slug: "mass-cream", nombre: "Mass Cream" },
   { slug: "harina-el-lobo", nombre: "Harina El Lobo" },
   { slug: "haz-de-oros", nombre: "Haz de Oros", logo: "/images/proveedores/haz-de-oros.png" },
-  { slug: "codifikai", nombre: "CodifikAI", logo: "/images/proveedores/codifikai.webp", oscuro: true },
+  { slug: "codifikai", nombre: "CodifikAI", logo: "/images/proveedores/codifikai.webp" },
 ]

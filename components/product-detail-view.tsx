@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import Link from "next/link"
 import { Check, MapPin, MessageCircle } from "lucide-react"
 import type { Producto } from "@/lib/types/producto"
@@ -67,7 +67,7 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
                       i === fotoActiva ? "ring-primary" : "ring-transparent opacity-75 hover:opacity-100",
                     )}
                   >
-                    <Image src={src} alt="" fill className="object-cover" sizes="120px" />
+                    <ImagenMiniatura src={src} ancho={240} alt="" fill className="object-cover" sizes="120px" />
                   </button>
                 ))}
               </div>
@@ -180,7 +180,7 @@ export function ProductDetailView({ producto, relacionados }: ProductDetailViewP
                   className="group flex flex-col text-left"
                 >
                   <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
-                    <Image
+                    <ImagenMiniatura
                       src={p.imagen}
                       alt={p.nombre}
                       fill

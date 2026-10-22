@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
+import { ImagenMiniatura } from "@/components/imagen-miniatura"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
@@ -57,7 +57,7 @@ export function FlavorShowcase({ productos }: FlavorShowcaseProps) {
                       i === active ? "ring-brand-gold" : "ring-transparent",
                     )}
                   >
-                    <Image src={p.imagen} alt="" fill className="object-cover" sizes="48px" />
+                    <ImagenMiniatura src={p.imagen} ancho={160} alt="" fill className="object-cover" sizes="48px" />
                   </span>
                   <span className="min-w-0">
                     <span
@@ -86,8 +86,9 @@ export function FlavorShowcase({ productos }: FlavorShowcaseProps) {
                   className="grid sm:grid-cols-2"
                 >
                   <div className="relative aspect-[4/3] sm:aspect-auto">
-                    <Image
+                    <ImagenMiniatura
                       src={current.imagen}
+                      ancho={800}
                       alt={current.nombre}
                       fill
                       className="object-cover"
