@@ -31,8 +31,8 @@ const BLOQUES: Bloque[] = [
       { icono: TrendingUp, texto: "Crecimiento y rentabilidad" },
     ],
     imagen: {
-      src: "/images/banners/mision-torta-chocolate.webp",
-      alt: "Torta Daliza de crema y chocolate decorada con fresas y láminas de chocolate",
+      src: "/images/banners/mision-rebanadas.webp",
+      alt: "Rebanadas de torta de chocolate, crema y arequipe de Daliza",
       encuadre: "50% 50%",
     },
     fotoA: "derecha",
@@ -48,8 +48,8 @@ const BLOQUES: Bloque[] = [
       { icono: Store, texto: "Más variedad" },
     ],
     imagen: {
-      src: "/images/banners/vision-chocolate-fresas.webp",
-      alt: "Ola de chocolate con fresas y trozos de chocolate sobre mármol",
+      src: "/images/banners/vision-tartaleta-rollo.webp",
+      alt: "Tartaleta de durazno y fresa, rollo de fruta y torta en rebanada de Daliza",
       encuadre: "50% 50%",
     },
     fotoA: "izquierda",
