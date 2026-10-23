@@ -18,6 +18,7 @@ import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { NEGOCIO } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { RedesSociales } from "@/components/redes-sociales"
+import { telefonosPorSede, telHref } from "@/lib/telefonos"
 import { Corazon, Hoja } from "@/components/sedes-dalizas/decoraciones"
 
 type FooterProps = {
@@ -129,18 +130,8 @@ function Voluta({ className, espejo }: { className?: string; espejo?: boolean })
 }
 
 export function Footer({ locations }: FooterProps) {
-  // Un renglón por sede con sus números ("310 8527365 · 312 5169547" → dos enlaces); sin repetir números ya listados
-  const vistos = new Set<string>()
-  const telefonos = [...locations]
-    .sort((a, b) => Number(b.isPrincipal) - Number(a.isPrincipal))
-    .map((l) => ({
-      sede: l.name,
-      numeros: l.phone
-        .split("·")
-        .map((n) => n.trim())
-        .filter((n) => n && !vistos.has(n.replace(/\D/g, "")) && vistos.add(n.replace(/\D/g, ""))),
-    }))
-    .filter((t) => t.numeros.length > 0)
+  // Una línea por sede: el nombre una sola vez y sus números (uno o dos) como enlaces; ningún número se repite
+  const telefonos = telefonosPorSede(locations)
 
   return (
     <footer className="relative isolate overflow-hidden bg-[#FBF6F0]">
@@ -199,27 +190,33 @@ export function Footer({ locations }: FooterProps) {
                 Bosa, Bogotá · {locations.length} sedes
               </Link>
             </li>
-            {/* Un renglón por número, cada uno con su círculo de llamada (las sedes que comparten número salen una vez) */}
-            {telefonos.flatMap(({ sede, numeros }) =>
-              numeros.map((n) => (
-                <li key={`${sede}-${n}`}>
-                  <a
-                    href={`tel:+57${n.replace(/\D/g, "")}`}
-                    aria-label={`Llamar a ${sede}: ${n}`}
-                    className="group flex items-center gap-3.5 text-[15px] leading-snug text-[#5A2E2E] transition-colors hover:text-[#8B2E2E]"
-                    style={SERIF}
-                  >
-                    <span className={cn(CIRCULO, "transition-transform group-hover:scale-105")}>
-                      <Phone className="h-4 w-4" aria-hidden />
+            {/* Una línea por sede; cada número lleva su propio enlace para llamar */}
+            {telefonos.map(({ sede, numeros }) => (
+              <li key={sede} className="flex items-center gap-3.5 text-[15px] leading-snug text-[#5A2E2E]" style={SERIF}>
+                <a
+                  href={telHref(numeros[0])}
+                  aria-label={`Llamar a ${sede}: ${numeros[0]}`}
+                  className={cn(CIRCULO, "transition-transform hover:scale-105")}
+                >
+                  <Phone className="h-4 w-4" aria-hidden />
+                </a>
+                <span>
+                  <span className="text-[#8B2E2E]">{sede}</span>
+                  {numeros.map((n) => (
+                    <span key={n} className="whitespace-nowrap">
+                      {" · "}
+                      <a
+                        href={telHref(n)}
+                        aria-label={`Llamar a ${sede}: ${n}`}
+                        className="transition-colors hover:text-[#8B2E2E] hover:underline"
+                      >
+                        {n}
+                      </a>
                     </span>
-                    <span>
-                      <span className="text-[#8B2E2E]">{sede}</span>
-                      <span className="whitespace-nowrap"> · {n}</span>
-                    </span>
-                  </a>
-                </li>
-              )),
-            )}
+                  ))}
+                </span>
+              </li>
+            ))}
           </ul>
 
           <WhatsAppCTA

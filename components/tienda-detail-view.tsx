@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { ImagenMiniatura } from "@/components/imagen-miniatura"
+import { numerosDe, telHref } from "@/lib/telefonos"
 import Link from "next/link"
 import { Clock, ImageIcon, MapPin, MessageCircle, Navigation, Phone, QrCode } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -72,15 +73,12 @@ export function TiendaDetailView({ location, productos, qrDataUrl, heroImage }: 
                 </span>
               </span>
             ) : null}
-            {location.phone ? (
-              <a
-                href={`tel:+57${location.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-2 py-1.5 hover:underline"
-              >
+            {numerosDe(location.phone).map((n) => (
+              <a key={n} href={telHref(n)} className="flex items-center gap-2 py-1.5 hover:underline">
                 <Phone className="h-4 w-4 text-[#C9A96E]" />
-                {location.phone}
+                {n}
               </a>
-            ) : null}
+            ))}
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { SoftCircle } from "@/components/ornaments/soft-circle"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { FondoMarca } from "@/components/ornaments/fondo-marca"
 import { FormulariosSolicitud } from "@/components/formularios-solicitud"
+import { telefonosPorSede } from "@/lib/telefonos"
 
 type ContactProps = {
   locations: Location[]
@@ -25,9 +26,7 @@ export function Contact({ locations, courses }: ContactProps) {
     {
       icon: Phone,
       title: "Teléfonos",
-      details: locations
-        .filter((l) => l.phone)
-        .map((l) => `${l.phone}${l.isPrincipal ? " (Principal)" : ""}`),
+      details: telefonosPorSede(locations).map(({ sede, numeros }) => `${sede}: ${numeros.join(" · ")}`),
     },
     {
       icon: MapPin,
