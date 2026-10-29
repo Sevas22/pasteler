@@ -3,10 +3,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { ArrowRight, ChevronLeft, ChevronRight, Plus } from "lucide-react"
+import { ArrowRight, ChevronLeft, ChevronRight, Plus, ZoomIn } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { ImagenMiniatura } from "@/components/imagen-miniatura"
+import { VisorZoom } from "@/components/visor-zoom"
+import { urlImagen } from "@/lib/imagenes"
 import { cn } from "@/lib/utils"
 
 export type ItemPasarela = {
@@ -81,6 +83,7 @@ function Tarjeta({
   indice,
   total,
   onAbrir,
+  onFoto,
   onIr,
   estilo,
   refTarjeta,
@@ -93,6 +96,8 @@ function Tarjeta({
   total: number
   cargarFoto?: boolean
   onAbrir: (i: number, boton: HTMLButtonElement) => void
+  /** Clic en la foto: la pasarela decide si la amplía (solo la del centro) o si trae la tarjeta al centro. */
+  onFoto?: (i: number) => void
   onIr?: (i: number) => void
   estilo?: React.CSSProperties
   refTarjeta?: (el: HTMLElement | null) => void
@@ -111,7 +116,14 @@ function Tarjeta({
         clase,
       )}
     >
-      <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#EDE5DD]">
+      <button
+        type="button"
+        data-foto
+        onClick={() => onFoto?.(indice)}
+        aria-label={`Ampliar la foto de ${item.nombre}`}
+        aria-haspopup="dialog"
+        className="relative block aspect-square w-full cursor-zoom-in overflow-hidden rounded-2xl bg-[#EDE5DD] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B2E2E]"
+      >
         {/* Solo las tarjetas cercanas al centro cargan su foto (las lejanas son un recuadro vacío) */}
         {cargarFoto ? (
           <ImagenMiniatura
@@ -124,7 +136,13 @@ function Tarjeta({
             draggable={false}
           />
         ) : null}
-      </div>
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/85 text-[#3A2620] shadow-sm"
+        >
+          <ZoomIn className="h-4 w-4" />
+        </span>
+      </button>
       <div className="flex items-center justify-between gap-3 px-1 pt-3" style={{ minHeight: ALTO_TEXTO - 12 }}>
         <div className="min-w-0">
           <p className="truncate font-sans text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8B2E2E]/80">
@@ -209,15 +227,34 @@ function Controles({
 
 /* ───────────── Modal ───────────── */
 
-function ModalProducto({ item, onCerrar }: { item: ItemPasarela | null; onCerrar: () => void }) {
+function ModalProducto({
+  item,
+  onCerrar,
+  onAmpliar,
+}: {
+  item: ItemPasarela | null
+  onCerrar: () => void
+  onAmpliar: (item: ItemPasarela) => void
+}) {
   return (
     <Dialog open={Boolean(item)} onOpenChange={(abierto) => !abierto && onCerrar()}>
       <DialogContent className="grid max-h-[90svh] w-[calc(100%-1.5rem)] max-w-3xl grid-cols-1 gap-0 overflow-y-auto rounded-3xl border-0 bg-[#F8F5F2] p-0 sm:grid-cols-2">
         {item ? (
           <>
-            <div className="relative aspect-square w-full bg-[#EDE5DD]">
+            <button
+              type="button"
+              onClick={() => onAmpliar(item)}
+              aria-label={`Ampliar la foto de ${item.nombre}`}
+              className="relative block aspect-square w-full cursor-zoom-in bg-[#EDE5DD] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#8B2E2E]"
+            >
               <Image src={item.imagen} alt={item.nombre} fill sizes="(max-width: 640px) 100vw, 380px" className="object-cover" />
-            </div>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-[#3A2620] shadow-sm"
+              >
+                <ZoomIn className="h-4 w-4" />
+              </span>
+            </button>
             <div className="flex flex-col justify-center gap-4 p-6 sm:p-8">
               <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B2E2E]">
                 {item.categoria}
@@ -279,10 +316,12 @@ function PasarelaSencilla({
   items,
   encabezado,
   onAbrir,
+  onFoto,
 }: {
   items: ItemPasarela[]
   encabezado: EncabezadoPasarela
   onAbrir: (i: number, b: HTMLButtonElement) => void
+  onFoto: (i: number) => void
 }) {
   const filaRef = useRef<HTMLDivElement>(null)
   const [activo, setActivo] = useState(0)
@@ -311,7 +350,7 @@ function PasarelaSencilla({
         className="mx-auto mt-10 flex max-w-6xl snap-x snap-mandatory gap-6 overflow-x-auto pb-4"
       >
         {items.map((item, i) => (
-          <Tarjeta key={item.id} item={item} indice={i} total={items.length} onAbrir={onAbrir} clase="w-[min(78vw,320px)] shrink-0 snap-center" />
+          <Tarjeta key={item.id} item={item} indice={i} total={items.length} onAbrir={onAbrir} onFoto={onFoto} clase="w-[min(78vw,320px)] shrink-0 snap-center" />
         ))}
       </div>
       <div className="mx-auto mt-6 max-w-xl">
@@ -356,6 +395,7 @@ export function GaleriaPasarela({
 
   const [activo, setActivo] = useState(0)
   const [abierto, setAbierto] = useState<number | null>(null)
+  const [ampliada, setAmpliada] = useState<{ src: string; nombre: string } | null>(null)
   const origenFoco = useRef<HTMLButtonElement | null>(null)
 
   /* Mide el escenario: tamaño de tarjeta según el alto y ancho disponibles, y la separación entre tarjetas. */
@@ -408,6 +448,11 @@ export function GaleriaPasarela({
       tarjeta.style.cursor = abs < 0.5 ? "default" : "pointer"
       const boton = botonesRef.current[i]
       if (boton) boton.tabIndex = abs < 0.5 ? 0 : -1
+      const foto = tarjeta.querySelector<HTMLElement>("[data-foto]")
+      if (foto) {
+        foto.tabIndex = abs < 0.5 ? 0 : -1
+        foto.style.cursor = abs < 0.5 ? "zoom-in" : "pointer"
+      }
     })
 
     if (barraRef.current) barraRef.current.style.transform = `scaleX(${progreso})`
@@ -513,15 +558,38 @@ export function GaleriaPasarela({
     setAbierto(i)
   }
 
+  /* Baja de antemano la foto grande de la tarjeta del centro (cuando se queda quieta un momento), para que el zoom abra al instante */
+  const precargadas = useRef(new Set<string>())
+  useEffect(() => {
+    const item = items[activo]
+    if (!item) return
+    const espera = window.setTimeout(() => {
+      const url = urlImagen(item.imagen, 1280)
+      if (precargadas.current.has(url)) return
+      precargadas.current.add(url)
+      new window.Image().src = url
+    }, 350)
+    return () => window.clearTimeout(espera)
+  }, [activo, items])
+
+  /** Solo la foto de la tarjeta del centro se amplía; la de una lateral solo la trae al centro (lo hace su onIr). */
+  const ampliarFoto = (i: number) => {
+    if (reducido || Math.round(posicionRef.current) === i) setAmpliada({ src: items[i].imagen, nombre: items[i].nombre })
+  }
+
   const modal = (
-    <ModalProducto
-      item={abierto === null ? null : items[abierto]}
-      onCerrar={() => {
-        setAbierto(null)
-        // Devuelve el foco al "+" que abrió el modal
-        requestAnimationFrame(() => origenFoco.current?.focus())
-      }}
-    />
+    <>
+      <ModalProducto
+        item={abierto === null ? null : items[abierto]}
+        onAmpliar={(item) => setAmpliada({ src: item.imagen, nombre: item.nombre })}
+        onCerrar={() => {
+          setAbierto(null)
+          // Devuelve el foco al "+" que abrió el modal
+          requestAnimationFrame(() => origenFoco.current?.focus())
+        }}
+      />
+      <VisorZoom foto={ampliada} onCerrar={() => setAmpliada(null)} />
+    </>
   )
 
   if (total === 0) return null
@@ -529,7 +597,7 @@ export function GaleriaPasarela({
   if (reducido) {
     return (
       <>
-        <PasarelaSencilla items={items} encabezado={encabezado} onAbrir={abrir} />
+        <PasarelaSencilla items={items} encabezado={encabezado} onAbrir={abrir} onFoto={ampliarFoto} />
         {modal}
       </>
     )
@@ -574,6 +642,7 @@ export function GaleriaPasarela({
                   indice={i}
                   total={total}
                   onAbrir={abrir}
+                  onFoto={ampliarFoto}
                   onIr={(idx) => Math.round(posicionRef.current) !== idx && irA(idx)}
                   refTarjeta={(el) => {
                     tarjetasRef.current[i] = el
