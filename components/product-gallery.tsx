@@ -42,6 +42,8 @@ export function ProductGallery({
               "object-cover object-center saturate-[1.1] contrast-[1.05] transition-opacity duration-700 ease-in-out",
               // En celular la foto se ve en un bloque 4:3: se encuadra en la torta (en esta foto queda a un tercio del borde)
               key === "pasteleria" && "max-lg:object-[34%_center]",
+              // Esta foto es cuadrada: se encuadra en las filas de cheesecakes (la mitad inferior de la foto)
+              key === "reposteria" && "object-[center_58%]",
               key === servicio ? "opacity-100" : "opacity-0",
             )}
           />

@@ -31,8 +31,8 @@ const BLOQUES: Bloque[] = [
       { icono: TrendingUp, texto: "Crecimiento y rentabilidad" },
     ],
     imagen: {
-      src: "/images/banners/mision-rebanadas.webp",
-      alt: "Rebanadas de torta de chocolate, crema y arequipe de Daliza",
+      src: "/images/banners/mision-fresas-crema.webp",
+      alt: "Postres de fresas con crema batida y salsa de frutos rojos de Daliza",
       encuadre: "50% 50%",
     },
     fotoA: "derecha",

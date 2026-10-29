@@ -106,7 +106,7 @@ export const BANNERS = {
     todos: "/images/banners/hero-tortas-surtido.webp",
     panaderia: "/images/banners/panaderia-lino-flores.webp",
     pasteleria: "/images/banners/hero-cheesecake-mango.webp",
-    reposteria: "/images/banners/reposteria-rebanadas-caramelo.webp",
+    reposteria: "/images/banners/reposteria-cheesecakes-colores.webp",
   },
   paginas: {
     cursos: "/images/banners/pasteleria-brillos.webp",
