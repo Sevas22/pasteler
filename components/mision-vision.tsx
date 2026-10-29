@@ -31,8 +31,8 @@ const BLOQUES: Bloque[] = [
       { icono: TrendingUp, texto: "Crecimiento y rentabilidad" },
     ],
     imagen: {
-      src: "/images/banners/mision-fresas-crema.webp",
-      alt: "Postres de fresas con crema batida y salsa de frutos rojos de Daliza",
+      src: "/images/banners/mision-torta-milkiway.webp",
+      alt: "Torta Milkiway de Daliza con crema batida, chocolate y fresas",
       encuadre: "50% 50%",
     },
     fotoA: "derecha",
@@ -48,8 +48,8 @@ const BLOQUES: Bloque[] = [
       { icono: Store, texto: "Más variedad" },
     ],
     imagen: {
-      src: "/images/banners/vision-tartaleta-rollo.webp",
-      alt: "Tartaleta de durazno y fresa, rollo de fruta y torta en rebanada de Daliza",
+      src: "/images/banners/vision-torta-65.webp",
+      alt: "Torta de dos pisos de Daliza decorada con rosas rojas, esferas doradas y el número 65",
       encuadre: "50% 50%",
     },
     fotoA: "izquierda",

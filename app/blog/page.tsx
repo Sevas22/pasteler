@@ -73,6 +73,7 @@ export default function BlogPage() {
                       alt={a.imagenAlt}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      style={a.imagenEncuadre ? { objectPosition: a.imagenEncuadre } : undefined}
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
                     />
                   </div>

@@ -27,6 +27,9 @@ export type Articulo = {
   lecturaMin: number
   imagen: string
   imagenAlt: string
+  /** Foto vertical con texto propio: en el artículo se muestra completa y en la tarjeta se recorta con `imagenEncuadre`. */
+  imagenVertical?: boolean
+  imagenEncuadre?: string
   cuerpo: Bloque[]
   faqs: { question: string; answer: string }[]
   relacionados: { href: string; label: string }[]
@@ -35,6 +38,100 @@ export type Articulo = {
 }
 
 export const ARTICULOS: Articulo[] = [
+  {
+    slug: "halloween-postres-y-tortas-para-ninos-bogota",
+    titulo: "Halloween con los niños: ideas de postres y tortas para celebrar en Bogotá",
+    descripcion:
+      "Ideas de postres, tortas y detalles dulces para celebrar Halloween con los niños en casa o en el colegio, y cómo hacer tu pedido en Daliza, Bogotá.",
+    categoria: "Celebraciones",
+    respuestaRapida:
+      "Para celebrar Halloween con los niños funcionan mejor los postres fáciles de repartir: porciones individuales, una torta personalizada con papel de azúcar y algo cremoso o frutal para equilibrar tanto dulce. Pide con anticipación, cuéntale a la sede cuántos niños serán y si hay alergias, y escríbele por WhatsApp para confirmar disponibilidad y valor.",
+    fecha: "2026-10-29",
+    lecturaMin: 4,
+    imagen: "/images/blog/halloween-los-ninos-tambien-celebran.webp",
+    imagenAlt:
+      "Niña disfrazada de payaso con un globo rojo, sosteniendo una caja de Daliza Pastelería Fina dentro de la tienda, con el mensaje Los niños también celebran",
+    imagenVertical: true,
+    imagenEncuadre: "50% 23%",
+    cuerpo: [
+      { t: "h2", x: "¿Por qué los niños son los protagonistas de Halloween?" },
+      {
+        t: "p",
+        x: "El 31 de octubre es una de las fechas favoritas de los niños: disfraces, caritas pintadas, globos y, sobre todo, dulces. En Bogotá se celebra en casa, en el conjunto, en el colegio o en una reunión con amigos, y casi siempre hay un momento para compartir algo dulce.",
+      },
+      {
+        t: "p",
+        x: "Un buen postre hace que la fiesta se recuerde. No tiene que dar miedo: basta con que sea divertido, rico y fácil de compartir.",
+      },
+      { t: "h2", x: "¿Qué postres funcionan mejor para una fiesta de Halloween?" },
+      {
+        t: "ul",
+        x: [
+          "Porciones individuales: cada niño toma la suya sin cortar ni ensuciarse, ideal para el colegio o el conjunto. Mira la [repostería individual](/productos?servicio=reposteria).",
+          "Una torta personalizada con papel de azúcar: puede llevar una imagen de Halloween, un nombre o un mensaje. Aquí te explicamos [cómo pedirla](/blog/torta-personalizada-papel-de-azucar-bogota).",
+          "Cheesecakes y postres frutales: son suaves y cremosos, gustan a niños y adultos y compensan lo muy dulce. Explora las [tortas y pastelería](/productos?servicio=pasteleria).",
+          "Algo de [panadería](/productos?servicio=panaderia) para los adultos que acompañan, para que no todo sea azúcar.",
+        ],
+      },
+      { t: "h2", x: "¿Cómo armar una mesa dulce sin complicarte?" },
+      {
+        t: "ul",
+        x: [
+          "Elige una paleta de dos o tres colores (naranja, negro y rojo funcionan siempre) y repítela en globos, servilletas y decoración.",
+          "Pon los postres a la altura de los niños y en porciones pequeñas, para que prueben de todo sin desperdiciar.",
+          "Deja un rincón para fotos: los disfraces son parte de la fiesta.",
+          "Si vas a regalar detalles dulces a los invitados, empácalos en cajas o bolsitas individuales.",
+        ],
+      },
+      { t: "h2", x: "¿Qué debo tener en cuenta con los niños y los dulces?" },
+      {
+        t: "p",
+        x: "Antes de pedir, pregunta a los papás si algún niño tiene alergias o restricciones y avísalo a la sede al hacer tu pedido. Calcula una porción por niño más algunas extra (en la [guía de porciones](/blog/cuantas-porciones-tiene-una-torta-que-tamano-pedir) te explicamos cómo) y, si la fiesta es larga, guarda la torta en la nevera hasta el momento de servir. Más consejos en [cómo conservar y transportar una torta](/blog/como-conservar-y-transportar-una-torta).",
+      },
+      {
+        t: "nota",
+        x: "Los postres y diseños disponibles para estas fechas pueden variar según la sede. Confirma por WhatsApp qué hay y con cuánta anticipación debes pedir.",
+      },
+      { t: "h2", x: "¿Cómo hago mi pedido para Halloween en Daliza?" },
+      {
+        t: "ol",
+        x: [
+          "Escoge la sede más cercana en [sedes y horarios](/tiendas).",
+          "Escríbele por WhatsApp con la fecha, el número de niños y los sabores que prefieres.",
+          "Si quieres una torta personalizada, envía la imagen de referencia o cuéntanos la idea.",
+          "Confirma tu pedido con la sede y recógelo en la fecha acordada.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "¿Con cuánta anticipación debo pedir un postre o una torta para Halloween?",
+        answer:
+          "Entre más pronto, mejor, sobre todo en fechas de mucha demanda como el 31 de octubre. Escríbele a tu sede por WhatsApp para confirmar disponibilidad.",
+      },
+      {
+        question: "¿Pueden hacer una torta con tema de Halloween?",
+        answer:
+          "Podemos personalizar tortas con papel de azúcar con la imagen o el diseño que prefieras. Envía tu idea a la sede y te confirman si es posible y el valor.",
+      },
+      {
+        question: "¿Qué postre es mejor para repartir en el colegio o el conjunto?",
+        answer:
+          "Los postres individuales, porque se reparten fácil y cada niño tiene su porción. Calcula uno por niño y algunos extra.",
+      },
+      {
+        question: "¿Qué hago si un niño tiene alergias?",
+        answer:
+          "Avísale a la sede al hacer el pedido para que te indique los ingredientes del producto, y confírmalo con los papás antes de la fiesta.",
+      },
+    ],
+    relacionados: [
+      { href: "/galeria", label: "Tortas personalizadas de nuestra galería" },
+      { href: "/productos?servicio=reposteria", label: "Postres y repostería individual" },
+      { href: "/contacto", label: "Hacer tu pedido por WhatsApp" },
+    ],
+    siguientes: ["torta-personalizada-papel-de-azucar-bogota", "cuantas-porciones-tiene-una-torta-que-tamano-pedir"],
+  },
   {
     slug: "torta-personalizada-papel-de-azucar-bogota",
     titulo: "Torta personalizada con papel de azúcar: cómo pedirla en Bogotá",

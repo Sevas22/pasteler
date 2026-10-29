@@ -150,7 +150,9 @@ export default async function ArticuloPage({ params }: Props) {
             <time dateTime={a.fecha}>{formatearFecha(a.fecha)}</time>
           </p>
 
-          <div className="relative mt-8 aspect-[16/10] w-full overflow-hidden rounded-2xl">
+          <div
+            className={`relative mt-8 w-full overflow-hidden rounded-2xl ${a.imagenVertical ? "mx-auto aspect-[9/16] max-w-sm" : "aspect-[16/10]"}`}
+          >
             <Image src={a.imagen} alt={a.imagenAlt} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
           </div>
 
